@@ -146,7 +146,7 @@
 								<field name="certificate_date"
 									attrs="{'invisible': [('products_types','!=','certification')]}" />
 								<field name="mold" attrs="{'invisible': [('products_types','not in',['design'])]}"/>
-								<field name="certificate" attrs="{'invisible': [('products_types','in',['certification'])]}"/>
+								<field name="certificate" attrs="{'invisible': [('products_types','not in',['certification'])]}"/>
 								
 							</group>
 							<group name="group_standard_price">

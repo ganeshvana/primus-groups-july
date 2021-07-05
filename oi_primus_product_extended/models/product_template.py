@@ -177,8 +177,8 @@ class Product_Master_Creation(models.Model):
     center_color_stone_id = fields.Many2one('center.color.stone', "Center Stone Color")
     provided_by = fields.Many2one('res.partner', "Provided By") 
     stone_applicable = fields.Boolean("Stone Applicable", default=True)
-    certificate_product_ids = fields.Many2many('product.template','product_certificate_rel', 'product_id', 'certificate_id', "Certificate Products")
-    certificate_origin_product_ids = fields.Many2many('product.template','product_certificate_origin_rel', 'product_id', 'certificate_id', "Certificate Origin Products")
+    certificate_product_ids = fields.Many2many('product.product','product_certificate_rel', 'product_id', 'certificate_id', "Certificate Products")
+    certificate_origin_product_ids = fields.Many2many('product.product','product_certificate_origin_rel', 'product_id', 'certificate_id', "Certificate Origin Products")
     jtypes = fields.Many2one('jewel.tags', "Jewel Type")
     
     @api.onchange('jtype')
@@ -992,16 +992,6 @@ class Product_Master_Creation(models.Model):
                     for rec in res.design_product_ids:
                         rec.mold_product_ids = [(4,res.id)]
                         rec.mold = 'yes'
-        if 'certificate_product_ids' in vals:
-            if res.certificate_product_ids:
-                for rec in res.certificate_product_ids:
-                    rec.certificate_origin_product_ids = [(4,res.id)]
-                    rec.certificate = 'yes'
-        if 'certificate_origin_product_ids' in vals:
-            if res.certificate_origin_product_ids:
-                for rec in res.certificate_origin_product_ids:
-                    rec.certificate_product_ids = [(4,res.id)]
-                    rec.certificate = 'yes'
         if res.default_code:
             res.barcode = res.default_code
         return res
@@ -1024,11 +1014,6 @@ class Product_Master_Creation(models.Model):
                     for rec in pt.design_product_ids:
                         rec.mold_product_ids = [(4,pt.id)]
                         rec.mold = 'yes'
-            if 'certificate_product_ids' in vals:
-                if pt.certificate_product_ids:
-                    for rec in pt.certificate_product_ids:
-                        rec.certificate_origin_product_ids = [(4,pt.id)]
-                        rec.certificate = 'yes'
 #             if 'certificate_origin_product_ids' in vals:
 #                 if pt.certificate_origin_product_ids:
 #                     for rec in pt.certificate_origin_product_ids:
@@ -1584,6 +1569,18 @@ class ProductProduct(models.Model):
                 })
         if res.default_code:
             res.barcode = res.default_code
+        if 'certificate_product_ids' in vals:
+            if res.certificate_product_ids:
+                for rec in res.certificate_product_ids:
+                    rec.certificate_origin_product_ids = [(4,res.id)]
+                    rec.certificate = 'yes'
+        if 'certificate_origin_product_ids' in vals:
+            if res.certificate_origin_product_ids:
+                for rec in res.certificate_origin_product_ids:
+                    pr_ids = rec.certificate_product_ids.ids
+                    pr_ids.append(res.id)
+                    rec.certificate_product_ids = [(6,0,pr_ids)]
+                    rec.certificate = 'yes'
         return res
     
     def write(self, vals):  
@@ -1608,6 +1605,20 @@ class ProductProduct(models.Model):
 #             self.env.cr.execute("Update product_product set finding_Thickness_id = %s WHERE id=%s", (vals['finding_Thickness_id'],self.id,))
         if 'finding_plating_thickness_id' in vals and vals['finding_plating_thickness_id'] != False:
             self.env.cr.execute("Update product_product set finding_plating_thickness_id = %s WHERE id=%s", (vals['finding_plating_thickness_id'],self.id,))
+        pt = self
+        if 'certificate_product_ids' in vals:
+            if pt.certificate_product_ids:
+                for rec in pt.certificate_product_ids:
+                    rec.certificate_origin_product_ids = [(4,pt.id)]
+                    rec.certificate = 'yes'
+#         if 'certificate_origin_product_ids' in vals:
+#             if pt.certificate_origin_product_ids:
+#                 for rec in pt.certificate_origin_product_ids:
+#                     pr_ids = rec.certificate_product_ids.ids
+#                     pr_ids.append(pt.id)
+#                     rec.certificate_product_ids = [(6,0,pr_ids)]
+#                     rec.certificate = 'yes'
+        
         return result
     
 class ProductAttVal(models.Model):
