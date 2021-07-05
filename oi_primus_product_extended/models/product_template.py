@@ -1566,6 +1566,10 @@ class ProductProduct(models.Model):
                 res.rseq = '0' + str(find_rec)
             else:
                 res.rseq =  str(find_rec)
+            if not type:
+                type = ''
+            if not res.rseq:
+                res.rseq = '01'
             sku  = 'F' + type + year + res.rseq 
             name = str(st) + ' '+ str(ft) + ' in ' + ' ' + str(fn) + ' ' + str(pf) + ' ' + str(pl) + ' ' + str(tn)
             res.write({
