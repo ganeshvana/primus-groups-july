@@ -177,8 +177,8 @@ class Product_Master_Creation(models.Model):
     center_color_stone_id = fields.Many2one('center.color.stone', "Center Stone Color")
     provided_by = fields.Many2one('res.partner', "Provided By") 
     stone_applicable = fields.Boolean("Stone Applicable", default=True)
-    certificate_product_ids = fields.Many2many('product.product','product_certificate_rel', 'product_id', 'certificate_id', "Certificate Products")
-    certificate_origin_product_ids = fields.Many2many('product.product','product_certificate_origin_rel', 'product_id', 'certificate_id', "Certificate Origin Products")
+    certificate_product_ids = fields.Many2many('product.product','product_certificates_rel', 'product_id', 'certificate_id', "Certificate Products")
+    certificate_origin_product_ids = fields.Many2many('product.product','product_certificates_origin_rel', 'product_id', 'certificate_id', "Certificate Origin Products")
     jtypes = fields.Many2one('jewel.tags', "Jewel Type")
     
     @api.onchange('jtype')
