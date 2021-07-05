@@ -43,9 +43,13 @@
         <field name="arch" type="xml">
             <form string="Make Project Payment Approved">
             	<group>
+            		<field name="option" widget="radio" required="1" string="Update"/>
+            	</group>
+            
+            	<group attrs="{'invisible': [('option', 'not in', ['bom'])]}">
             		<field name="bom_type"/>
             	</group>
-            	<notebook>
+            	<notebook attrs="{'invisible': [('option', 'not in', ['bom'])]}">
             		<page string="Bom Lines">
 	                     <field name="bulk_bom_ids">
 	                        <tree editable="bottom">
@@ -64,8 +68,12 @@
 	                    </field>
 	                </page>
             	</notebook>
+            	<group attrs="{'invisible': [('option', 'not in', ['cost'])]}">
+            		<field name="percentage"/>
+            	</group>
                 <footer>
-                	<button type="object" class="oe_highlight" string="Update" name="create_bom"/>
+                	<button type="object" class="oe_highlight" string="Update BoM" name="create_bom" attrs="{'invisible': [('option', 'not in', ['bom'])]}"/>
+                	<button type="object" class="oe_highlight" string="Update Cost" name="update_cost" attrs="{'invisible': [('option', 'not in', ['cost'])]}"/>
                 	<button string="Discard" class="btn btn-secondary" special="cancel"/>
                 </footer>
             </form>            
@@ -73,7 +81,7 @@
     </record>
     
     <record id="action_bom_bulk_update" model="ir.actions.act_window">
-        <field name="name">BoM - Bulk Update</field>
+        <field name="name">BOM/Cost - Bulk Update</field>
         <field name="res_model">product.bom.bulk</field>
         <field name="view_mode">form</field>
         <field name="view_id" ref="oi_primus_product_extended.view_bom_bulk_update"/>

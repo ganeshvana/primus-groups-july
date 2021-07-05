@@ -26,7 +26,7 @@ class Product_Master_Creation(models.Model):
         ('is_jewellery', 'Finished Jewelry'),
         ('finding','Findings'),
         ('mold', 'Mold'),
-        ('design', 'Design Work')], string='Products')
+        ('design', 'Design Work')], string='Product type to map')
     diacolorgrade = fields.Many2one('stone.diacolorgrade',string='Dia Color Grade')
     diaclaritygrade = fields.Many2one('stone.diaclaritygrade',string='Dia Clarity Grade')
     gemstonecolorgrade=fields.Many2one('stone.gemstonecolorgrade', string='Gemstone Color Grade')
@@ -141,6 +141,7 @@ class Product_Master_Creation(models.Model):
     
     motif = fields.Many2many('motif', 'motif_product_rel', 'motif_id', 'product_id', "Motif")
     mold = fields.Selection(([('yes', 'Yes'), ('no', 'No')]),"Mold", default='no', readonly=True)
+    certificate = fields.Selection(([('yes', 'Yes'), ('no', 'No')]),"Certificate", default='no', readonly=True)
     jewel_mold = fields.Selection(([('yes', 'Yes'), ('no', 'No')]),"Design Work", default='no')
     mold_ids = fields.One2many('mold', 'product_id', 'Design Molds')
     mold_type_id = fields.Many2one('mold.type',  'Mold Type')
@@ -175,7 +176,34 @@ class Product_Master_Creation(models.Model):
     ir_attachment_ids = fields.One2many('ir.attachment', 'product_tmpl_id', "Files")
     center_color_stone_id = fields.Many2one('center.color.stone', "Center Stone Color")
     provided_by = fields.Many2one('res.partner', "Provided By") 
-    stone_applicable = fields.Boolean("Stone Applicable")
+    stone_applicable = fields.Boolean("Stone Applicable", default=True)
+    certificate_product_ids = fields.Many2many('product.template','product_certificate_rel', 'product_id', 'certificate_id', "Certificate Products")
+    certificate_origin_product_ids = fields.Many2many('product.template','product_certificate_origin_rel', 'product_id', 'certificate_id', "Certificate Origin Products")
+    jtypes = fields.Many2one('jewel.tags', "Jewel Type")
+    
+    @api.onchange('jtype')
+    def onchange_jtype(self):
+        jt = False
+        if self.jtype:
+            if self.jtype == 'earring':                
+                jt = self.env['jewel.tags'].search([('name', '=', 'Earring')])
+            if self.jtype == 'pendant':                
+                jt = self.env['jewel.tags'].search([('name', '=', 'Pendant')])
+            if self.jtype == 'bracelet':                
+                jt = self.env['jewel.tags'].search([('name', '=', 'Bracelet')])
+            if self.jtype == 'ring':                
+                jt = self.env['jewel.tags'].search([('name', '=', 'Ring')])
+            if self.jtype == 'necklace':                
+                jt = self.env['jewel.tags'].search([('name', '=', 'Necklace')])
+            if self.jtype == 'brooche':                
+                jt = self.env['jewel.tags'].search([('name', '=', 'Brooche')])
+            if self.jtype == 'bangle':                
+                jt = self.env['jewel.tags'].search([('name', '=', 'Bangle')])
+            if self.jtype == 'bangle':                
+                jt = self.env['jewel.tags'].search([('name', '=', 'Bangle')])
+            if self.jtype == 'cuff':                
+                jt = self.env['jewel.tags'].search([('name', '=', 'Cuff')])
+            self.jtypes =  jt
     
     @api.onchange('default_code')
     def onchange_default_code(self):
@@ -282,7 +310,9 @@ class Product_Master_Creation(models.Model):
             
     @api.onchange('stone_name_id', 'stone_shape_id', 'stone_cutting_id', 'size_length', 'size_width')
     def onchange_stone_name_id(self):
-        sshape = scut = sname = self.rseq = ''            
+        sshape = scut = sname = ''
+        if not self.rseq:
+            self.rseq =  ''              
         if self.stone_name_id:
             self.birth_stone = self.stone_name_id.birth_stone
             sname = self.stone_name_id.code
@@ -351,12 +381,14 @@ class Product_Master_Creation(models.Model):
                         product += ' ' + self.diacolorgrade.name 
                     if self.diaclaritygrade:
                         product += ' ' +self.diaclaritygrade.name
-            self.name = product
+#             self.name = product
             
     @api.onchange('products_types')
     def onchange_products_types(self):
         sshape = scut = sname = ''
-        fineness = plating = self.rseq = ''
+        fineness = plating = ''
+        if not self.rseq:
+            self.rseq =  ''  
         if self.products_types != 'stone':
             self.stone_name_id = False
         if self.products_types != 'is_jewellery':
@@ -451,7 +483,9 @@ class Product_Master_Creation(models.Model):
             
     @api.onchange('finess', 'plating', 'plating_fitness_id', 'thickness')
     def onchange_finess(self):   
-        fineness = plating = self.rseq = ''     
+        fineness = plating = ''
+        if not self.rseq:
+            self.rseq =  ''   
         if self.finess:
             fineness = self.finess.code
         if self.plating:
@@ -469,7 +503,7 @@ class Product_Master_Creation(models.Model):
             plating = self.plating.name
         if self.thickness:
             thick = self.thickness.name
-        self.name = fineness + ' ' + pfiness + ' ' + plating + ' ' +thick
+#         self.name = fineness + ' ' + pfiness + ' ' + plating + ' ' +thick
         
     @api.onchange('jplating')
     def onchange_jplating(self):
@@ -563,7 +597,9 @@ class Product_Master_Creation(models.Model):
             
     @api.onchange('jfiness', 'jtype', 'jplating','jewel_size', 'jstone_name_id')
     def onchange_jfiness(self):   
-        fineness = plating = self.rseq = jsize = sname = ''     
+        fineness = plating = jsize = sname = ''
+        if not self.rseq:
+            self.rseq = ''
         if self.products_types in ['is_jewellery', 'design']:
             self.style = False
             self.default_code = False
@@ -637,12 +673,13 @@ class Product_Master_Creation(models.Model):
                 product += ' ' + self.certification_lab.code
             if self.certification_type:
                 product += ' ' + self.certification_type.name
-            self.name = product   
+#             self.name = product   
     
     @api.onchange('finding_type_id', 'finding_subtype_id', 'finding_fineness_id', 'finding_plating_id', 'finding_Thickness_id', 'finding_plating_thickness_id')
     def onchange_finding(self):
         find = 'F'
-        self.rseq = ''
+        if not self.rseq:
+            self.rseq = ''
         year = str(datetime.now().year)[-2:]
         type = find = stype = finess = pfine = plating = thick = ''
         if self.finding_type_id:
@@ -660,7 +697,7 @@ class Product_Master_Creation(models.Model):
             thick = self.finding_Thickness_id.name
         if self.finding_plating_thickness_id:
             pfine = self.finding_plating_thickness_id.name
-        self.name = stype + ' ' + type + ' in ' + ' ' + finess + ' ' + pfine + ' ' + plating + ' ' + thick
+#         self.name = stype + ' ' + type + ' in ' + ' ' + finess + ' ' + pfine + ' ' + plating + ' ' + thick
     
     @api.onchange('mold_line_part_id', 'mold_material_id')
     def onchange_mold(self):
@@ -670,7 +707,7 @@ class Product_Master_Creation(models.Model):
                 mlp = self.mold_line_part_id.name
             if self.mold_material_id:
                 mat = self.mold_material_id.name            
-            self.name = mlp + ' ' + mat + ' ' + 'Mold'
+#             self.name = mlp + ' ' + mat + ' ' + 'Mold'
     
     @api.model
     def create(self, vals):
@@ -731,7 +768,7 @@ class Product_Master_Creation(models.Model):
                 plating = res.plating.name
             if res.thickness:
                 thick = res.thickness.name
-            res.name = fineness + ' ' + pfiness + ' ' + plating + ' ' +thick
+#             res.name = fineness + ' ' + pfiness + ' ' + plating + ' ' +thick
             
         if res.products_types == 'certification':
             lab = ''
@@ -768,7 +805,7 @@ class Product_Master_Creation(models.Model):
                 product += ' ' + res.certification_lab.code
             if res.certification_type:
                 product += ' ' + res.certification_type.name
-            res.name = product   
+#             res.name = product   
         if res.products_types == 'stone':
             product = ''
             length = width = ''
@@ -809,7 +846,7 @@ class Product_Master_Creation(models.Model):
                         product += ' ' + res.diacolorgrade.name
                     if res.diaclaritygrade:
                         product += ' ' +res.diaclaritygrade.name
-            res.name = product
+#             res.name = product
         if res.products_types == 'mold':
             seq = self.env['ir.sequence'].next_by_code('mold')
             Jewel = mlp = mat = ''            
@@ -820,12 +857,14 @@ class Product_Master_Creation(models.Model):
                 mat = res.mold_material_id.name  
                 Jewel = res.mold_line_part_id.code          
             res.default_code = 'M' + Jewel + year + seq
-            res.name = mlp + ' ' + mat + ' ' + ' Mold'
+#             res.name = mlp + ' ' + mat + ' ' + ' Mold'
         if res.products_types == 'is_jewellery':
             if res.jewel_mold == 'no' and 'style' in vals and vals['style'] == False:
 #                 seq = self.env['ir.sequence'].next_by_code('style')
                 seq = ''
-                seqrec = self.env['product.template'].search([('jtype', '=', res.jtype)])
+                seqrec = self.env['product.template'].search([('jtype', '=', res.jtype),('jfiness', '=', res.jfiness.id),
+                                                              ('jplating', '=', res.jplating.id),('jstone_name_id', '=', res.jstone_name_id.id),
+                                                              ('jewel_size', '=', res.jewel_size.id),('center_color_stone_id', '=', res.center_color_stone_id.id)])
                 seq = len(seqrec) + 1
                 res.jewel_seq = seq
                 if int(seq) < 10:
@@ -859,7 +898,9 @@ class Product_Master_Creation(models.Model):
                 jsize = res.jewel_size.code
             else:
                 jsize = ''
-            jewel_rec = self.env['product.template'].search_count([('products_types', '=', 'is_jewellery'), ('jtype', '=', res.jtype)])
+            jewel_rec = self.env['product.template'].search_count([('jtype', '=', res.jtype),('jfiness', '=', res.jfiness.id),
+                                                              ('jplating', '=', res.jplating.id),('jstone_name_id', '=', res.jstone_name_id.id),
+                                                              ('jewel_size', '=', res.jewel_size.id),('center_color_stone_id', '=', res.center_color_stone_id.id)])
             if jewel_rec < 10:
                 res.rseq = '0' + str(jewel_rec)
             else:
@@ -937,7 +978,7 @@ class Product_Master_Creation(models.Model):
                 thick = res.finding_Thickness_id.name
             if res.finding_plating_thickness_id:
                 pfine = res.finding_plating_thickness_id.name
-            res.name = stype + ' '+type + ' in ' + ' ' + finess + ' ' + pfine + ' ' + plating + ' ' + thick
+#             res.name = stype + ' '+type + ' in ' + ' ' + finess + ' ' + pfine + ' ' + plating + ' ' + thick
         if 'design_product_id' in vals and vals['design_product_id'] != False:
             if res.design_product_id.bom_ids:
                 for bom in res.design_product_id.bom_ids:
@@ -951,6 +992,16 @@ class Product_Master_Creation(models.Model):
                     for rec in res.design_product_ids:
                         rec.mold_product_ids = [(4,res.id)]
                         rec.mold = 'yes'
+        if 'certificate_product_ids' in vals:
+            if res.certificate_product_ids:
+                for rec in res.certificate_product_ids:
+                    rec.certificate_origin_product_ids = [(4,res.id)]
+                    rec.certificate = 'yes'
+        if 'certificate_origin_product_ids' in vals:
+            if res.certificate_origin_product_ids:
+                for rec in res.certificate_origin_product_ids:
+                    rec.certificate_product_ids = [(4,res.id)]
+                    rec.certificate = 'yes'
         if res.default_code:
             res.barcode = res.default_code
         return res
@@ -958,6 +1009,10 @@ class Product_Master_Creation(models.Model):
     def write(self, vals):        
         result = super(Product_Master_Creation, self).write(vals)
         for pt in self:
+            if 'name' in vals:
+                if pt.product_variant_ids:
+                    for va in pt.product_variant_ids:
+                        va.name = pt.name
             if 'design_product_id' in vals:
                 if pt.design_product_id.bom_ids:
                     for bom in pt.design_product_id.bom_ids:
@@ -969,6 +1024,18 @@ class Product_Master_Creation(models.Model):
                     for rec in pt.design_product_ids:
                         rec.mold_product_ids = [(4,pt.id)]
                         rec.mold = 'yes'
+            if 'certificate_product_ids' in vals:
+                if pt.certificate_product_ids:
+                    for rec in pt.certificate_product_ids:
+                        rec.certificate_origin_product_ids = [(4,pt.id)]
+                        rec.certificate = 'yes'
+#             if 'certificate_origin_product_ids' in vals:
+#                 if pt.certificate_origin_product_ids:
+#                     for rec in pt.certificate_origin_product_ids:
+#                         pr_ids = rec.certificate_product_ids.ids
+#                         pr_ids.append(pt.id)
+#                         rec.certificate_product_ids = [(6,0,pr_ids)]
+#                         rec.certificate = 'yes'
             if pt.products_types == 'is_jewellery':
                 if 'design_product_id' in vals:
                     if pt.design_product_id:
@@ -1181,7 +1248,7 @@ class ProductProduct(models.Model):
                 plating = res.plating.name
             if res.thickness:
                 thick = res.thickness.name
-            res.name = fineness + ' ' + pfiness + ' ' + plating + ' ' +thick
+#             res.name = fineness + ' ' + pfiness + ' ' + plating + ' ' +thick
             
         if res.products_types == 'certification':
             lab = ''
@@ -1218,7 +1285,7 @@ class ProductProduct(models.Model):
                 product += ' ' + res.certification_lab.code
             if res.certification_type:
                 product += ' ' + res.certification_type.name
-            res.name = product   
+#             res.name = product   
         if res.products_types == 'stone':
             product = ''
             length = width = ''
@@ -1259,7 +1326,7 @@ class ProductProduct(models.Model):
                         product += ' ' + res.diacolorgrade.name
                     if res.diaclaritygrade:
                         product += ' ' +res.diaclaritygrade.name
-            res.name = product
+#             res.name = product
         if res.products_types == 'mold':
             seq = self.env['ir.sequence'].next_by_code('mold')
             Jewel = mlp = mat = ''            
@@ -1270,7 +1337,7 @@ class ProductProduct(models.Model):
                 mat = res.mold_material_id.name  
                 Jewel = res.mold_line_part_id.code          
             res.default_code = 'M' + Jewel + year + seq
-            res.name = mlp + ' ' + mat + ' ' + ' Mold'
+#             res.name = mlp + ' ' + mat + ' ' + ' Mold'
         if res.products_types == 'is_jewellery':
             if res.jewel_mold == 'no' and 'style' in vals and vals['style'] == False:
                 seq = ''
@@ -1346,14 +1413,21 @@ class ProductProduct(models.Model):
                                 'jewel_code': tempvar.product_attribute_value_id.code})
                             plate = plates.id
                     if tempvar.attribute_id.name == 'Jewel Size':
+                        jewelss = False
                         jsize = tempvar.product_attribute_value_id.code
                         jewelss = self.env['jewel.size'].search([('name', '=', tempvar.product_attribute_value_id.name)])
                         if jewelss:
+                            for j in jewelss:
+                                if j.jtypes:
+                                    for js in j.jtypes.ids:
+                                        if js in tempvar.product_attribute_value_id.jtypes.ids:
+                                            jewelss = j
                             jewels = jewelss.id
                         else:
                             jewelss = self.env['jewel.size'].create({
                                 'name': tempvar.product_attribute_value_id.name,
-                                'code': tempvar.product_attribute_value_id.code
+                                'code': tempvar.product_attribute_value_id.code,
+                                'jtypes': [(6, 0, tempvar.product_attribute_value_id.jtypes.ids)]
                                 })
                             jewels = jewelss.id
                     if tempvar.attribute_id.name == 'Center stone':
@@ -1505,7 +1579,6 @@ class ProductProduct(models.Model):
                 'finding_plating_thickness_id': pfine
                 })
         if res.default_code:
-            print(res, "---------")
             res.barcode = res.default_code
         return res
     
@@ -1536,6 +1609,7 @@ class ProductProduct(models.Model):
 class ProductAttVal(models.Model):
     _inherit = 'product.attribute.value'     
     
+    attribute = fields.Char("Att name", compute='get_attribute', store=True)
     code = fields.Char("Code")
     gemstone = fields.Boolean(string='Is a Gem Stone')
     diamond = fields.Boolean(string='Is a Diamond')
@@ -1553,14 +1627,21 @@ class ProductAttVal(models.Model):
                              ('october', 'October'),
                              ('november', 'November'),
                              ('december', 'December')],'Birth Stone')
-    jtype = fields.Selection([('earring', 'Earring'),
-                             ('pendant', 'Pendant'),
-                             ('bracelet', 'Bracelet'),
-                             ('ring', 'Ring'),
-                             ('necklace', 'Necklace'),
-                             ('brooche', 'Brooche'),
-                             ('bangle', 'Bangle'),
-                             ('cuff', 'Cuff')],'Jewelry Type')
+#     jtype = fields.Selection([('earring', 'Earring'),
+#                              ('pendant', 'Pendant'),
+#                              ('bracelet', 'Bracelet'),
+#                              ('ring', 'Ring'),
+#                              ('necklace', 'Necklace'),
+#                              ('brooche', 'Brooche'),
+#                              ('bangle', 'Bangle'),
+#                              ('cuff', 'Cuff')],'Jewelry Type')
+    jtypes = fields.Many2many('jewel.tags', 'jewel_tag_product_rel', 'product_id', 'tag_id', "Jewelry Type")
+    
+    @api.depends('attribute_id')
+    def get_attribute(self):
+        for rec in self:
+            if rec.attribute_id:
+                rec.attribute = rec.attribute_id.name
     
     @api.model
     def create(self, vals):  
@@ -1592,7 +1673,7 @@ class ProductAttVal(models.Model):
                 jewelss = self.env['jewel.size'].create({
                     'name': tempvar.name,
                     'code': tempvar.code,
-                    'jtype': tempvar.jtype
+                    'jtypes': [(6,0,tempvar.jtypes.ids)]
                     })
         if tempvar.attribute_id.name == 'Center stone':
             stones = self.env['stone.name'].search([('name', '=', tempvar.name)])
@@ -1632,12 +1713,96 @@ class ProductAttVal(models.Model):
                     })
         return tempvar
     
+    @api.model
+    def write(self, vals):  
+        tempvar = self
+        if tempvar.attribute_id.name == 'Fineness':
+            fines = self.env['metal.finess'].search([('name', '=', tempvar.name)])
+            if fines:
+                if 'name' in vals:
+                    fines.name = vals['name']
+                if 'code' in vals:
+                    fines.code = vals['code']
+                if 'jewel_code' in vals:
+                    fines.jewel_code = vals['jewel_code']
+        if tempvar.attribute_id.name == 'Center Stone Color':
+            center_stone = self.env['center.color.stone'].search([('name', '=', tempvar.name)])
+            if center_stone:
+                if 'name' in vals:
+                    center_stone.name = vals['name']
+                if 'code' in vals:
+                    center_stone.code = vals['code']
+        if tempvar.attribute_id.name == 'Plating':
+            plates = self.env['metal.plating'].search([('name', '=', tempvar.name)])
+            if plates:
+                if 'name' in vals:
+                    plates.name = vals['name']
+                if 'code' in vals:
+                    plates.code = vals['code']
+                if 'code2' in vals:
+                    plates.code2 = vals['code2']
+                if 'jewel_code' in vals:
+                    plates.jewel_code = vals['jewel_code']
+        if tempvar.attribute_id.name == 'Jewel Size':
+            jewelss = self.env['jewel.size'].search([('name', '=', tempvar.name)])
+            if jewelss:
+                if 'name' in vals:
+                    jewelss.name = vals['name']
+                if 'code' in vals:
+                    jewelss.code = vals['code']
+                if 'jtypes' in vals:
+                    jewelss.jtypes = vals['jtypes']
+        if tempvar.attribute_id.name == 'Center stone':
+            stones = self.env['stone.name'].search([('name', '=', tempvar.name)])
+            if stones:
+                if 'name' in vals:
+                    stones.name = vals['name']
+                if 'code' in vals:
+                    stones.code = vals['code']
+                if 'code2' in vals:
+                    stones.code2 = vals['code2']
+                if 'gemstone' in vals:
+                    stones.gemstone = vals['gemstone']
+                if 'diamond' in vals:
+                    stones.diamond = vals['diamond']
+                if 'birth_stone' in vals:
+                    stones.birth_stone = vals['birth_stone']
+        if tempvar.attribute_id.name == 'Finding Type':
+            findtype = self.env['finding.type'].search([('name', '=', tempvar.name)])
+            if findtype:
+                if 'name' in vals:
+                    findtype.name = vals['name']
+                if 'code' in vals:
+                    findtype.code = vals['code']
+        if tempvar.attribute_id.name == 'Sub Type':
+            subtype = self.env['finding.sub.type'].search([('name', '=', tempvar.name)])
+            if subtype:
+                if 'name' in vals:
+                    subtype.name = vals['name']
+        if tempvar.attribute_id.name == 'Thickness':
+            thickness = self.env['metal.thickness'].search([('name', '=', tempvar.name)])
+            if thickness:
+                if 'name' in vals:
+                    thickness.name = vals['name']
+        if tempvar.attribute_id.name == 'Plating Fineness':
+            pfiness = self.env['metal.platingfiness'].search([('name', '=', tempvar.name)])
+            if pfiness:
+                if 'name' in vals:
+                    pfiness.name = vals['name']
+        tempvar = super(ProductAttVal, self).write(vals)
+        return tempvar
+    
 class Attacment(models.Model):
     _inherit = 'ir.attachment'     
      
     product_tmpl_id = fields.Many2one('product.template', "Product")
     product_id = fields.Many2one('product.product', "Product Variant")
     desc = fields.Char("Description")   
+
+class JewelTags(models.Model):
+    _name = 'jewel.tags'
+    
+    name = fields.Char('Name')
 
 
 class ProductTags(models.Model):
@@ -1743,18 +1908,11 @@ class SubBrandMaster(models.Model):
     
 class JewelSize(models.Model):
     _name='jewel.size'
-    _description = "Mold"
+    _description = "Jewel Size"
     
     name=fields.Char(string='Name')
     code=fields.Char(string='Code')
-    jtype = fields.Selection([('earring', 'Earring'),
-                             ('pendant', 'Pendant'),
-                             ('bracelet', 'Bracelet'),
-                             ('ring', 'Ring'),
-                             ('necklace', 'Necklace'),
-                             ('brooche', 'Brooche'),
-                             ('bangle', 'Bangle'),
-                             ('cuff', 'Cuff')],'Jewelry Type')
+    jtypes = fields.Many2many('jewel.tags', 'jewel_tag_size_rel', 'product_id', 'tag_id', "Jewelry Type")
     
 class ChildSubBrandMaster(models.Model):
     _name = 'child.sub.brand.master'

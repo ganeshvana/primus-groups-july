@@ -83,7 +83,7 @@
 				                     <field name="sec_quantity" string="Pcs."/>
 				                     <field name="secondary_uom_id" invisible="1"/>
 						    	 	 <field name="min_weight"/>
-						    	 	 <field name="unit_cost"/>
+						    	 	 <field name="unit_cost" readonly="0"/>
 						    	 	 <field name="total"/>
 						    	 	 <field name="provided_by" domain="[('supplier_rank','&gt;', 0)]"/>	  
 				                     <field name="product_uom_category_id" invisible="1"/>
@@ -132,7 +132,7 @@
                      <field name="sec_quantity" string="Pcs."/>
                      <field name="secondary_uom_id" invisible="1"/>
 		    	 	 <field name="min_weight"/>
-		    	 	 <field name="unit_cost"/>
+		    	 	 <field name="unit_cost" readonly="0"/>
 		    	 	 <field name="total"/>
 		    	 	 <field name="provided_by" domain="[('supplier_rank','&gt;', 0)]"/>	  
                      <field name="product_uom_category_id" invisible="1"/>

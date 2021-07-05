@@ -61,3 +61,4 @@ template_mass_edit,template.mass.edit,model_template_mass_edit,,1,1,1,1
 product_customer_code_line,product.customer.code.line,model_product_customer_code_line,,1,1,1,1
 product_bom_bulk,product.bom.bulk,model_product_bom_bulk,,1,1,1,1
 product_bom_bulk_line,product.bom.bulk.line,model_product_bom_bulk_line,,1,1,1,1
+jewel_tags,jewel.tags,model_jewel_tags,,1,1,1,1

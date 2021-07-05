@@ -61,34 +61,71 @@ class BOMBulk(models.TransientModel):
     _name = 'product.bom.bulk'
     _description = "Bulk BOM"   
     
+    option = fields.Selection([('bom', 'BoM'), ('cost', 'Cost')])    
     bom_type = fields.Selection([('normal', 'Manufacture this product'), ('phantom', 'Kit')], "Type", default='normal')
     bulk_bom_ids = fields.One2many('product.bom.bulk.line', 'bulk_bom_id', "Bom" )
+    percentage = fields.Float("Percentage")
     
     def create_bom(self):
         context = self._context
         active_ids = context['active_ids']  
-        bom = False
+        no_bom = []
+        with_bom = []
         if active_ids:
-            for rec in active_ids:                
-                product = self.env['product.product'].browse(rec)
-                bom = False
-                if product.bom_id:
-                    bom = product.bom_id
-                if not product.bom_id and product.bom_ids:
-                    bom = product.bom_ids[0]
-                if not bom:
-                    bom = self.env['mrp.bom'].create({
-                        'product_id': product.id,
-                        'product_tmpl_id': product.product_tmpl_id.id,
+            products = self.env['product.product'].search([('id', 'in', active_ids)])
+#             no_bom = products.filtered(lambda p: p.bom_id == False)
+#             with_bom = products.filtered(lambda p: p.bom_id != False)   
+            for rec in products:
+                if rec.bom_id:
+                    with_bom.append(rec)
+            for wb in with_bom: 
+                for line in self.bulk_bom_ids:
+                    if wb.bom_id.bom_line_ids:
+                        exist = wb.bom_id.bom_line_ids.filtered(lambda ptal: ptal.product_id.id == line.product_id.id)
+                        if not exist:
+                            bomline = self.env['mrp.bom.line'].create({
+                                'pro_pro_id': wb.id,
+                                'bom_line_type_id': line.bom_line_type_id.id,
+                                'sku_number': line.sku_number,
+                                'product_id': line.product_id.id,
+                                'product_qty': line.product_qty,
+                                'product_uom_id': line.product_uom_id.id,
+                                'sec_quantity': line.sec_quantity,
+                                'min_weight': line.min_weight,
+                                'unit_cost': line.unit_cost,
+                                'total': line.total,
+                                'provided_by': line.provided_by.id,
+                                'bom_id': wb.bom_id.id
+                                })
+                    if not wb.bom_id.bom_line_ids:
+                        bomline = self.env['mrp.bom.line'].create({
+                            'pro_pro_id': wb.id,
+                            'bom_line_type_id': line.bom_line_type_id.id,
+                            'sku_number': line.sku_number,
+                            'product_id': line.product_id.id,
+                            'product_qty': line.product_qty,
+                            'product_uom_id': line.product_uom_id.id,
+                            'sec_quantity': line.sec_quantity,
+                            'min_weight': line.min_weight,
+                            'unit_cost': line.unit_cost,
+                            'total': line.total,
+                            'provided_by': line.provided_by.id,
+                            'bom_id': wb.bom_id.id
+                            })
+            for rec in products:
+                if not rec.bom_id:
+                    no_bom.append(rec)
+            for nb in no_bom:
+                bom = self.env['mrp.bom'].create({
+                        'product_id': nb.id,
+                        'product_tmpl_id': nb.product_tmpl_id.id,
                         'type': self.bom_type,
                         'company_id': self.env.company.id
                         })
+                nb.bom_id = bom.id
                 for line in self.bulk_bom_ids:
-                    if bom.bom_line_ids:
-                        exist = bom.bom_line_ids.filtered(lambda ptal: ptal.product_id.id == line.product_id.id)
-                        if not exist:
-                            bomline = self.env['mrp.bom.line'].create({
-                                'pro_pro_id': product.id,
+                    bomline = self.env['mrp.bom.line'].create({
+                                'pro_pro_id': nb.id,
                                 'bom_line_type_id': line.bom_line_type_id.id,
                                 'sku_number': line.sku_number,
                                 'product_id': line.product_id.id,
@@ -101,24 +138,20 @@ class BOMBulk(models.TransientModel):
                                 'provided_by': line.provided_by.id,
                                 'bom_id': bom.id
                                 })
-                    if not bom.bom_line_ids:
-                        bomline = self.env['mrp.bom.line'].create({
-                            'pro_pro_id': product.id,
-                            'bom_line_type_id': line.bom_line_type_id.id,
-                            'sku_number': line.sku_number,
-                            'product_id': line.product_id.id,
-                            'product_qty': line.product_qty,
-                            'product_uom_id': line.product_uom_id.id,
-                            'sec_quantity': line.sec_quantity,
-                            'min_weight': line.min_weight,
-                            'unit_cost': line.unit_cost,
-                            'total': line.total,
-                            'provided_by': line.provided_by.id,
-                            'bom_id': bom.id
-                            })
-                
-                product.bom_id = bom.id
         return True
+    
+    def update_cost(self):
+        context = self._context
+        active_ids = context['active_ids']  
+        no_bom = []
+        with_bom = []
+        perc_amt = 0.0
+        if active_ids:
+            products = self.env['product.product'].search([('id', 'in', active_ids)])
+            for rec in products:
+                if rec.standard_price > 0.0:
+                    perc_amt = rec.standard_price * (self.percentage / 100)
+                    rec.standard_price += perc_amt
         
     
 class BOMBulk(models.TransientModel):

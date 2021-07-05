@@ -4,6 +4,22 @@
 
 		<menuitem id="menu_action_masters" name="Masters"
 			parent="stock.menu_stock_config_settings" sequence="13" />
+			
+		<record id="product_template_tree_certificate" model="ir.ui.view">
+			<field name="name">product.template.tree.certificate</field>
+			<field name="model">product.template</field>		
+			<field name="arch" type="xml">
+			<tree>
+				<field name="default_code"/>
+				<field name="name"/>
+    			<field name="certification_no"/>
+    			<field name="certificate_date"/>
+    			<field name="certification_lab"/>
+    			<field name="certification_type"/>
+    			<field name="certification_name"/>
+			</tree>
+			</field>
+		</record>
 
 		<record id="product_template_form_view_inherit"
 			model="ir.ui.view">
@@ -22,73 +38,74 @@
 								<field name="default_code" string="SKU Number" attrs="{'invisible': [('products_types','in',['design'])]}"/>
 								<field name="jewel_mold" attrs="{'invisible': [('products_types','not in',['is_jewellery'])]}"/>
 								<field name="style" attrs="{'invisible': ['|',('products_types','not in',['is_jewellery']), ('jewel_mold', '=','yes')]}"/>
-								<field name="design_product_id" attrs="{'invisible': ['|',('products_types','not in',['is_jewellery']), ('jewel_mold', '=','no')]}" domain="[('products_types','=', 'design')]" string="Style"/>
+								<field name="design_product_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}"  attrs="{'invisible': ['|',('products_types','not in',['is_jewellery']), ('jewel_mold', '=','no')], 'required': [('jewel_mold', '=','yes')]}" domain="[('products_types','=', 'design')]" string="Style"/>
 								<field name="products_types" string="Product Type" />
 								<field name="dia" attrs="{'invisible':1}" />
 								<field name="gem" attrs="{'invisible':1}" />
-								<field name="mold_line_part_id"
+								<field name="mold_line_part_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('products_types','!=','mold')]}" />
 								<field name="mold_dimension" placeholder="LxWxH" string="Dimension"
 									attrs="{'invisible': [('products_types','!=','mold')]}" />
 								<field name="mold_weight" string="Weight"
 									attrs="{'invisible': [('products_types','!=','mold')]}" />
-								<field name="mold_material_id"
+								<field name="mold_material_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('products_types','!=','mold')]}" />
 								<field name="mold_condition"
 									attrs="{'invisible': [('products_types','!=','mold')]}" />
-								<field name="stone_name_id" string="Stone Name"
+								<field name="stone_name_id" string="Stone Name" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('products_types','!=','stone')]}" />
-								<field name="stone_shape_id" string="Shape"
+								<field name="stone_shape_id" string="Shape" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('products_types','!=','stone')]}" />
-								<field name="stone_color_id" string="Color"
+								<field name="stone_color_id" string="Color" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('products_types','!=','stone')]}" />
-								<field name="stone_cutting_id" string="Cutting"
+								<field name="stone_cutting_id" string="Cutting" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('products_types','!=','stone')]}" />
-								<field name="diacolorgrade" string="Dia Color Grade"
+								<field name="diacolorgrade" string="Dia Color Grade" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('dia','=',False)]}" />
-								<field name="diaclaritygrade" string="Dia Clarity Grade"
+								<field name="diaclaritygrade" string="Dia Clarity Grade" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('dia','=',False)]}" />
-								<field name="gemstonecolorgrade"
+								<field name="gemstonecolorgrade" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									string="Gemstone Color Grade"
 									attrs="{'invisible': [('gem','=',False)]}" />
-								<field name="gemstoneclaritygrade"									
+								<field name="gemstoneclaritygrade" options="{'no_create': True, 'no_edit': True, 'no_open': True}"									
 									attrs="{'invisible': [('gem','=',False)]}" />
-								<field name="finess" string="Fineness"
+								<field name="finess" string="Fineness" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('products_types','not in',['metal'])]}" />
-								<field name="plating" string="Plating"
+								<field name="plating" string="Plating" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('products_types','not in',['metal'])]}" />
-								<field name="jfiness" string="Fineness"
+								<field name="jfiness" string="Fineness" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('products_types','not in',['is_jewellery', 'design'])],'required': [('products_types','in',['is_jewellery', 'design'])]}" />
-								<field name="jplating" string="Plating"
+								<field name="jplating" string="Plating" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('products_types','not in',['is_jewellery', 'design'])],'required': [('products_types','in',['is_jewellery', 'design'])]}" />
 								
-								<field name="thickness" string="Thickness"
+								<field name="thickness" string="Thickness" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('products_types','!=','metal')]}" />
-								<field name="plating_fitness_id" string="Plating Fineness"
+								<field name="plating_fitness_id" string="Plating Fineness" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('products_types','!=','metal')]}" />
-								<field name="jtype" attrs="{'invisible': [('products_types','not in',['is_jewellery', 'design'])]}"/>
-								<field name="jewel_size" domain="[('jtype','=', jtype)]" attrs="{'invisible': ['|',('products_types','not in',['is_jewellery', 'design']),('jtype','in',['earring','brooche','pendant'])], 'required': [('jtype','in',['bracelet','ring','necklace', 'bangle','cuff'])]}"/>
-								<field name="motif" widget="many2many_tags" attrs="{'invisible': [('products_types','not in',['is_jewellery', 'design'])]}"/>
+								<field name="jtype" attrs="{'invisible': [('products_types','not in',['is_jewellery', 'design'])], 'required': [('products_types','in',['is_jewellery', 'design'])]}"/>
+								<field name="jtypes" invisible="1"/>
+								<field name="jewel_size" options="{'no_create': True, 'no_edit': True, 'no_open': True}" domain="[('jtypes','in', jtypes)]" attrs="{'invisible': ['|',('products_types','not in',['is_jewellery', 'design']),('jtype','in',['earring','brooche','pendant'])], 'required': [('jtype','in',['bracelet','ring','necklace', 'bangle','cuff'])]}"/>
+								<field name="motif" widget="many2many_tags" attrs="{'invisible': [('products_types','not in',['is_jewellery', 'design'])]}" options="{'no_create': True, 'no_edit': True, 'no_open': True}"/>
 								<field name="earring_drop_length" string="Drop Length (Inch)"
 									attrs="{'invisible': [('jtype','!=','earring')]}" />
 								<field name="earring_drop_width"
 									attrs="{'invisible': [('jtype','!=','earring')]}" />
-								<field name="ear_clasp"
+								<field name="ear_clasp" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('jtype','!=','earring')]}" />
-								<field name="inside_dia"
+								<field name="inside_dia" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('jtype','!=','earring')]}" />
 									
-								<field name="chain"
+								<field name="chain" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('jtype','!=','pendant')]}" />
 								<field name="chain_length"
 									attrs="{'invisible': [('jtype','!=','pendant')]}" />								
 								<field name="chain_drop_length" string="Drop Length (Inch)"
 									attrs="{'invisible': [('jtype','!=','pendant')]}" />
-								<field name="chain_type"
+								<field name="chain_type" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('jtype','!=','pendant')]}" />								
-								<field name="bracelet_clasp"
+								<field name="bracelet_clasp" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('jtype','!=','bracelet')]}" />
-								<field name="bracelet_safety"
+								<field name="bracelet_safety" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('jtype','!=','bracelet')]}" />
 								<field name="bracelet_extender" string="Extender"
 									attrs="{'invisible': [('jtype','!=','bracelet')]}" />
@@ -104,43 +121,44 @@
 									attrs="{'invisible': [('jtype','!=','necklace')]}" />
 								<field name="necklace_extender_length"  string="Extender Length (Inch)"
 									attrs="{'invisible': [('jtype','!=','necklace')]}" />								
-								<field name="bangle_clasp"
+								<field name="bangle_clasp" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('jtype','!=','bangle')]}" />
 								
 								<field name="brooche_desc"
 									attrs="{'invisible': [('jtype','!=','brooche')]}" />	
-								<field name="collection"
+								<field name="collection" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('products_types','not in',['is_jewellery', 'design'])]}" />								
-								<field name="trademark"
+								<field name="trademark" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('products_types','not in',['is_jewellery', 'design'])]}" />
-								<field name="finding_type_id" attrs="{'invisible': [('products_types','!=','finding')],'required': [('products_types','=','finding')]}"/>
-								<field name="finding_subtype_id" attrs="{'invisible': [('products_types','!=','finding')]}" domain="[('finding_type_id', '=', finding_type_id)]"/>
-								<field name="finding_fineness_id" attrs="{'invisible': [('products_types','!=','finding')]}" string="Fineness"/>
-								<field name="finding_plating_id" attrs="{'invisible': [('products_types','!=','finding')]}" string="Plating"/>
-								<field name="finding_Thickness_id" attrs="{'invisible': [('products_types','!=','finding')]}" string="Thickness"/>
-								<field name="finding_plating_thickness_id" attrs="{'invisible': [('products_types','!=','finding')]}" string="Plating Fineness"/>	
-								<field name="finding_dimension" string="Dimension" attrs="{'invisible': [('products_types','!=','finding')]}"/>	
-								<field name="certification_lab"
+								<field name="finding_type_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}" attrs="{'invisible': [('products_types','!=','finding')],'required': [('products_types','=','finding')]}"/>
+								<field name="finding_subtype_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}" attrs="{'invisible': [('products_types','!=','finding')]}" domain="[('finding_type_id', '=', finding_type_id)]"/>
+								<field name="finding_fineness_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}" attrs="{'invisible': [('products_types','!=','finding')]}" string="Fineness"/>
+								<field name="finding_plating_id" attrs="{'invisible': [('products_types','!=','finding')]}" string="Plating" options="{'no_create': True, 'no_edit': True, 'no_open': True}"/>
+								<field name="finding_Thickness_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}" attrs="{'invisible': [('products_types','!=','finding')]}" string="Thickness"/>
+								<field name="finding_plating_thickness_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}" attrs="{'invisible': [('products_types','!=','finding')]}" string="Plating Fineness"/>	
+								<field name="finding_dimension" options="{'no_create': True, 'no_edit': True, 'no_open': True}" string="Dimension" attrs="{'invisible': [('products_types','!=','finding')]}"/>	
+								<field name="certification_lab" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('products_types','!=','certification')]}" />
-								<field name="certification_type"
+								<field name="certification_type" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('products_types','!=','certification')]}" />
-								<field name="certification_no"
+								<field name="certification_no" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('products_types','!=','certification')]}" />
 								<field name="certificate_date"
 									attrs="{'invisible': [('products_types','!=','certification')]}" />
 								<field name="mold" attrs="{'invisible': [('products_types','not in',['design'])]}"/>
+								<field name="certificate" attrs="{'invisible': [('products_types','in',['certification'])]}"/>
 								
 							</group>
 							<group name="group_standard_price">
-								<field name="stone_origin_id"
+								<field name="stone_origin_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('products_types','!=','stone')]}" />
-								<field name="treatment"
+								<field name="treatment" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('products_types','!=','stone')]}" />
-								<field name="cstone_name_id"
+								<field name="cstone_name_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('products_types','!=','certification')]}" />
-								<field name="stone_weight"
+								<field name="stone_weight" 
 									attrs="{'invisible': [('products_types','!=','certification')]}" />
-								<field name="certification_name"
+								<field name="certification_name" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('products_types','!=','certification')]}" />
 								
 								<field name="appraisal" invisible="1"/>
@@ -148,10 +166,10 @@
 									attrs="{'invisible': [('appraisal','=',False)]}" />
 								<field name="avg"
 									attrs="{'invisible': [('products_types','!=','stone')]}" />
-								<field name="stone_class" string="Class"
+								<field name="stone_class" string="Class" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('products_types','!=','stone')]}" />
 								<field name="birth_stone" attrs="{'invisible': [('products_types','!=','stone')]}" />
-								<field name="product_tags" widget="many2many_tags"/>
+								<field name="product_tags" widget="many2many_tags" options="{'no_create': True, 'no_edit': True, 'no_open': True}"/>
 								<field name="min_weight"/>
 								<field name="avg_cost" string="Average Cost"
 									attrs="{'invisible': [('products_types','!=','metal')]}" />
@@ -159,17 +177,17 @@
 									attrs="{'invisible': [('products_types','!=','metal')]}" />
 								<field name="dimension" placeholder="LxWxH" string="Dimension"
 									attrs="{'invisible': [('products_types','not in',['is_jewellery', 'design'])]}" />
-								<field name="country_origin"
+								<field name="country_origin" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('products_types','not in',['is_jewellery', 'design'])]}" />								
-								<field name="brand_id"
+								<field name="brand_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('products_types','not in',['is_jewellery', 'design'])]}" />
-								<field name="sub_brand_id"
+								<field name="sub_brand_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('products_types','not in',['is_jewellery', 'design'])]}"
 									domain="[('brand_id','=',brand_id)]" />
-								<field name="child_sub_brand_id"
+								<field name="child_sub_brand_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('products_types','not in',['is_jewellery', 'design'])]}"
 									domain="[('sub_brand_id','=',sub_brand_id)]" />
-								<field name="provided_by" domain="[('supplier_rank','&gt;', 0)]"/>	 
+								<field name="provided_by" domain="[('supplier_rank','&gt;', 0)]" options="{'no_create': True, 'no_edit': True, 'no_open': True}"/>	 
 							</group>
 						</group>
 						<group attrs="{'invisible': [('products_types','!=','stone')]}">
@@ -181,8 +199,8 @@
 						<group attrs="{'invisible': [('products_types','not in',['is_jewellery'])]}">
 							<group>
 								<field name="stone_applicable"/>
-								<field name="jstone_name_id"  attrs="{'required': [('stone_applicable','=',True)]}" string="Center Stone"/>
-								<field name="center_color_stone_id" attrs="{'required': [('stone_applicable','=',True)]}"/>
+								<field name="jstone_name_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}" attrs="{'required': [('stone_applicable','=',True),('products_types','=','is_jewellery')]}" string="Center Stone"/>
+								<field name="center_color_stone_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}"  attrs="{'required': [('stone_applicable','=',True),('products_types','=','is_jewellery')]}"/>
 								<!--<label for="jsize" attrs="{'invisible': ['|',('products_types','not in',['is_jewellery']),('jtype','in',['earring','brooche','pendant'])]}"/>
 								 <div class="oe_inline" attrs="{'invisible': ['|',('products_types','not in',['is_jewellery']),('jtype','in',['earring','brooche','pendant'])]}">
 									<field name="jsize" nolabel="1" class="oe_inline" />"									
@@ -227,10 +245,8 @@
 								</div>	
 							</group>
 							<group>
-								<field name="uom_id" groups="uom.group_uom"
-									options="{'no_create': True}" />									
-								<field name="uom_po_id" groups="uom.group_uom" invisible="1"
-									options="{'no_create': True}" />
+								<field name="uom_id" groups="uom.group_uom" options="{'no_create': True, 'no_edit': True, 'no_open': True}"/>									
+								<field name="uom_po_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}" groups="uom.group_uom" invisible="1"/>
 							</group>
 						</group>
 						<group string="Internal Notes">
@@ -258,6 +274,36 @@
 								<tree>
 									<field name="default_code"/>
 									<field name="name"/>
+	            					<!-- <field name="jtype"/>
+	            					<field name="jewel_size"/>
+	            					<field name="jfiness"/>
+	            					<field name="jplating"/> -->
+								</tree>
+							</field>
+						</group>
+					</page>
+					<page string="Certificate ref" name="design_information" attrs="{'invisible': [('products_types', 'not in', ['stone','is_jewellery','finding','design'])]}">
+						<group>
+							<field name="certificate_product_ids" domain="[('products_types','=', 'certification')]" nolabel="1" context="{'tree_view_ref': 'oi_primus_product_extended.product_template_tree_certificate'}">
+								<tree>
+									<field name="default_code"/>
+									<field name="name"/>
+	            					<field name="certification_no"/>
+	            					<field name="certificate_date"/>
+	            					<field name="certification_lab"/>
+	            					<field name="certification_type"/>
+	            					<field name="certification_name"/>
+								</tree>
+							</field>
+						</group>
+					</page>
+					<page string="Certificate product ref" name="design_information" attrs="{'invisible': [('products_types', '!=', 'certification')]}">
+						<group>
+							<field name="certificate_origin_product_ids" domain="[('products_types','in', ['stone','is_jewellery','finding','design'])]" nolabel="1">
+								<tree>
+									<field name="default_code"/>
+									<field name="name"/>
+									<field name="products_types"/>
 	            					<!-- <field name="jtype"/>
 	            					<field name="jewel_size"/>
 	            					<field name="jfiness"/>
@@ -389,6 +435,12 @@
 			<field name="model">product.template</field>
 			<field name="inherit_id" ref="product.product_template_search_view" />
 			<field name="arch" type="xml">
+				<xpath expr="/search/filter[@name='consumable']" position="after">
+					<separator/>
+					<filter string="Design Work" name="design" domain="[('products_types', '=', ['design'])]"/>
+					<filter string="Findings" name="finding" domain="[('products_types', '=', ['finding'])]"/>
+					<filter string="Jewelry" name="jewellery" domain="[('products_types', '=', ['is_jewellery'])]"/>
+				</xpath>
 				<xpath expr="/search/field[@name='name']" position="after">
 					<field name="design_product_id" string="Design - Style SKU" filter_domain="[ ('design_product_id.default_code', 'ilike', self)]"/>
 					<field name="bom_id_line" string="BOM component" filter_domain="[ ('bom_id_line.product_id.name', 'ilike', self)]"/>
@@ -689,7 +741,7 @@
 						<group name="trademark">
 							<group>
 								<field name="name" />
-								<field name="jtype" />
+								<field name="jtypes" widget="many2many_tags"/>
 							</group>
 							<group>
 								<field name="code" />
@@ -2836,9 +2888,30 @@
 					<field name="gemstone" attrs="{'column_invisible': [('parent.name', '!=', 'Center stone')]}"/>
 					<field name="diamond" attrs="{'column_invisible': [('parent.name', '!=', 'Center stone')]}"/>
 					<field name="birth_stone" attrs="{'column_invisible': [('parent.name', '!=', 'Center stone')]}"/>
-					<field name="jtype" attrs="{'column_invisible': [('parent.name', '!=', 'Jewel Size')]}"/>
+					<field name="jtypes" widget="many2many_tags" attrs="{'column_invisible': [('parent.name', '!=', 'Jewel Size')]}"/>
 				</xpath>
-
+			</field>
+		</record>
+		
+		<record id="product_attribute_value_form_view" model="ir.ui.view">
+			<field name="name">product.attribute.value.form.view</field>
+			<field name="model">product.attribute.value</field>
+			<field name="arch" type="xml">
+				<form>
+					<group>
+						<field name="attribute_id"/>
+						<field name="attribute"/>
+					</group>					
+					<group>
+						<field name="code"/>
+						<field name="code2" attrs="{'invisible': [('attribute', 'not in', ['Center stone', 'Plating', 'Center stone'])]}"/>
+						<field name="jewel_code" attrs="{'invisible': [('attribute', 'not in', ['Fineness', 'Plating'])]}"/>
+						<field name="gemstone" attrs="{'invisible': [('attribute', '!=', 'Center stone')]}"/>
+						<field name="diamond" attrs="{'invisible': [('attribute', '!=', 'Center stone')]}"/>
+						<field name="birth_stone" attrs="{'invisible': [('attribute', '!=', 'Center stone')]}"/>
+						<field name="jtypes" widget="many2many_tags" attrs="{'invisible': [('attribute', '!=', 'Jewel Size')]}"/>
+					</group>
+				</form>
 			</field>
 		</record>
 

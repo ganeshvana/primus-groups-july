@@ -121,7 +121,7 @@ class MrpBomLine(models.Model):
     bom_line_type_id = fields.Many2one('bom.line.type', "Type")
     sku_number = fields.Char("SKU Number")
     description = fields.Char("Description")
-    unit_cost = fields.Float("Unit Cost")
+    unit_cost = fields.Float("Unit Cost", compute='compute_unit_cost', store=True)
     total = fields.Float("Total", compute='compute_total', store=True)  
     provided_by = fields.Many2one('res.partner', "Provided By") 
     min_weight = fields.Float("Min weight")
@@ -129,6 +129,12 @@ class MrpBomLine(models.Model):
     product_id = fields.Many2one('product.product', 'Component', required=False, check_company=True)
     sec_quantity = fields.Float("Secondary Qty")
     secondary_uom_id = fields.Many2one('uom.uom', string="Secondary UOM")
+    
+    @api.depends('product_id', 'product_id.standard_price')
+    def compute_unit_cost(self):
+        for rec in self:
+            if rec.product_id:
+                rec.unit_cost = rec.product_id.standard_price
     
     @api.depends('unit_cost', 'product_qty')
     def compute_total(self):
