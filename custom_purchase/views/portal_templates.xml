@@ -1,0 +1,1061 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<template id="purchase_order_line_form_modal_template" name="Update Purchase Line" >
+        <!-- The Modal -->
+        <form id="add_purchase_line"  t-attf-action="/portal/purchaseline/get"  method="post">
+            <input type="hidden" id="purchase_line_id" name="order" value="0" />
+            <div class="modal fade" id="purchase_line_form_dialog">
+                <div class="modal-dialog" style="max-width:850px;">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Update Purchase Line</h4>
+                            <button type="button" class="close" data-dismiss="modal">X</button>
+                        </div>
+                        <!-- Modal body -->
+                        <div class="modal-body" style="padding:1rem; border-bottom: 1px solid #fff;">
+                            <div class="row">                            	
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Purchase<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="purchase_order_id" name="purchase_order_id"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Product<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="purchase_line_desc" name="purchase_line_desc"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Order Qty<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="oqty" name="oqty"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Bal. to Ship<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="bqty" name="bqty"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Delivery Date<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="date_planned" name="date_planned"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Qty to ship<span style="color:#FF0000">*</span>:
+                                        </label>
+                                        <div class="col-md-8" style="padding-left:10px;">
+                                            <input type="number" required="1" class="form-control" id="qty_to_ship" name="qty_to_ship"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Shipping Number<span style="color:#FF0000">*</span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" required="1" class="form-control" id="shipping_number" name="shipping_number"/>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="hidden" class="form-control" id="plineid" name="plineid"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success btn-sm" id="pline_save">Save</button>
+                            <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal" id="job_attorney_close">Close</button>
+                        </div>  
+                    </div>                    
+                </div>
+            </div>
+        </form>        
+    </template>
+    
+    <template id="bom_line_form_modal_template" name="Update Purchase Line" >
+        <!-- The Modal -->
+        <form id="add_bom_line"  t-attf-action="/portal/purchaseline/get"  method="post">
+            <input type="hidden" id="purchase_line_id" name="order" value="0" />
+            <div class="modal fade" id="bom_form_dialog">
+                <div class="modal-dialog" style="max-width:1050px;">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Product &amp; BoM Info</h4>
+                            <button type="button" class="close" data-dismiss="modal">X</button>
+                        </div>
+                        <!-- Modal body -->
+                        <div class="modal-body" style="padding:1rem; border-bottom: 1px solid #fff;">
+                            <div class="row">                            	
+                                <div class="col-md-12">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Product<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="product" name="product"/>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="plineid" name="plineid"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">                            	
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Jewellery Type<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="jtype" name="jtype"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Extender<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="extender" name="extender"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Bracelet Clasp<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="bracelet_clasp" name="bracelet_clasp"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Extender Length<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="bracelet_extender_length" name="bracelet_extender_length"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Safety<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="safety" name="safety"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Trademark<span style="color:#FF0000">*</span>:
+                                        </label>
+                                        <div class="col-md-8" style="padding-left:10px;">
+                                            <input type="text" readonly="1" class="form-control" id="trademark" name="trademark"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <!-- <div class="main_side_bar">
+                        	<h5><center><strong>BOM</strong></center></h5>
+                       <table class="table table_profile">
+                       <thead>
+						<tr class="active">
+				          	<th class="text-center">Purchase</th>
+				            <th class="text-center">Product</th>
+				            <th class="text-left">Type</th>
+				            <th class="text-left">Description</th>
+				            <th class="text-right">SKU Number</th>
+				            <th class="text-right">Qty</th>            
+				            <th class="text-left">UOM</th>
+				            <th class="text-right">Pcs.</th>
+				            <th class="text-right">Min. weight</th>
+				          </tr>
+				        </thead>
+				        <tbody>
+				          <t t-foreach="orders" t-as="order">
+				          
+				          	<t t-foreach="order.sudo().bom_id_line" t-as="bom">
+				          	<t t-if="order.product_id.jtype == 'bracelet'">  
+				            <tr t-att-id="'bom_line_row_%i'%(bom.id)" class="bom_line_row">
+				              <td class="text-left">
+				                  <t t-esc="order.order_id.name" id="purchase_order_id"/>
+				              </td>
+				              <td class="text-left">
+				                  <t t-esc="order.name" id="purchase_line_desc"/>
+				              </td>				              
+				              <td class="text-left">
+				                <span t-field="bom.bom_line_type_id.name" id="bom_type_name"/>
+				              </td> 
+				              <td class="text-left">
+				                <span t-field="bom.product_id.name" id="bom_name"/>
+				              </td> 
+				              <td class="text-left">
+				                <span t-field="bom.sku_number" id="bom_sku"/>
+				              </td> 
+				              <td class="text-right">
+				                <span t-field="bom.product_qty" id="bom_qty"/>
+				              </td>    
+				              <td class="text-left">
+				              	<span t-field="bom.product_uom_id.name" id="bom_uom"/>
+				              </td>
+				              <td class="text-right">
+				              	<span t-field="bom.sec_quantity" id="bom_sec_qty"/>                  
+				              </td> 
+				              <td class="text-right">
+				              	<span t-field="bom.min_weight" id="min_wt"/>                  
+				              </td> 
+				            </tr>
+				            </t>
+				          </t>
+				          </t>
+				        </tbody>
+                       </table>
+                        </div> -->
+                    </div>                    
+                </div>
+            </div>
+        </form>        
+    </template>
+    
+    <template id="bom_line_earring_form_modal_template" name="Update Purchase Line" >
+        <!-- The Modal -->
+        <form id="add_bom_line"  method="get">
+            <input type="hidden" id="purchase_line_id" name="order" value="0" />
+            <div class="modal fade" id="bom_form_dialog_earring">
+                <div class="modal-dialog" style="max-width:1050px;">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Product &amp; BoM Info</h4>
+                            <button type="button" class="close" data-dismiss="modal">X</button>
+                        </div>
+                        <!-- Modal body -->
+                        <div class="modal-body" style="padding:1rem; border-bottom: 1px solid #fff;">
+                            <div class="row">                            	
+                                <div class="col-md-12">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Product<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="eproduct" name="eproduct"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">                            	
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Jewellery Type<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="ejtype" name="ejtype"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Inside DIA (Inch)<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="inside_dia" name="inside_dia"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Ear Clasp<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="ear_clasp" name="ear_clasp"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Drop Width (Inch)<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="earring_drop_width" name="earring_drop_width"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Drop Length (Inch)<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="earring_drop_length" name="earring_drop_length"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Trademark<span style="color:#FF0000">*</span>:
+                                        </label>
+                                        <div class="col-md-8" style="padding-left:10px;">
+                                            <input type="text" readonly="1" class="form-control" id="etrademark" name="etrademark"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </form>        
+    </template>
+    
+    <template id="bom_line_ring_form_modal_template" name="Update Purchase Line" >
+        <!-- The Modal -->
+        <form id="add_bom_line"  t-attf-action="/portal/purchaseline/get"  method="post">
+            <input type="hidden" id="purchase_line_id" name="order" value="0" />
+            <div class="modal fade" id="bom_form_dialog_ring">
+                <div class="modal-dialog" style="max-width:1050px;">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Product &amp; BoM Info</h4>
+                            <button type="button" class="close" data-dismiss="modal">X</button>
+                        </div>
+                        <!-- Modal body -->
+                        <div class="modal-body" style="padding:1rem; border-bottom: 1px solid #fff;">
+                            <div class="row">                            	
+                                <div class="col-md-12">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Product<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="rproduct" name="product"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">                            	
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Jewellery Type<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="rjtype" name="rjtype"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Shank Width (Inch)<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="shank_width" name="shank_width"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Trademark<span style="color:#FF0000">*</span>:
+                                        </label>
+                                        <div class="col-md-8" style="padding-left:10px;">
+                                            <input type="text" readonly="1" class="form-control" id="rtrademark" name="rtrademark"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </form>        
+    </template>
+    
+    <template id="bom_line_pendant_form_modal_template" name="Update Purchase Line" >
+        <!-- The Modal -->
+        <form id="add_bom_line"  t-attf-action="/portal/purchaseline/get"  method="post">
+            <input type="hidden" id="purchase_line_id" name="order" value="0" />
+            <div class="modal fade" id="bom_form_dialog_pendant">
+                <div class="modal-dialog" style="max-width:1050px;">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Product &amp; BoM Info</h4>
+                            <button type="button" class="close" data-dismiss="modal">X</button>
+                        </div>
+                        <!-- Modal body -->
+                        <div class="modal-body" style="padding:1rem; border-bottom: 1px solid #fff;">
+                            <div class="row">                            	
+                                <div class="col-md-12">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Product<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="pproduct" name="pproduct"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">                            	
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Jewellery Type<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="pjtype" name="pjtype"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Chain Length (Inch)<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="pchain_length" name="pchain_length"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Drop Length (Inch)<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="pchain_drop_length" name="pchain_drop_length"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Chain Type<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="pchain_type" name="pchain_type"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Trademark<span style="color:#FF0000">*</span>:
+                                        </label>
+                                        <div class="col-md-8" style="padding-left:10px;">
+                                            <input type="text" readonly="1" class="form-control" id="ptrademark" name="ptrademark"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </form>        
+    </template>
+    
+    <template id="bom_line_necklace_form_modal_template" name="Update Purchase Line" >
+        <!-- The Modal -->
+        <form id="add_bom_line"  t-attf-action="/portal/purchaseline/get"  method="post">
+            <input type="hidden" id="purchase_line_id" name="order" value="0" />
+            <div class="modal fade" id="bom_form_dialog_necklace">
+                <div class="modal-dialog" style="max-width:1050px;">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Product &amp; BoM Info</h4>
+                            <button type="button" class="close" data-dismiss="modal">X</button>
+                        </div>
+                        <!-- Modal body -->
+                        <div class="modal-body" style="padding:1rem; border-bottom: 1px solid #fff;">
+                            <div class="row">                            	
+                                <div class="col-md-12">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Product<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="nproduct" name="nproduct"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">                            	
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Jewellery Type<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="njtype" name="njtype"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Extender Length (Inch)<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="necklace_extender_length" name="necklace_extender_length"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Trademark<span style="color:#FF0000">*</span>:
+                                        </label>
+                                        <div class="col-md-8" style="padding-left:10px;">
+                                            <input type="text" readonly="1" class="form-control" id="ntrademark" name="ntrademark"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </form>        
+    </template>
+    
+    <template id="bom_line_bangle_form_modal_template" name="Update Purchase Line" >
+        <!-- The Modal -->
+        <form id="add_bom_line"  t-attf-action="/portal/purchaseline/get"  method="post">
+            <input type="hidden" id="purchase_line_id" name="order" value="0" />
+            <div class="modal fade" id="bom_form_dialog_bangle">
+                <div class="modal-dialog" style="max-width:1050px;">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Product &amp; BoM Info</h4>
+                            <button type="button" class="close" data-dismiss="modal">X</button>
+                        </div>
+                        <!-- Modal body -->
+                        <div class="modal-body" style="padding:1rem; border-bottom: 1px solid #fff;">
+                            <div class="row">                            	
+                                <div class="col-md-12">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Product<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="bproduct" name="bproduct"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">                            	
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Jewellery Type<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="bjtype" name="bjtype"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Bangle Clasp<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="bangle_clasp" name="bangle_clasp"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Trademark<span style="color:#FF0000">*</span>:
+                                        </label>
+                                        <div class="col-md-8" style="padding-left:10px;">
+                                            <input type="text" readonly="1" class="form-control" id="btrademark" name="btrademark"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </form>        
+    </template>
+    
+    <template id="bom_line_brooche_form_modal_template" name="Update Purchase Line" >
+        <!-- The Modal -->
+        <form id="add_bom_line"  t-attf-action="/portal/purchaseline/get"  method="post">
+            <input type="hidden" id="purchase_line_id" name="order" value="0" />
+            <div class="modal fade" id="bom_form_dialog_brooche">
+                <div class="modal-dialog" style="max-width:1050px;">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Product &amp; BoM Info</h4>
+                            <button type="button" class="close" data-dismiss="modal">X</button>
+                        </div>
+                        <!-- Modal body -->
+                        <div class="modal-body" style="padding:1rem; border-bottom: 1px solid #fff;">
+                            <div class="row">                            	
+                                <div class="col-md-12">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Product<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="brproduct" name="brproduct"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">                            	
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Jewellery Type<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="brjtype" name="brjtype"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Brooche Desc<span style="color:#FF0000"></span>:
+                                        </label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly="1" class="form-control" id="brooche_desc" name="brooche_desc"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label class="col-md-4 control-label" style="text-align: left; color:#00395c;">Trademark<span style="color:#FF0000">*</span>:
+                                        </label>
+                                        <div class="col-md-8" style="padding-left:10px;">
+                                            <input type="text" readonly="1" class="form-control" id="brtrademark" name="brtrademark"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </form>        
+    </template>
+
+  <template id="portal_my_home_menu_purchase_line" name="Portal layout : purchase menu entries" inherit_id="portal.portal_breadcrumbs" priority="25">
+    <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+      <li t-if="page_name == 'purchase_line' or purchase_order_line" t-attf-class="breadcrumb-item #{'active ' if not purchase_order_line else ''}">
+        <a t-if="purchase_order_line" t-attf-href="/my/purchase/line?{{ keep_query() }}">Purchase Order Line</a>
+        <t t-else="">Purchase Order Line</t>
+      </li>
+      <li t-if="purchase_order_line" class="breadcrumb-item active">
+        <t t-esc="purchase_order_line.name"/>
+      </li>
+    </xpath>
+  </template>
+
+  <template id="portal_my_home_purchase_line" name="Show Purchase Order Lines" customize_show="True" inherit_id="portal.portal_my_home" priority="25">
+    <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+        <t t-call="portal.portal_docs_entry">
+            <t t-set="title">Purchase Order Line</t>
+            <t t-set="url" t-value="'/my/purchase/line'"/>
+            <t t-set="placeholder_count" t-value="'purchase_line_count'"/>
+        </t>
+    </xpath>
+  </template>
+
+  <template id="portal_my_purchase_order_lines" name="Portal: My Purchase Order Lines">
+    <t t-call="portal.portal_layout">
+      <t t-set="breadcrumbs_searchbar" t-value="True"/>
+      <t t-call="portal.portal_searchbar"/>
+      <t t-if="orders" t-call="portal.portal_table">
+        <thead>
+          <tr class="active">
+          	<th class="text-center">Purchase</th>
+            <th class="text-center" style="max-width: 00px">Product</th>
+            <th class="text-center">Delivery Date</th>
+            <th class="text-left">Ordered Qty</th>
+            <th class="text-right">Unit Price</th>            
+            <th class="text-right">Sub Total</th>
+            <th class="text-right">Shipped Qty</th>
+            <th class="text-right">Done Qty</th>
+            <th class="text-right">Bal. to Ship</th>
+          </tr>
+        </thead>
+        <tbody>
+          <t t-foreach="orders" t-as="order">
+            <tr t-att-id="'purchase_line_row_%i'%(order.id)" class="purchase_line_row">
+              <td class="text-left">
+                  <t t-esc="order.order_id.name" id="purchase_order_id"/>
+              </td>
+              <td class="text-left" width="20%" nowrap="nowrap">
+                  <t t-esc="order.name" id="purchase_line_desc"/>
+              </td>
+              <td class="text-left">
+                  <t t-esc="order.date_planned" t-options='{"widget": "datetime"}' id="date_planned"/>
+              </td>
+              <td class="text-right">
+                <span t-field="order.product_qty" id="order_qty"/>
+              </td> 
+              <td class="text-right">
+                <span t-field="order.price_unit" id="price_unit"/>
+              </td>    
+              <td class="text-right">
+                <span t-field="order.price_subtotal" t-options='{"widget": "monetary", "display_currency": order.currency_id}' id="price_subtotal"/>
+              </td>
+              <td class="text-right">
+              	<span t-field="order.shipped_qty" id="shipped_qty"/>                  
+              </td> 
+              <td class="text-right"> 
+              	<span t-field="order.qty_received" id="qty_received"/>               
+              </td> 
+              <td class="text-right">
+                <span t-field="order.balance_to_ship" id="balance_to_ship"/>
+              </td> 
+              <td>
+              	<t t-if="order.balance_to_ship &gt; 0.0">
+	              	<i class="btn btn-success btn-sm" t-att-onclick="'return editPLine(%i);'%(order.id)">Update</i>
+	              	<a type="hidden" href="#" data-toggle="modal" id="btn_update_pline" data-target="#purchase_line_form_dialog" class="btn btn-warning btn-xs" style="background-color:#FFFFFF	; border-color: #FFFFFF;"></a>
+              	</t>
+              </td>
+              <td>
+              	<t t-if="order.bom_id_line">
+                	<a t-attf-href="/my/bom/#{order.id}">BOM</a>
+                </t>
+              </td>
+              <td>
+              	<t t-if="order.jtype=='bracelet'">
+	              	<i class="btn btn-success btn-sm" t-att-onclick="'return editBOMLine(%i);'%(order.id)">Info</i>
+	              	<a type="hidden" href="#" data-toggle="modal" id="btn_update_bom" data-target="#bom_form_dialog" class="btn btn-warning btn-xs" style="background-color:#FFFFFF	; border-color: #FFFFFF;"></a>
+              	</t>
+              	<t t-if="order.jtype=='earring'">
+	              	<i class="btn btn-success btn-sm" t-att-onclick="'return editEarring(%i);'%(order.id)">Info</i>
+	              	<a type="hidden" href="#" data-toggle="modal" id="btn_update_earring" data-target="#bom_form_dialog_earring" class="btn btn-warning btn-xs" style="background-color:#FFFFFF	; border-color: #FFFFFF;"></a>
+              	</t>
+              	<t t-if="order.jtype=='ring'">
+	              	<i class="btn btn-success btn-sm" t-att-onclick="'return editRing(%i);'%(order.id)">Info</i>
+	              	<a type="hidden" href="#" data-toggle="modal" id="btn_update_ring" data-target="#bom_form_dialog_ring" class="btn btn-warning btn-xs" style="background-color:#FFFFFF	; border-color: #FFFFFF;"></a>
+              	</t>
+              	<t t-if="order.jtype=='pendant'">
+	              	<i class="btn btn-success btn-sm" t-att-onclick="'return editPendant(%i);'%(order.id)">Info</i>
+	              	<a type="hidden" href="#" data-toggle="modal" id="btn_update_pendant" data-target="#bom_form_dialog_pendant" class="btn btn-warning btn-xs" style="background-color:#FFFFFF	; border-color: #FFFFFF;"></a>
+              	</t>
+              	<t t-if="order.jtype=='necklace'">
+	              	<i class="btn btn-success btn-sm" t-att-onclick="'return editNecklace(%i);'%(order.id)">Info</i>
+	              	<a type="hidden" href="#" data-toggle="modal" id="btn_update_necklace" data-target="#bom_form_dialog_necklace" class="btn btn-warning btn-xs" style="background-color:#FFFFFF	; border-color: #FFFFFF;"></a>
+              	</t>
+              	<t t-if="order.jtype=='bangle'">
+	              	<i class="btn btn-success btn-sm" t-att-onclick="'return editBangle(%i);'%(order.id)">Info</i>
+	              	<a type="hidden" href="#" data-toggle="modal" id="btn_update_bangle" data-target="#bom_form_dialog_bangle" class="btn btn-warning btn-xs" style="background-color:#FFFFFF	; border-color: #FFFFFF;"></a>
+              	</t>
+              	<t t-if="order.jtype=='brooche'">
+	              	<i class="btn btn-success btn-sm" t-att-onclick="'return editBrooche(%i);'%(order.id)">Info</i>
+	              	<a type="hidden" href="#" data-toggle="modal" id="btn_update_brooche" data-target="#bom_form_dialog_brooche" class="btn btn-warning btn-xs" style="background-color:#FFFFFF	; border-color: #FFFFFF;"></a>
+              	</t>
+              </td>
+            </tr>
+          </t>
+        </tbody>
+      </t>
+      <t t-call="custom_purchase.purchase_order_line_form_modal_template" />
+      <t t-call="custom_purchase.bom_line_form_modal_template" type="hidden"/>
+      <t t-call="custom_purchase.bom_line_earring_form_modal_template" type="hidden"/>
+      <t t-call="custom_purchase.bom_line_ring_form_modal_template" type="hidden"/>
+      <t t-call="custom_purchase.bom_line_pendant_form_modal_template" type="hidden"/>
+      <t t-call="custom_purchase.bom_line_necklace_form_modal_template" type="hidden"/>
+      <t t-call="custom_purchase.bom_line_bangle_form_modal_template" type="hidden"/>
+      <t t-call="custom_purchase.bom_line_brooche_form_modal_template" type="hidden"/>
+      <script src="/custom_purchase/static/src/js/purchase_order_line.js"></script> 
+    </t>
+  </template>
+  
+  <template id="portal_my_bom_line" name="Portal: BOM Lines">
+    <t t-call="portal.portal_layout">
+      <t t-set="breadcrumbs_searchbar" t-value="True"/>
+      <t t-call="portal.portal_searchbar"/>
+      <t t-if="orders" t-call="portal.portal_table">
+        <thead>
+		<tr class="active">
+            <th class="text-left">Type</th>
+            <th class="text-left">Description</th>
+            <th class="text-right">SKU Number</th>
+            <th class="text-right">Qty</th>            
+            <th class="text-left">UOM</th>
+            <th class="text-right">Pcs.</th>
+            <th class="text-right">Min. weight</th>
+          </tr>
+        </thead>
+        <tbody>
+          <t t-foreach="orders.sudo().bom_id_line" t-as="bom">
+          	<t >
+          	<t>  
+            <tr>     
+              <td class="text-left">
+                <span t-field="bom.bom_line_type_id.name" id="bom_type_name"/>
+              </td> 
+              <td class="text-left">
+                <span t-field="bom.product_id.name" id="bom_name"/>
+              </td> 
+              <td class="text-left">
+                <span t-field="bom.sku_number" id="bom_sku"/>
+              </td> 
+              <td class="text-right">
+                <span t-field="bom.product_qty" id="bom_qty"/>
+              </td>    
+              <td class="text-left">
+              	<span t-field="bom.product_uom_id.name" id="bom_uom"/>
+              </td>
+              <td class="text-right">
+              	<span t-field="bom.sec_quantity" id="bom_sec_qty"/>                  
+              </td> 
+              <td class="text-right">
+              	<span t-field="bom.min_weight" id="min_wt"/>                  
+              </td> 
+            </tr>
+            </t>
+          </t>
+          </t>
+        </tbody>
+      </t>
+    </t>
+  </template>
+
+  <template id="portal_my_purchase_order_line" name="Portal: My Purchase Order">
+    <t t-call="portal.portal_layout">
+      <t t-set="purchase_order" t-value="order"/>
+      <t t-set="o_portal_fullwidth_alert" groups="purchase.group_purchase_manager">
+        <t t-call="portal.portal_back_in_edit_mode">
+          <t t-set="backend_url" t-value="'/web#return_label=Website&amp;model=%s&amp;id=%s&amp;action=%s&amp;view_type=form' % (purchase_order._name, purchase_order.id, purchase_order.env.ref('purchase.purchase_rfq').id)"/>
+        </t>
+      </t>
+      <div id="optional_placeholder"></div>
+      <div class="container">
+        <div class="row mt16 o_portal_purchase_sidebar">
+          <!-- Sidebar -->
+          <t t-call="portal.portal_record_sidebar">
+            <t t-set="classes" t-value="'col-lg-auto d-print-none'"/>
+              <t t-set="title">
+                <h2 class="mb-0">
+                  <b t-field="purchase_order.amount_total" data-id="total_amount"/>
+                </h2>
+              </t>
+            <t t-set="entries">
+              <ul class="list-group list-group-flush flex-wrap flex-row flex-lg-column">
+                <li class="list-group-item flex-grow-1">
+                  <div class="o_download_pdf btn-toolbar flex-sm-nowrap">
+                    <div class="btn-group flex-grow-1 mr-1 mb-1">
+                      <a class="btn btn-secondary btn-block o_download_btn" t-att-href="purchase_order.get_portal_url(report_type='pdf', download=True)" title="Download"><i class="fa fa-download"/> Download</a>
+                    </div>
+                    <div class="btn-group flex-grow-1 mb-1">
+                        <a class="btn btn-secondary btn-block o_print_btn o_portal_invoice_print" t-att-href="purchase_order.get_portal_url(report_type='pdf')" id="print_invoice_report" title="Print" target="_blank"><i class="fa fa-print"/> Print</a>
+                    </div>
+                  </div>
+                </li>
+
+                <li t-if="purchase_order.user_id" class="list-group-item flex-grow-1">
+                  <div class="small mb-1">
+                    <strong class="text-muted">Purchase Representative</strong>
+                  </div>
+                  <div class="row flex-nowrap">
+                    <div class="col flex-grow-0 pr-2">
+                      <img class="rounded-circle mr4 float-left o_portal_contact_img" t-if="purchase_order.user_id.image_1024" t-att-src="image_data_uri(purchase_order.user_id.image_1024)" alt="Contact"/>
+                      <img class="rounded-circle mr4 float-left o_portal_contact_img" t-if="not purchase_order.user_id.image_1024" src="/web/static/src/img/placeholder.png" alt="Contact"/>
+                    </div>
+                    <div class="col pl-0" style="min-width: 150px">
+                      <span t-field="purchase_order.user_id" t-options='{"widget": "contact", "fields": ["name", "phone"], "no_marker": True}'/>
+                      <a href="#discussion" class="small"><i class="fa fa-comment"></i> Send message</a>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </t>
+          </t>
+          <div class=" col-lg col-12 justify-content-end w-100">
+            <div class= "card pb-5">
+              <div class="card-header bg-white pb-1">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <h2 class="font-weight-normal">
+                      <t t-if="order.state in ['draft', 'sent']">Request for Quotation</t>
+                      <t t-else="1">
+                        Purchase Order
+                      </t>
+                      <span class="font-italic" t-esc="order.name"/>
+                    </h2>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="mb-4">
+                  <strong class="d-block mb-1">From:</strong>
+                  <address t-field="order.company_id.partner_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                  <strong>Confirmation Date:</strong> <span t-field="order.date_approve" t-options='{"widget": "date"}'/><br/>
+                  <div t-att-class="'d-inline' if order.date_planned else 'd-none'">
+                    <strong>Receipt Date:</strong><span class="ml-1" t-field="order.date_planned" t-options='{"widget": "date"}'/>
+                  </div>
+                </div>
+                <h3 class="font-weight-normal">Pricing</h3>
+                <table class="table table-sm">
+                  <thead class="bg-100">
+                    <tr>
+                      <th>Products</th>
+                      <th class="text-right d-none d-sm-table-cell">Unit Price</th>
+                      <th class="text-right">Quantity</th>
+                      <th class="text-right">Subtotal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <t t-foreach="order.order_line" t-as="ol">
+                      <tr>
+                        <td>
+                          <img t-att-src="image_data_uri(resize_to_48(ol.product_id.image_1024))" alt="Product" class="d-none d-lg-inline"/>
+                          <span t-esc="ol.name"/>
+                        </td>
+                        <td class="text-right d-none d-sm-table-cell">
+                          <span t-field="ol.price_unit" t-options='{"widget": "monetary", "display_currency": order.currency_id}'/>
+                        </td>
+                        <td class="text-right">
+                          <span t-esc="ol.product_qty"/>
+                        </td>
+                        <td class="text-right">
+                          <span t-field="ol.price_subtotal" t-options='{"widget": "monetary", "display_currency": order.currency_id}'/>
+                        </td>
+                      </tr>
+                    </t>
+                  </tbody>
+                </table>
+                <div class="row">
+                  <div class="col-sm-7 col-md-5 ml-auto">
+                    <table class="table table-sm">
+                      <tbody>
+                        <tr>
+                          <td>
+                            <strong>Untaxed Amount:</strong>
+                          </td>
+                          <td class="text-right">
+                            <span t-field="order.amount_untaxed" t-options='{"widget": "monetary", "display_currency": order.currency_id}'/>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <strong>Taxes:</strong>
+                          </td>
+                          <td class="text-right">
+                            <span t-field="order.amount_tax" t-options='{"widget": "monetary", "display_currency": order.currency_id}'/>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <strong>Total:</strong>
+                          </td>
+                          <td class="text-right">
+                            <span t-field="order.amount_total" t-options='{"widget": "monetary", "display_currency": order.currency_id}'/>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="purchase_order_communication" class="mt-4">
+              <h2>History</h2>
+              <t t-call="portal.message_thread">
+                <t t-set="object" t-value="purchase_order"/>
+              </t>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="oe_structure mb32"/>
+    </t>
+  </template>
+  
+  <template id="portal_my_bom_line" name="Portal: BoM">
+    <t t-call="portal.portal_layout">
+      <div id="optional_placeholder"></div>
+      <div class="container">
+        <div class="row mt16 o_portal_purchase_sidebar">
+          <!-- Sidebar -->
+          <t t-call="portal.portal_record_sidebar">
+          </t>
+          <div class=" col-lg col-12 justify-content-end w-100">
+            <div class= "card pb-5">
+              <div class="card-header bg-white pb-1">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <h2 class="font-weight-normal">
+                        Purchase Order
+                      <span class="font-italic" t-esc="order.order_id.name"/>
+                    </h2>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <h3>Product : <span class="font-italic" t-esc="order.sudo().product_id.name"/></h3>
+                <h4 class="font-weight-normal">BOM</h4>
+                <table class="table table-sm">
+                  <thead>
+					<tr class="active">
+			            <th class="text-left">Type</th>
+			            <th class="text-left">Description</th>
+			            <th class="text-right">SKU Number</th>
+			            <th class="text-right">Qty</th>            
+			            <th class="text-left">UOM</th>
+			            <th class="text-right">Pcs.</th>
+			            <th class="text-right">Min. weight</th>
+			          </tr>
+			        </thead>
+			        <tbody>
+			          <t t-foreach="order.sudo().bom_id_line" t-as="bom">
+			          	<t >
+			          	<t>  
+			            <tr>     
+			              <td class="text-left">
+			                <span t-field="bom.bom_line_type_id.name" id="bom_type_name"/>
+			              </td> 
+			              <td class="text-left">
+			                <span t-field="bom.product_id.name" id="bom_name"/>
+			              </td> 
+			              <td class="text-left">
+			                <span t-field="bom.sku_number" id="bom_sku"/>
+			              </td> 
+			              <td class="text-right">
+			                <span t-field="bom.product_qty" id="bom_qty"/>
+			              </td>    
+			              <td class="text-left">
+			              	<span t-field="bom.product_uom_id.name" id="bom_uom"/>
+			              </td>
+			              <td class="text-right">
+			              	<span t-field="bom.sec_quantity" id="bom_sec_qty"/>                  
+			              </td> 
+			              <td class="text-right">
+			              	<span t-field="bom.min_weight" id="min_wt"/>                  
+			              </td> 
+			            </tr>
+			            </t>
+			          </t>
+			          </t>
+			        </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      <div class="oe_structure mb32"/>
+    </t>
+  </template>
+
+</odoo>

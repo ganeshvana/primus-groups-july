@@ -1,0 +1,14 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ear_ring,ear.ring,model_ear_ring,base.group_user,1,1,1,1
+access_ear_clasp,ear.clasp,model_ear_clasp,base.group_user,1,1,1,1
+access_pendant,pendant,model_pendant,base.group_user,1,1,1,1
+access_chain_length,chain.length,model_chain_length,base.group_user,1,1,1,1
+access_chain_clasp,chain.clasp,model_chain_clasp,base.group_user,1,1,1,1
+access_bracelet_length,bracelet.length,model_bracelet_length,base.group_user,1,1,1,1
+access_bracelet_clasp,bracelet.clasp,model_bracelet_clasp,base.group_user,1,1,1,1
+access_bracelet_safety,bracelet.safety,model_bracelet_safety,base.group_user,1,1,1,1
+access_extender_length,extender.length,model_extender_length,base.group_user,1,1,1,1
+access_ring,ring,model_ring,base.group_user,1,1,1,1
+access_necklace,necklace,model_necklace,base.group_user,1,1,1,1
+access_cuffs,cuffs,model_cuffs,base.group_user,1,1,1,1
+access_cuffs_length,cuffs.length,model_cuffs_length,base.group_user,1,1,1,1

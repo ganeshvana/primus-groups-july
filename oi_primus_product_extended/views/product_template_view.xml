@@ -1,0 +1,2849 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<menuitem id="menu_action_masters" name="Masters"
+			parent="stock.menu_stock_config_settings" sequence="13" />
+
+		<record id="product_template_form_view_inherit"
+			model="ir.ui.view">
+			<field name="name">product.template.form.view.inherit</field>
+			<field name="model">product.template</field>
+			<field name="inherit_id"
+				ref="product.product_template_form_view" />
+			<field name="arch" type="xml">
+				<xpath
+					expr="/form/sheet/notebook/page[@name='general_information']"
+					position="replace">
+					<page string="Product Information" name="general_information">
+						<group>
+							<group name="group_general">
+								<field name="default_code" string="Style" attrs="{'invisible': [('products_types','not in',['design'])]}"/>
+								<field name="default_code" string="SKU Number" attrs="{'invisible': [('products_types','in',['design'])]}"/>
+								<field name="jewel_mold" attrs="{'invisible': [('products_types','not in',['is_jewellery'])]}"/>
+								<field name="style" attrs="{'invisible': ['|',('products_types','not in',['is_jewellery']), ('jewel_mold', '=','yes')]}"/>
+								<field name="design_product_id" attrs="{'invisible': ['|',('products_types','not in',['is_jewellery']), ('jewel_mold', '=','no')]}" domain="[('products_types','=', 'design')]" string="Style"/>
+								<field name="products_types" string="Product Type" />
+								<field name="dia" attrs="{'invisible':1}" />
+								<field name="gem" attrs="{'invisible':1}" />
+								<field name="mold_line_part_id"
+									attrs="{'invisible': [('products_types','!=','mold')]}" />
+								<field name="mold_dimension" placeholder="LxWxH" string="Dimension"
+									attrs="{'invisible': [('products_types','!=','mold')]}" />
+								<field name="mold_weight" string="Weight"
+									attrs="{'invisible': [('products_types','!=','mold')]}" />
+								<field name="mold_material_id"
+									attrs="{'invisible': [('products_types','!=','mold')]}" />
+								<field name="mold_condition"
+									attrs="{'invisible': [('products_types','!=','mold')]}" />
+								<field name="stone_name_id" string="Stone Name"
+									attrs="{'invisible': [('products_types','!=','stone')]}" />
+								<field name="stone_shape_id" string="Shape"
+									attrs="{'invisible': [('products_types','!=','stone')]}" />
+								<field name="stone_color_id" string="Color"
+									attrs="{'invisible': [('products_types','!=','stone')]}" />
+								<field name="stone_cutting_id" string="Cutting"
+									attrs="{'invisible': [('products_types','!=','stone')]}" />
+								<field name="diacolorgrade" string="Dia Color Grade"
+									attrs="{'invisible': [('dia','=',False)]}" />
+								<field name="diaclaritygrade" string="Dia Clarity Grade"
+									attrs="{'invisible': [('dia','=',False)]}" />
+								<field name="gemstonecolorgrade"
+									string="Gemstone Color Grade"
+									attrs="{'invisible': [('gem','=',False)]}" />
+								<field name="gemstoneclaritygrade"									
+									attrs="{'invisible': [('gem','=',False)]}" />
+								<field name="finess" string="Fineness"
+									attrs="{'invisible': [('products_types','not in',['metal'])]}" />
+								<field name="plating" string="Plating"
+									attrs="{'invisible': [('products_types','not in',['metal'])]}" />
+								<field name="jfiness" string="Fineness"
+									attrs="{'invisible': [('products_types','not in',['is_jewellery', 'design'])],'required': [('products_types','in',['is_jewellery', 'design'])]}" />
+								<field name="jplating" string="Plating"
+									attrs="{'invisible': [('products_types','not in',['is_jewellery', 'design'])],'required': [('products_types','in',['is_jewellery', 'design'])]}" />
+								
+								<field name="thickness" string="Thickness"
+									attrs="{'invisible': [('products_types','!=','metal')]}" />
+								<field name="plating_fitness_id" string="Plating Fineness"
+									attrs="{'invisible': [('products_types','!=','metal')]}" />
+								<field name="jtype" attrs="{'invisible': [('products_types','not in',['is_jewellery', 'design'])]}"/>
+								<field name="jewel_size" domain="[('jtype','=', jtype)]" attrs="{'invisible': ['|',('products_types','not in',['is_jewellery', 'design']),('jtype','in',['earring','brooche','pendant'])], 'required': [('jtype','in',['bracelet','ring','necklace', 'bangle','cuff'])]}"/>
+								<field name="motif" widget="many2many_tags" attrs="{'invisible': [('products_types','not in',['is_jewellery', 'design'])]}"/>
+								<field name="earring_drop_length" string="Drop Length (Inch)"
+									attrs="{'invisible': [('jtype','!=','earring')]}" />
+								<field name="earring_drop_width"
+									attrs="{'invisible': [('jtype','!=','earring')]}" />
+								<field name="ear_clasp"
+									attrs="{'invisible': [('jtype','!=','earring')]}" />
+								<field name="inside_dia"
+									attrs="{'invisible': [('jtype','!=','earring')]}" />
+									
+								<field name="chain"
+									attrs="{'invisible': [('jtype','!=','pendant')]}" />
+								<field name="chain_length"
+									attrs="{'invisible': [('jtype','!=','pendant')]}" />								
+								<field name="chain_drop_length" string="Drop Length (Inch)"
+									attrs="{'invisible': [('jtype','!=','pendant')]}" />
+								<field name="chain_type"
+									attrs="{'invisible': [('jtype','!=','pendant')]}" />								
+								<field name="bracelet_clasp"
+									attrs="{'invisible': [('jtype','!=','bracelet')]}" />
+								<field name="bracelet_safety"
+									attrs="{'invisible': [('jtype','!=','bracelet')]}" />
+								<field name="bracelet_extender" string="Extender"
+									attrs="{'invisible': [('jtype','!=','bracelet')]}" />
+								<field name="bracelet_extender_length" string="Extender Length (Inch)"
+									attrs="{'invisible': [('jtype','!=','bracelet')]}" />
+									
+								<field name="undergallery"
+									attrs="{'invisible': [('jtype','!=','ring')]}" />
+								<field name="shank_width"
+									attrs="{'invisible': [('jtype','!=','ring')]}" />
+									
+								<field name="necklace_extender" string="Extender"
+									attrs="{'invisible': [('jtype','!=','necklace')]}" />
+								<field name="necklace_extender_length"  string="Extender Length (Inch)"
+									attrs="{'invisible': [('jtype','!=','necklace')]}" />								
+								<field name="bangle_clasp"
+									attrs="{'invisible': [('jtype','!=','bangle')]}" />
+								
+								<field name="brooche_desc"
+									attrs="{'invisible': [('jtype','!=','brooche')]}" />	
+								<field name="collection"
+									attrs="{'invisible': [('products_types','not in',['is_jewellery', 'design'])]}" />								
+								<field name="trademark"
+									attrs="{'invisible': [('products_types','not in',['is_jewellery', 'design'])]}" />
+								<field name="finding_type_id" attrs="{'invisible': [('products_types','!=','finding')],'required': [('products_types','=','finding')]}"/>
+								<field name="finding_subtype_id" attrs="{'invisible': [('products_types','!=','finding')]}" domain="[('finding_type_id', '=', finding_type_id)]"/>
+								<field name="finding_fineness_id" attrs="{'invisible': [('products_types','!=','finding')]}" string="Fineness"/>
+								<field name="finding_plating_id" attrs="{'invisible': [('products_types','!=','finding')]}" string="Plating"/>
+								<field name="finding_Thickness_id" attrs="{'invisible': [('products_types','!=','finding')]}" string="Thickness"/>
+								<field name="finding_plating_thickness_id" attrs="{'invisible': [('products_types','!=','finding')]}" string="Plating Fineness"/>	
+								<field name="finding_dimension" string="Dimension" attrs="{'invisible': [('products_types','!=','finding')]}"/>	
+								<field name="certification_lab"
+									attrs="{'invisible': [('products_types','!=','certification')]}" />
+								<field name="certification_type"
+									attrs="{'invisible': [('products_types','!=','certification')]}" />
+								<field name="certification_no"
+									attrs="{'invisible': [('products_types','!=','certification')]}" />
+								<field name="certificate_date"
+									attrs="{'invisible': [('products_types','!=','certification')]}" />
+								<field name="mold" attrs="{'invisible': [('products_types','not in',['design'])]}"/>
+								
+							</group>
+							<group name="group_standard_price">
+								<field name="stone_origin_id"
+									attrs="{'invisible': [('products_types','!=','stone')]}" />
+								<field name="treatment"
+									attrs="{'invisible': [('products_types','!=','stone')]}" />
+								<field name="cstone_name_id"
+									attrs="{'invisible': [('products_types','!=','certification')]}" />
+								<field name="stone_weight"
+									attrs="{'invisible': [('products_types','!=','certification')]}" />
+								<field name="certification_name"
+									attrs="{'invisible': [('products_types','!=','certification')]}" />
+								
+								<field name="appraisal" invisible="1"/>
+								<field name="appraisal_value" widget="monetary"
+									attrs="{'invisible': [('appraisal','=',False)]}" />
+								<field name="avg"
+									attrs="{'invisible': [('products_types','!=','stone')]}" />
+								<field name="stone_class" string="Class"
+									attrs="{'invisible': [('products_types','!=','stone')]}" />
+								<field name="birth_stone" attrs="{'invisible': [('products_types','!=','stone')]}" />
+								<field name="product_tags" widget="many2many_tags"/>
+								<field name="min_weight"/>
+								<field name="avg_cost" string="Average Cost"
+									attrs="{'invisible': [('products_types','!=','metal')]}" />
+								<field name="last_revised_cost" string="Last Revised Cost"
+									attrs="{'invisible': [('products_types','!=','metal')]}" />
+								<field name="dimension" placeholder="LxWxH" string="Dimension"
+									attrs="{'invisible': [('products_types','not in',['is_jewellery', 'design'])]}" />
+								<field name="country_origin"
+									attrs="{'invisible': [('products_types','not in',['is_jewellery', 'design'])]}" />								
+								<field name="brand_id"
+									attrs="{'invisible': [('products_types','not in',['is_jewellery', 'design'])]}" />
+								<field name="sub_brand_id"
+									attrs="{'invisible': [('products_types','not in',['is_jewellery', 'design'])]}"
+									domain="[('brand_id','=',brand_id)]" />
+								<field name="child_sub_brand_id"
+									attrs="{'invisible': [('products_types','not in',['is_jewellery', 'design'])]}"
+									domain="[('sub_brand_id','=',sub_brand_id)]" />
+								<field name="provided_by" domain="[('supplier_rank','&gt;', 0)]"/>	 
+							</group>
+						</group>
+						<group attrs="{'invisible': [('products_types','!=','stone')]}">
+							<label for="size_width" attrs="{'invisible': ['|',('products_types','in',['certification','metal']), ('jtype','in',['brooche','earring','pendant'])]}"/>
+							<div class="oe_inline" attrs="{'invisible': ['|',('products_types','in',['certification','metal']), ('jtype','in',['brooche','earring','pendant'])]}">
+								L <field name="size_length" nolabel="1" class="oe_inline" style="{'width':10%;}"/> X W <field name="size_width" nolabel="1" style="{'width':10%;}" class="oe_inline"/> mm									
+							</div>	
+						</group>
+						<group attrs="{'invisible': [('products_types','not in',['is_jewellery'])]}">
+							<group>
+								<field name="stone_applicable"/>
+								<field name="jstone_name_id"  attrs="{'required': [('stone_applicable','=',True)]}" string="Center Stone"/>
+								<field name="center_color_stone_id" attrs="{'required': [('stone_applicable','=',True)]}"/>
+								<!--<label for="jsize" attrs="{'invisible': ['|',('products_types','not in',['is_jewellery']),('jtype','in',['earring','brooche','pendant'])]}"/>
+								 <div class="oe_inline" attrs="{'invisible': ['|',('products_types','not in',['is_jewellery']),('jtype','in',['earring','brooche','pendant'])]}">
+									<field name="jsize" nolabel="1" class="oe_inline" />"									
+								</div>	 -->
+								
+							</group>
+							<group></group>
+						</group>
+						<group>
+							<group>
+								<label for="list_price" />
+								<div name="pricing">
+									<field name="list_price" class="oe_inline"
+										widget='monetary'
+										options="{'currency_field': 'currency_id', 'field_digits': True}" />
+									<button name="open_pricelist_rules"
+										icon="fa-arrow-right" type="object"
+										groups="product.group_product_pricelist" class="oe_inline">
+										<field name="pricelist_item_count"
+											attrs="{'invisible': [('pricelist_item_count', '=', 0)]}" />
+										<span
+											attrs="{'invisible': [('pricelist_item_count', '=', 1)]}">
+											Extra Prices
+										</span>
+										<span
+											attrs="{'invisible': [('pricelist_item_count', '!=', 1)]}">
+											Extra Price
+										</span>
+									</button>
+								</div>
+								<label for="standard_price" groups="base.group_user"
+									attrs="{'invisible': [('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False)]}" />
+								<div name="standard_price_uom" groups="base.group_user"
+									attrs="{'invisible': [('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False)]}"
+									class="o_row">
+									<field name="standard_price" widget='monetary'
+										options="{'currency_field': 'cost_currency_id', 'field_digits': True}" />
+									<span groups="uom.group_uom" class="oe_read_only">
+										per
+										<field name="uom_name" />
+									</span>
+								</div>	
+							</group>
+							<group>
+								<field name="uom_id" groups="uom.group_uom"
+									options="{'no_create': True}" />									
+								<field name="uom_po_id" groups="uom.group_uom" invisible="1"
+									options="{'no_create': True}" />
+							</group>
+						</group>
+						<group string="Internal Notes">
+							<field name="description" nolabel="1"
+								placeholder="This note is only for internal purposes." />
+						</group>
+					</page>
+					<page string="Mold" name="mold_information" attrs="{'invisible': [('products_types', '!=', 'design')]}">
+						<group>
+							<field name="mold_product_ids" domain="[('products_types','=', 'mold')]" nolabel="1" readonly="1">
+								<tree>
+									<field name="default_code"/>
+	            					<field name="name"/>
+	            					<!-- <field name="mold_dimension" placeholder="LxWxH"/>
+	            					<field name="mold_weight"/>
+	            					<field name="mold_material_id"/>
+	            					<field name="mold_condition"/> -->
+								</tree>
+							</field>
+						</group>
+					</page>
+					<page string="Design Style ref" name="design_information" attrs="{'invisible': [('products_types', '!=', 'mold')]}">
+						<group>
+							<field name="design_product_ids" domain="[('products_types','=', 'design')]" nolabel="1">
+								<tree>
+									<field name="default_code"/>
+									<field name="name"/>
+	            					<!-- <field name="jtype"/>
+	            					<field name="jewel_size"/>
+	            					<field name="jfiness"/>
+	            					<field name="jplating"/> -->
+								</tree>
+							</field>
+						</group>
+					</page>
+					<page string="Jewel ref" name="jewel_information" attrs="{'invisible': [('products_types', '!=', 'design')]}">
+						<group>
+							<field name="jewel_product_ids"  nolabel="1" readonly="1">
+								<tree>
+									<field name="default_code"/>
+									<field name="name"/>
+	            					<!-- <field name="jtype"/>
+	            					<field name="jewel_size"/>
+	            					<field name="jfiness"/>
+	            					<field name="jplating"/> -->
+								</tree>
+							</field>
+						</group>
+					</page>
+					<page string="Other Information" name="other_information">
+						<group>
+							<group name="group_other">
+								<field name="active" invisible="1" />
+								<field name="type" string="Item Type" />
+								<field name="categ_id" string="Product Category" />
+							</group>
+							<group name="group_standard_price">
+								<field name="currency_id" invisible="1" />
+								<field name="cost_currency_id" invisible="1" />
+								<field name="product_variant_id" invisible="1" />
+							</group>
+							<group>
+								<field name="is_secondary_uom" groups="secondary_uom_app.group_secondary_uom"/>
+                        		<field name="secondary_uom_id" groups="secondary_uom_app.group_secondary_uom" options="{'no_create': True}" attrs="{'invisible':[('is_secondary_uom', '!=', True)],'required':[('is_secondary_uom','=',True)]}"/>
+							</group>
+						</group>
+						<group>
+							<group>
+								<field name="l10n_in_hsn_code" />
+								<field name="l10n_in_hsn_description" />								
+							</group>
+							<group>
+								<field name="taxes_id" widget="many2many_tags"
+									context="{'default_type_tax_use':'sale', 'search_default_sale': 1, 'search_default_service': type == 'service', 'search_default_goods': type == 'consu'}" />
+								<field name="company_id" groups="base.group_multi_company"
+									options="{'no_create': True}" />
+							</group>
+						</group>
+						<group string="Internal Notes">
+							<field name="description" nolabel="1"
+								placeholder="This note is only for internal purposes." />
+						</group>
+					</page>
+				</xpath>
+				<xpath expr="//notebook" position="inside">
+            		<page name="mold" string="Mold" attrs="{'invisible': [('jewel_mold', '=', 'no')]}">
+            			<group>
+            				<group>
+            					<field name="mold_type_id" invisible="1"/>
+            					<field name="mold_part_id" invisible="1"/>            					
+            				</group>
+            			</group>
+            			<field name="mold_ids">
+            				<tree editable="top">
+            					<field name="mold_product_id" domain="[('products_types','=', 'mold')]"/>
+            					<field name="name"/>
+            					<field name="mold_line_part_id"/>
+            					<field name="mold_dimension" placeholder="LxWxH"/>
+            					<field name="mold_weight" string="Weight"/>
+            					<field name="mold_material_id"/>
+            					<field name="mold_condition"/>
+            				</tree>   
+            				<form>
+            					<group>
+            						<group>
+            							<field name="mold_product_id" domain="[('products_types','=', 'mold')]"/>
+	            						<field name="name"/>
+		            					<field name="mold_line_part_id"/>
+		            					<field name="mold_dimension" placeholder="LxWxH"/>            					
+	            					</group>
+	            					<group>
+	            						<field name="mold_weight" string="Weight"/>
+		            					<field name="mold_material_id"/>
+		            					<field name="mold_condition"/>
+	            					</group>
+            					</group>
+            				</form>            			
+            			</field>
+            		</page>
+            	</xpath>
+			</field>
+		</record>
+		
+		<record id="product_template_form_view_ecom_inherit"
+			model="ir.ui.view">
+			<field name="name">product.template.form.view.inherit</field>
+			<field name="model">product.template</field>
+			<field name="inherit_id" ref="website_sale.product_template_form_view" />
+			<field name="arch" type="xml">
+				<xpath expr="//page/group[@name='shop']" position="inside">
+					<group string="Files">
+						<field name="ir_attachment_ids" nolabel="1" context="{'default_type':'binary'}">
+							<tree editable="bottom">
+								<field name="datas" filename="name" string="Content"/>
+								<field name="name"/>
+								<field name="description" required="1"/>
+								<field name="type" invisible="1"/>
+							</tree>
+						</field>
+					</group>
+				</xpath>
+			</field>
+		</record>
+		
+		<template id="product_inh1" active="1" inherit_id="website_sale.product" name="Product">
+			<xpath expr="//section[@id='product_detail']/div/div/t" position="after">
+				<t t-foreach="product.ir_attachment_ids" t-as="att">
+                  <a t-att-href="'https://ganeshvana-primus-groups.odoo.com/web/content/%i?download=true' % att.id" oncontextmenu="return false;" download="file.pdf"><span t-esc="att.description" class="fa fa-download"/></a>
+                </t>
+			</xpath>
+		</template>
+		
+		
+		<record id="product_template_search_view_inherit" model="ir.ui.view">
+			<field name="name">product.template.search.view.inherit</field>
+			<field name="model">product.template</field>
+			<field name="inherit_id" ref="product.product_template_search_view" />
+			<field name="arch" type="xml">
+				<xpath expr="/search/field[@name='name']" position="after">
+					<field name="design_product_id" string="Design - Style SKU" filter_domain="[ ('design_product_id.default_code', 'ilike', self)]"/>
+					<field name="bom_id_line" string="BOM component" filter_domain="[ ('bom_id_line.product_id.name', 'ilike', self)]"/>
+					<field name="mold_ids" string="Mould - SKU" filter_domain="[ ('mold_ids.name', 'ilike', self)]"/>
+					<field name="style" string="Style" filter_domain="[ ('style', 'ilike', self)]"/>
+					<field name="default_code" string="SKU Number" filter_domain="[ ('default_code', 'ilike', self)]"/>
+					<field name="products_types" string="Product Type" filter_domain="[ ('products_types', 'ilike', self)]"/>
+					<field name="product_customer_code_ids" string="Customer Code" filter_domain="[ ('product_customer_code_ids.product_code', 'ilike', self)]"/>
+				</xpath>
+				<xpath expr="/search/group" position="inside">
+					<filter string="Product Type" name="products_types" context="{'group_by':'products_types'}"/>
+				</xpath>
+				<xpath expr="/search/group/filter[@name='type']" position="replace">
+					<filter string="Item Type" name="type" context="{'group_by':'type'}"/>
+				</xpath>
+			</field>
+		</record>
+
+		<record id="dimension_tree_view" model="ir.ui.view">
+			<field name="name">dimension.tree</field>
+			<field name="model">dimension</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="dimension_form_view" model="ir.ui.view">
+			<field name="name">dimension.form</field>
+			<field name="model">dimension</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="dimension">
+							<group>
+								<field name="name" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_dimension" model="ir.actions.act_window">
+			<field name="name">Dimension</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">dimension</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<record id="certification_lab_tree_view" model="ir.ui.view">
+			<field name="name">certification.lab.tree</field>
+			<field name="model">certification.lab</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+					<field name="code" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="certification_lab_form_view" model="ir.ui.view">
+			<field name="name">certification.lab.form</field>
+			<field name="model">certification.lab</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="certification_lab">
+							<group>
+								<field name="name" />
+							</group>
+							<group>
+								<field name="code" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_certification_lab"
+			model="ir.actions.act_window">
+			<field name="name">Certification Lab</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">certification.lab</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="certification_lab_menu_config_master"
+			name="Certification Lab" sequence="11" parent="menu_action_masters"
+			action="action_certification_lab" />
+			
+		<record id="certification_type_tree_view" model="ir.ui.view">
+			<field name="name">certification.type.tree</field>
+			<field name="model">certification.type</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+					<field name="code" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="certification_type_form_view" model="ir.ui.view">
+			<field name="name">certification.type.form</field>
+			<field name="model">certification.type</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="certification_type">
+							<group>
+								<field name="name" />
+							</group>
+							<group>
+								<field name="code" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_certification_type"
+			model="ir.actions.act_window">
+			<field name="name">Certification Type</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">certification.type</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="certification_type_menu_config_master"
+			name="Certification Type" sequence="12" parent="menu_action_masters"
+			action="action_certification_type" />
+
+
+		<record id="trademark_tree_view" model="ir.ui.view">
+			<field name="name">trademark.tree</field>
+			<field name="model">trademark</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="trademark_form_view" model="ir.ui.view">
+			<field name="name">trademark.form</field>
+			<field name="model">trademark</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="trademark">
+							<group>
+								<field name="name" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_trademark" model="ir.actions.act_window">
+			<field name="name">Trademark</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">trademark</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="trademark_menu_config_master" name="Trademark"
+			sequence="13" parent="menu_action_masters" action="action_trademark" />
+			
+		<record id="mold_part_tree_view" model="ir.ui.view">
+			<field name="name">mold.part.tree</field>
+			<field name="model">mold.part</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+					<field name="parts" />					
+				</tree>
+			</field>
+		</record>
+
+		<record id="mold_part_form_view" model="ir.ui.view">
+			<field name="name">mold.part.form</field>
+			<field name="model">mold.part</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="trademark">
+							<group>
+								<field name="name" />
+								<field name="parts" />	
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_mold_part" model="ir.actions.act_window">
+			<field name="name">Mold Part</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">mold.part</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="mold_part_menu_config_master" name="Mold Part"
+			sequence="14" parent="menu_action_masters" action="action_mold_part" />
+			
+		<record id="mold_part_line_tree_view" model="ir.ui.view">
+			<field name="name">mold.line.part.tree</field>
+			<field name="model">mold.line.part</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+					<field name="code" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="mold_part_lineform_view" model="ir.ui.view">
+			<field name="name">mold.line.part.form</field>
+			<field name="model">mold.line.part</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="trademark">
+							<group>
+								<field name="name" />
+							</group>
+							<group>
+								<field name="code" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_mold_part_line" model="ir.actions.act_window">
+			<field name="name">Jewelry Mold Part</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">mold.line.part</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="mold_part__line_menu_config_master" name="Jewelry Mold Part"
+			sequence="15" parent="menu_action_masters" action="action_mold_part_line" />
+			
+		<record id="jewel_size_view" model="ir.ui.view">
+			<field name="name">jewel.size.tree</field>
+			<field name="model">jewel.size</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+					<field name="code" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="jewel_size_form_view" model="ir.ui.view">
+			<field name="name">jewel.size.form</field>
+			<field name="model">jewel.size</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="trademark">
+							<group>
+								<field name="name" />
+								<field name="jtype" />
+							</group>
+							<group>
+								<field name="code" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_jewel_size" model="ir.actions.act_window">
+			<field name="name">Jewel Size</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">jewel.size</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="jewel_size_menu_config_master" name="Jewel Size"
+			sequence="16" parent="menu_action_masters" action="action_jewel_size" />
+			
+		<record id="center_color_stone_form_view" model="ir.ui.view">
+			<field name="name">center.color.stone.form</field>
+			<field name="model">center.color.stone</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="trademark">
+							<group>
+								<field name="name" />
+							</group>
+							<group>
+								<field name="code" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_center_color_stone" model="ir.actions.act_window">
+			<field name="name">Center Stone Color</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">center.color.stone</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="center_color_stone_menu_config_master" name="Center Stone Color"
+			sequence="17" parent="menu_action_masters" action="action_center_color_stone" />
+
+
+		<record id="stone_name_tree_view" model="ir.ui.view">
+			<field name="name">stone.name.tree</field>
+			<field name="model">stone.name</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+					<field name="code" />
+					<field name="code2" />
+					<field name="diamond" />
+					<field name="gemstone" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="stone_name_form_view" model="ir.ui.view">
+			<field name="name">stone.name.form</field>
+			<field name="model">stone.name</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="stone_name">
+							<group>
+								<field name="name"/>
+								<field name="birth_stone"/>
+								<field name="diamond"/>
+							</group>
+							<group>
+								<field name="code"/>
+								<field name="code2"/>
+								<field name="gemstone"/>
+							</group>							
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_stone_name" model="ir.actions.act_window">
+			<field name="name">Stone Name</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">stone.name</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="menu_action_stone_masters" name="Stone Masters"
+			parent="stock.menu_stock_config_settings" sequence="15" />
+
+		<menuitem id="menu_action_metal_masters" name="Metal Masters"
+			parent="stock.menu_stock_config_settings" sequence="16" />
+			
+		<menuitem id="menu_action_finding_masters" name="Finding Masters"
+			parent="stock.menu_stock_config_settings" sequence="17" />
+
+		<menuitem id="stone_name_menu_config_master"
+			name="Stone Name" sequence="1" parent="menu_action_stone_masters"
+			action="action_stone_name" />
+
+		<record id="stone_shape_tree_view" model="ir.ui.view">
+			<field name="name">stone.shape.tree</field>
+			<field name="model">stone.shape</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+					<field name="code" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="stone_shape_form_view" model="ir.ui.view">
+			<field name="name">stone.shape.form</field>
+			<field name="model">stone.shape</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="stone_shape">
+							<group>
+								<field name="name" />
+							</group>
+							<group>
+								<field name="code" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_stone_shape" model="ir.actions.act_window">
+			<field name="name">Shape</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">stone.shape</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="stone_shape_menu_config_master"
+			name="Stone Shape" sequence="2" parent="menu_action_stone_masters"
+			action="action_stone_shape" />		
+			
+			
+		<record id="stone_shape_tree_view" model="ir.ui.view">
+			<field name="name">stone.shape.tree</field>
+			<field name="model">stone.shape</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="motif_form_view" model="ir.ui.view">
+			<field name="name">motif.form</field>
+			<field name="model">motif</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="stone_shape">
+							<group>
+								<field name="name" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_motif" model="ir.actions.act_window">
+			<field name="name">Shape</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">motif</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="motif_menu_config_master"
+			name="Motif" sequence="3" parent="menu_action_stone_masters"
+			action="action_motif" />
+
+
+		<record id="stone_color_tree_view" model="ir.ui.view">
+			<field name="name">stone.color.tree</field>
+			<field name="model">stone.color</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="stone_color_form_view" model="ir.ui.view">
+			<field name="name">stone.color.form</field>
+			<field name="model">stone.color</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="stone_color">
+							<group>
+								<field name="name" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_stone_color" model="ir.actions.act_window">
+			<field name="name">Color</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">stone.color</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="stone_color_menu_config_master" name="Color"
+			sequence="3" parent="menu_action_stone_masters"
+			action="action_stone_color" />
+
+		<record id="stone_cutting_tree_view" model="ir.ui.view">
+			<field name="name">stone.cutting.tree</field>
+			<field name="model">stone.cutting</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+					<field name="code" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="stone_cutting_form_view" model="ir.ui.view">
+			<field name="name">stone.cutting.form</field>
+			<field name="model">stone.cutting</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="stone_cutting">
+							<group>
+								<field name="name" />
+							</group>
+							<group>
+								<field name="code" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_stone_cutting" model="ir.actions.act_window">
+			<field name="name">Cutting</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">stone.cutting</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="stone_cutting_menu_config_master"
+			name="Cutting" sequence="4" parent="menu_action_stone_masters"
+			action="action_stone_cutting" />
+
+		<!-- <record id="stone_origin_tree_view" model="ir.ui.view"> <field name="name">stone.origin.tree</field> 
+			<field name="model">stone.origin</field> <field name="arch" type="xml"> <tree 
+			string="name"> <field name="name"/> </tree> </field> </record> <record id="stone_origin_form_view" 
+			model="ir.ui.view"> <field name="name">stone.origin.form</field> <field name="model">stone.origin</field> 
+			<field name="arch" type="xml"> <form string="name"> <sheet> <group name="stone_origin"> 
+			<group> <field name="name"/> </group> </group> </sheet> </form> </field> 
+			</record> <record id="action_stone_origin" model="ir.actions.act_window"> 
+			<field name="name">Origin</field> <field name="type">ir.actions.act_window</field> 
+			<field name="res_model">stone.origin</field> <field name="view_mode">tree,form</field> 
+			<field name="help" type="html"> <p class="o_view_nocontent_smiling_face"> 
+			Create the first record</p> </field> </record> <menuitem id="stone_origin_menu_config_master" 
+			name="Origin" sequence="5" parent="menu_action_stone_masters" action="action_stone_origin"/> -->
+
+		<record id="stone_type_tree_view" model="ir.ui.view">
+			<field name="name">stone.type.tree</field>
+			<field name="model">stone.type</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="stone_type_form_view" model="ir.ui.view">
+			<field name="name">stone.type.form</field>
+			<field name="model">stone.type</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="stone_type">
+							<group>
+								<field name="name" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_stone_type" model="ir.actions.act_window">
+			<field name="name">Type</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">stone.type</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<!-- <menuitem id="stone_type_menu_config_master" name="Type"
+			sequence="6" parent="menu_action_stone_masters"
+			action="action_stone_type" /> -->
+
+		<record id="stone_class_tree_view" model="ir.ui.view">
+			<field name="name">stone.class.tree</field>
+			<field name="model">stone.class</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="stone_class_form_view" model="ir.ui.view">
+			<field name="name">stone.class.form</field>
+			<field name="model">stone.class</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="stone_class">
+							<group>
+								<field name="name" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_stone_class" model="ir.actions.act_window">
+			<field name="name">Class</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">stone.class</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="stone_class_menu_config_master" name="Class"
+			sequence="7" parent="menu_action_stone_masters"
+			action="action_stone_class" />
+
+		<record id="collection_tree_view" model="ir.ui.view">
+			<field name="name">collection.tree</field>
+			<field name="model">collection</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="collection_form_view" model="ir.ui.view">
+			<field name="name">collection.form</field>
+			<field name="model">collection</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="stone_collection">
+							<group>
+								<field name="name" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_collection"
+			model="ir.actions.act_window">
+			<field name="name">Collection</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">collection</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="collection_menu_config_master"
+			name="Collection" sequence="8" parent="menu_action_masters"
+			action="action_collection" />
+
+
+		<record id="stone_treatment_tree_view" model="ir.ui.view">
+			<field name="name">stone.treatment.tree</field>
+			<field name="model">stone.treatment</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="stone_treatment_form_view" model="ir.ui.view">
+			<field name="name">stone.treatment.form</field>
+			<field name="model">stone.treatment</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="stone_treatment">
+							<group>
+								<field name="name" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_stone_treatment"
+			model="ir.actions.act_window">
+			<field name="name">Treatment</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">stone.treatment</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="stone_treatment_menu_config_master"
+			name="Treatment" sequence="9" parent="menu_action_stone_masters"
+			action="action_stone_treatment" />
+
+		<record id="stone_group_tree_view" model="ir.ui.view">
+			<field name="name">stone.group.tree</field>
+			<field name="model">stone.group</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="stone_group_form_view" model="ir.ui.view">
+			<field name="name">stone.group.form</field>
+			<field name="model">stone.group</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="stone_group">
+							<group>
+								<field name="name" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_stone_group" model="ir.actions.act_window">
+			<field name="name">Group</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">stone.group</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="stone_group_menu_config_master" name="Group"
+			sequence="10" parent="menu_action_stone_masters"
+			action="action_stone_group" />
+
+		<record id="stone_diaclaritygrade_tree_view" model="ir.ui.view">
+			<field name="name">stone.diaclaritygrade.tree</field>
+			<field name="model">stone.diaclaritygrade</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+					<field name="desc" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="stone_diaclaritygrade_form_view" model="ir.ui.view">
+			<field name="name">stone.diaclaritygrade.form</field>
+			<field name="model">stone.diaclaritygrade</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="stone_diaclaritygrade">
+							<group>
+								<field name="name" />
+							</group>
+							<group>
+								<field name="desc" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_stone_diaclaritygrade"
+			model="ir.actions.act_window">
+			<field name="name">Dia Clarity Grade</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">stone.diaclaritygrade</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="stone_diaclaritygrade_menu_config_master"
+			name="Dia Clarity Grade" sequence="11"
+			parent="menu_action_stone_masters"
+			action="action_stone_diaclaritygrade" />
+
+		<record id="stone_diacolorgrade_tree_view" model="ir.ui.view">
+			<field name="name">stone.diacolorgrade.tree</field>
+			<field name="model">stone.diacolorgrade</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="stone_diacolorgrade_form_view" model="ir.ui.view">
+			<field name="name">stone.diacolorgrade.form</field>
+			<field name="model">stone.diacolorgrade</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="stone_diacolorgrade">
+							<group>
+								<field name="name" />
+							</group>
+							<group>
+								<field name="desc" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_stone_diacolorgrade"
+			model="ir.actions.act_window">
+			<field name="name">Dia Color Grade</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">stone.diacolorgrade</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="stone_diacolorgrade_menu_config_master"
+			name="Dia Color Grade" sequence="12"
+			parent="menu_action_stone_masters"
+			action="action_stone_diacolorgrade" />
+
+		<record id="stone_gemstoneclaritygrade_tree_view"
+			model="ir.ui.view">
+			<field name="name">stone.gemstoneclaritygrade.tree</field>
+			<field name="model">stone.gemstoneclaritygrade</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+					<field name="desc" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="stone_gemstoneclaritygrade_form_view"
+			model="ir.ui.view">
+			<field name="name">stone.gemstoneclaritygrade.form</field>
+			<field name="model">stone.gemstoneclaritygrade</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="stone_gemstoneclaritygrade">
+							<group>
+								<field name="name" />								
+							</group>
+							<group>
+								<field name="desc" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_stone_gemstoneclaritygrade"
+			model="ir.actions.act_window">
+			<field name="name">GemStone Clarity Grade</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">stone.gemstoneclaritygrade</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="stone_gemstoneclaritygrade_menu_config_master"
+			name="GemStone Clarity Grade" sequence="13"
+			parent="menu_action_stone_masters"
+			action="action_stone_gemstoneclaritygrade" />
+
+		<record id="stone_gemstonecolorgrade_tree_view"
+			model="ir.ui.view">
+			<field name="name">stone.gemstonecolorgrade.tree</field>
+			<field name="model">stone.gemstonecolorgrade</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+					<field name="desc" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="stone_gemstonecolorgrade_form_view"
+			model="ir.ui.view">
+			<field name="name">stone.gemstonecolorgrade.form</field>
+			<field name="model">stone.gemstonecolorgrade</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="stone_gemstonecolorgrade">
+							<group>
+								<field name="name" />
+							</group>
+							<group>
+								<field name="desc" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_stone_gemstonecolorgrade"
+			model="ir.actions.act_window">
+			<field name="name">GemStone Color Grade</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">stone.gemstonecolorgrade</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="stone_gemstonecolorgrade_menu_config_master"
+			name="GemStone Color Grade" sequence="14"
+			parent="menu_action_stone_masters"
+			action="action_stone_gemstonecolorgrade" />
+
+
+		<record id="metal_name_tree_view" model="ir.ui.view">
+			<field name="name">metal.name.tree</field>
+			<field name="model">metal.name</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="metal_name_form_view" model="ir.ui.view">
+			<field name="name">metal.name.form</field>
+			<field name="model">metal.name</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="metal_name">
+							<group>
+								<field name="name" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_metal_name" model="ir.actions.act_window">
+			<field name="name">Metal Name</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">metal.name</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<!-- <menuitem id="metal_name_menu_config_master" name="Metal Name" sequence="1" 
+			parent="menu_action_metal_masters" action="action_metal_name"/> -->
+
+		<record id="metal_finess_tree_view" model="ir.ui.view">
+			<field name="name">metal.finess.tree</field>
+			<field name="model">metal.finess</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+					<field name="code" />
+					<field name="jewel_code" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="metal_finess_form_view" model="ir.ui.view">
+			<field name="name">metal.finess.form</field>
+			<field name="model">metal.finess</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="metal_finess">
+							<group>
+								<field name="name" />
+								<field name="jewel_code" />
+							</group>
+							<group>
+								<field name="code"/>
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_metal_finess" model="ir.actions.act_window">
+			<field name="name">Fineness</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">metal.finess</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="metal_finess_menu_config_master" name="Fineness"
+			sequence="2" parent="menu_action_metal_masters"
+			action="action_metal_finess" />
+
+		<record id="metal_plating_tree_view" model="ir.ui.view">
+			<field name="name">metal.plating.tree</field>
+			<field name="model">metal.plating</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+					<field name="code"/>
+					<field name="code2"/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="metal_plating_form_view" model="ir.ui.view">
+			<field name="name">metal.plating.form</field>
+			<field name="model">metal.plating</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="metal_plating">
+							<group>
+								<field name="name" />
+								<field name="jewel_code" />
+							</group>
+							<group>
+								<field name="code"/>
+								<field name="code2"/>
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_metal_plating" model="ir.actions.act_window">
+			<field name="name">Plating</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">metal.plating</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="metal_plating_menu_config_master"
+			name="Plating" sequence="3" parent="menu_action_metal_masters"
+			action="action_metal_plating" />
+
+
+		<record id="metal_platingfiness_tree_view" model="ir.ui.view">
+			<field name="name">metal.platingfiness.tree</field>
+			<field name="model">metal.platingfiness</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="metal_platingfiness_form_view" model="ir.ui.view">
+			<field name="name">metal.platingfiness.form</field>
+			<field name="model">metal.platingfiness</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="metal_platingfiness">
+							<group>
+								<field name="name" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_metal_platingfiness"
+			model="ir.actions.act_window">
+			<field name="name">Plating Fineness</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">metal.platingfiness</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="metal_platingfiness_menu_config_master"
+			name="Plating Fineness" sequence="4" parent="menu_action_metal_masters"
+			action="action_metal_platingfiness" />
+
+
+
+		<record id="metal_thickness_tree_view" model="ir.ui.view">
+			<field name="name">metal.thickness.tree</field>
+			<field name="model">metal.thickness</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="metal_thickness_form_view" model="ir.ui.view">
+			<field name="name">metal.thickness.form</field>
+			<field name="model">metal.thickness</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="metal_thickness">
+							<group>
+								<field name="name" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_metal_thickness"
+			model="ir.actions.act_window">
+			<field name="name">Thickness</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">metal.thickness</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="metal_thickness_menu_config_master"
+			name="Thickness" sequence="5" parent="menu_action_metal_masters"
+			action="action_metal_thickness" />
+
+
+
+
+
+
+		<record id="ear_ring_tree_view" model="ir.ui.view">
+			<field name="name">ear.ring.tree</field>
+			<field name="model">ear.ring</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+					<!-- <field name="code"/> -->
+					<field name="drop_length" />
+					<field name="drop_width" />
+					<field name="ear_clasp" />
+					<field name="inside_dia" />
+				</tree>
+			</field>
+		</record>
+		-->
+
+
+
+		<record id="ear_ring_form_view" model="ir.ui.view">
+			<field name="name">ear.ring.form</field>
+			<field name="model">ear.ring</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="ear_ring">
+							<group>
+								<field name="name" />
+							</group>
+							<!-- <group> <field name="code"/> </group> -->
+							<group>
+								<field name="drop_length" />
+							</group>
+							<group>
+								<field name="drop_width" />
+							</group>
+							<group>
+								<field name="ear_clasp" />
+							</group>
+							<group>
+								<field name="inside_dia" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_ear_ring" model="ir.actions.act_window">
+			<field name="name">Ear Ring</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">ear.ring</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<record id="ear_clasp_tree_view" model="ir.ui.view">
+			<field name="name">ear.clasp.tree</field>
+			<field name="model">ear.clasp</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+
+
+
+		<record id="ear_clasp_form_view" model="ir.ui.view">
+			<field name="name">ear.clasp.form</field>
+			<field name="model">ear.clasp</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="ear_clasp">
+							<group>
+								<field name="name" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_ear_clasp" model="ir.actions.act_window">
+			<field name="name">Ear Clasp</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">ear.clasp</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+
+		<record id="pendant_tree_view" model="ir.ui.view">
+			<field name="name">pendant.tree</field>
+			<field name="model">pendant</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+					<!-- <field name="code"/> -->
+					<field name="chain" />
+					<field name="chain_length" />
+					<field name="chain_clasp" />
+					<field name="drop_length" />
+				</tree>
+			</field>
+		</record>
+
+
+
+		<record id="pendant_form_view" model="ir.ui.view">
+			<field name="name">pendant.form</field>
+			<field name="model">pendant</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="pendant">
+							<group>
+								<field name="name" />
+							</group>
+							<!-- <group> <field name="code"/> </group> -->
+							<group>
+								<field name="chain" />
+							</group>
+							<group>
+								<field name="chain_length" />
+							</group>
+							<group>
+								<field name="chain_clasp" />
+							</group>
+							<group>
+								<field name="drop_length" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_pendant" model="ir.actions.act_window">
+			<field name="name">Pendant</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">pendant</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+
+
+
+		<record id="bracelet_tree_view" model="ir.ui.view">
+			<field name="name">bracelet.tree</field>
+			<field name="model">bracelet</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+					<!-- <field name="code"/> -->
+					<field name="length" />
+					<field name="clasp" />
+					<field name="safety" />
+					<field name="extender" />
+					<field name="extender_length" />
+				</tree>
+			</field>
+		</record>
+
+
+
+		<record id="bracelet_form_view" model="ir.ui.view">
+			<field name="name">bracelet.form</field>
+			<field name="model">bracelet</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="bracelet">
+							<group>
+								<field name="name" />
+							</group>
+							<!-- <group> <field name="code"/> </group> -->
+							<group>
+								<field name="length" />
+							</group>
+							<group>
+								<field name="clasp" />
+							</group>
+							<group>
+								<field name="safety" />
+							</group>
+							<group>
+								<field name="extender" />
+							</group>
+							<group>
+								<field name="extender_length" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_bracelet" model="ir.actions.act_window">
+			<field name="name">Bracelet</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">bracelet</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<record id="chain_type_tree_view" model="ir.ui.view">
+			<field name="name">chain.type.tree</field>
+			<field name="model">chain.type</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+
+
+
+		<record id="chain_type_form_view" model="ir.ui.view">
+			<field name="name">chain.type.form</field>
+			<field name="model">chain.type</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="chain_length">
+							<group>
+								<field name="name" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_chain_type" model="ir.actions.act_window">
+			<field name="name">Chain Type</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">chain.type</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<record id="clasp_tree_view" model="ir.ui.view">
+			<field name="name">clasp.tree</field>
+			<field name="model">clasp</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+					<field name="type" />
+				</tree>
+			</field>
+		</record>
+
+
+
+		<record id="clasp_form_view" model="ir.ui.view">
+			<field name="name">clasp.form</field>
+			<field name="model">clasp</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="chain_clasp">
+							<group>
+								<field name="name"/>
+							</group>
+							<group>
+								<field name="type"/>
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_clasp" model="ir.actions.act_window">
+			<field name="name">Clasp</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">clasp</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+		
+		<record id="jewellery_type_tree_view" model="ir.ui.view">
+			<field name="name">jewellery.type.tree</field>
+			<field name="model">jewellery.type</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+					<field name="type" />
+				</tree>
+			</field>
+		</record>
+
+
+
+		<record id="jewellery_type_form_view" model="ir.ui.view">
+			<field name="name">jewellery.type.form</field>
+			<field name="model">jewellery.type</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group>
+							<group>
+								<field name="name"/>
+							</group>
+							<group>
+								<field name="type"/>
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_jewellery_type" model="ir.actions.act_window">
+			<field name="name">Jewellery Type</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">jewellery.type</field>
+			<field name="view_mode">tree,form</field>			
+		</record>
+
+
+
+
+		<record id="bracelet_length_tree_view" model="ir.ui.view">
+			<field name="name">bracelet.length.tree</field>
+			<field name="model">bracelet.length</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+
+
+
+		<record id="bracelet_length_form_view" model="ir.ui.view">
+			<field name="name">bracelet.length.form</field>
+			<field name="model">bracelet.length</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="bracelet_length">
+							<group>
+								<field name="name" />
+							</group>
+
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_bracelet_length"
+			model="ir.actions.act_window">
+			<field name="name">Bracelet Length</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">bracelet.length</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+
+
+		<record id="bracelet_clasp_tree_view" model="ir.ui.view">
+			<field name="name">bracelet.clasp.tree</field>
+			<field name="model">bracelet.clasp</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+
+
+
+		<record id="bracelet_clasp_form_view" model="ir.ui.view">
+			<field name="name">bracelet.clasp.form</field>
+			<field name="model">bracelet.clasp</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="bracelet_clasp">
+							<group>
+								<field name="name" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_bracelet_clasp"
+			model="ir.actions.act_window">
+			<field name="name">Bracelet Clasp</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">bracelet.clasp</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+
+		<record id="bracelet_safety_view" model="ir.ui.view">
+			<field name="name">bracelet.safety.tree</field>
+			<field name="model">bracelet.safety</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+
+
+
+		<record id="bracelet_safety_form_view" model="ir.ui.view">
+			<field name="name">bracelet.safety.form</field>
+			<field name="model">bracelet.safety</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="bracelet_safety">
+							<group>
+								<field name="name" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_bracelet_safety"
+			model="ir.actions.act_window">
+			<field name="name">Safety</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">bracelet.safety</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+
+
+		<record id="extender_length_tree_view" model="ir.ui.view">
+			<field name="name">extender.length.tree</field>
+			<field name="model">extender.length</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+
+				</tree>
+			</field>
+		</record>
+
+
+
+		<record id="extender_length_form_view" model="ir.ui.view">
+			<field name="name">extender.length.form</field>
+			<field name="model">extender.length</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="extender_length">
+							<group>
+								<field name="name" />
+							</group>
+
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_extender_length"
+			model="ir.actions.act_window">
+			<field name="name">Extender Length</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">extender.length</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<record id="ring_tree_view" model="ir.ui.view">
+			<field name="name">ring.tree</field>
+			<field name="model">ring</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+					<!-- <field name="code"/> -->
+					<field name="under_gallery" />
+					<field name="shank_width" />
+				</tree>
+			</field>
+		</record>
+
+
+
+		<record id="ring_form_view" model="ir.ui.view">
+			<field name="name">ring.form</field>
+			<field name="model">ring</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="ring">
+							<group>
+								<field name="name" />
+							</group>
+							<!-- <group> <field name="code"/> </group> -->
+							<group>
+								<field name="under_gallery" />
+							</group>
+							<group>
+								<field name="shank_width" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_ring" model="ir.actions.act_window">
+			<field name="name">Ring</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">ring</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<record id="necklace_tree_view" model="ir.ui.view">
+			<field name="name">necklace.tree</field>
+			<field name="model">necklace</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+					<!-- <field name="code"/> -->
+					<field name="necklace_extender" />
+					<field name="necklace_extender_length" />
+				</tree>
+			</field>
+		</record>
+
+
+
+		<record id="necklace_form_view" model="ir.ui.view">
+			<field name="name">necklace.form</field>
+			<field name="model">necklace</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="necklace">
+							<group>
+								<field name="name" />
+							</group>
+							<!-- <group> <field name="code"/> </group> -->
+							<group>
+								<field name="necklace_extender" />
+							</group>
+							<group>
+								<field name="necklace_extender_length" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_necklace" model="ir.actions.act_window">
+			<field name="name">Necklace</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">necklace</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<record id="cuffs_tree_view" model="ir.ui.view">
+			<field name="name">cuffs.tree</field>
+			<field name="model">cuffs</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+					<!-- <field name="code"/> -->
+					<field name="cuffs_length" />
+				</tree>
+			</field>
+		</record>
+
+
+
+		<record id="cuffs_form_view" model="ir.ui.view">
+			<field name="name">cuffs.form</field>
+			<field name="model">cuffs</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="cuffs">
+							<group>
+								<field name="name" />
+							</group>
+							<!-- <group> <field name="code"/> </group> -->
+							<group>
+								<field name="cuffs_length" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_cuffs" model="ir.actions.act_window">
+			<field name="name">Cuffs</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">cuffs</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<record id="cuffs_length_tree_view" model="ir.ui.view">
+			<field name="name">cuffs.length.tree</field>
+			<field name="model">cuffs.length</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+
+
+
+		<record id="cuffs_length_form_view" model="ir.ui.view">
+			<field name="name">cuffs.length.form</field>
+			<field name="model">cuffs.length</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="cuffs_length">
+							<group>
+								<field name="name" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_cuffs_length" model="ir.actions.act_window">
+			<field name="name">Cuffs Length</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">cuffs.length</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+
+
+
+		<record id="bangles_length_tree_view" model="ir.ui.view">
+			<field name="name">bangles.length.tree</field>
+			<field name="model">bangles.length</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+
+
+
+		<record id="bangles_length_form_view" model="ir.ui.view">
+			<field name="name">bangles.length.form</field>
+			<field name="model">bangles.length</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="bangles_length">
+							<group>
+								<field name="name" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_bangles_length"
+			model="ir.actions.act_window">
+			<field name="name">Bangles Length</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">bangles.length</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<record id="bangles_clasp_tree_view" model="ir.ui.view">
+			<field name="name">bangles.clasp.tree</field>
+			<field name="model">bangles.clasp</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+
+
+
+		<record id="bangles_clasp_form_view" model="ir.ui.view">
+			<field name="name">bangles.clasp.form</field>
+			<field name="model">bangles.clasp</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="bangles_clasp">
+							<group>
+								<field name="name" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_bangles_clasp" model="ir.actions.act_window">
+			<field name="name">Bangles Clasp</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">bangles.clasp</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+
+		<record id="bangles_tree_view" model="ir.ui.view">
+			<field name="name">bangles.tree</field>
+			<field name="model">bangles</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+					<!-- <field name="code"/> -->
+					<field name="bangles_length" />
+					<field name="bangles_clasp" />
+				</tree>
+			</field>
+		</record>
+
+
+
+		<record id="bangles_form_view" model="ir.ui.view">
+			<field name="name">bangles.form</field>
+			<field name="model">bangles</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="bangles">
+							<group>
+								<field name="name" />
+							</group>
+							<!-- <group> <field name="code"/> </group> -->
+							<group>
+								<field name="bangles_length" />
+							</group>
+							<group>
+								<field name="bangles_clasp" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_bangles" model="ir.actions.act_window">
+			<field name="name">Bangles</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">bangles</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+
+
+
+		<record model="ir.ui.view" id="view_brand_master_form">
+			<field name="name">view.brand.master.form</field>
+			<field name="model">brand.master</field>
+			<field name="arch" type="xml">
+				<form string="Brand Master">
+					<sheet>
+						<group>
+							<group>
+								<field name="name" />
+							</group>
+							<!-- <group> <field name="sub_brand_id"/> </group> -->
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="view_brand_master_tree" model="ir.ui.view">
+			<field name="name">view.brand.master.tree</field>
+			<field name="model">brand.master</field>
+			<field name="arch" type="xml">
+				<tree string="Brand Master">
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="action_view_brand_master"
+			model="ir.actions.act_window">
+			<field name="name">Brand Master</field>
+			<field name="res_model">brand.master</field>
+			<field name="view_mode">tree,form</field>
+			<field name="search_view_id" ref="view_brand_master_tree" />
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create a new record
+				</p>
+			</field>
+		</record>
+
+		<menuitem action="action_view_brand_master"
+			id="menu_brand_master" name="Brand Master" sequence="10"
+			parent="stock.menu_stock_config_settings" />
+
+
+		<record model="ir.ui.view" id="view_sub_brand_master_form">
+			<field name="name">view.sub.brand.master.form</field>
+			<field name="model">sub.brand.master</field>
+			<field name="arch" type="xml">
+				<form string="Brand Master">
+					<sheet>
+						<group>
+							<group>
+								<field name="name" />
+							</group>
+							<group>
+								<field name="brand_id" />
+							</group>
+							<!-- <group> <field name="child_brand_id"/> </group> -->
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="view_sub_brand_master_tree" model="ir.ui.view">
+			<field name="name">view.sub.brand.master.tree</field>
+			<field name="model">sub.brand.master</field>
+			<field name="arch" type="xml">
+				<tree string="Brand Master">
+					<field name="name" />
+					<!-- <field name="code"/> -->
+				</tree>
+			</field>
+		</record>
+
+		<record id="action_view_sub_brand_master"
+			model="ir.actions.act_window">
+			<field name="name">Sub Brand Master</field>
+			<field name="res_model">sub.brand.master</field>
+			<field name="view_mode">tree,form</field>
+			<field name="search_view_id" ref="view_sub_brand_master_tree" />
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create a new record
+				</p>
+			</field>
+		</record>
+
+		<menuitem action="action_view_sub_brand_master"
+			id="menu_sub_brand_master" name="Sub Brand Master" sequence="11"
+			parent="stock.menu_stock_config_settings" />
+
+		<record model="ir.ui.view" id="view_child_brand_master_form">
+			<field name="name">view.child.brand.master.form</field>
+			<field name="model">child.sub.brand.master</field>
+			<field name="arch" type="xml">
+				<form string="Brand Master">
+					<sheet>
+						<group>
+							<group>
+								<field name="name" />
+							</group>
+							<group>
+								<field name="sub_brand_id" />
+							</group>
+							<group>
+								<!-- <field name="code"/> -->
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="view_child_brand_master_tree" model="ir.ui.view">
+			<field name="name">view.child.sub.brand.master.tree</field>
+			<field name="model">child.sub.brand.master</field>
+			<field name="arch" type="xml">
+				<tree string="Brand Master">
+					<field name="name" />
+					<!-- <field name="code"/> -->
+				</tree>
+			</field>
+		</record>
+
+		<record id="action_view_child_sub_brand_master"
+			model="ir.actions.act_window">
+			<field name="name">Sub Sub Brand Master</field>
+			<field name="res_model">child.sub.brand.master</field>
+			<field name="view_mode">tree,form</field>
+			<field name="search_view_id" ref="view_child_brand_master_tree" />
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create a new record
+				</p>
+			</field>
+		</record>
+
+		<menuitem action="action_view_child_sub_brand_master"
+			id="menu_child_sub_brand_master" name="Sub Sub Brand Master"
+			sequence="12" parent="stock.menu_stock_config_settings" />
+			
+		<!-- <menuitem id="jewellery_type_menu_config_master" name="Jewellery Type"
+			sequence="1" parent="menu_action_masters" action="action_jewellery_type" /> -->
+
+		<!-- <menuitem id="bangles_menu_config_master" name="Bangles"
+			sequence="1" parent="menu_action_masters" action="action_bangles" />
+
+		<menuitem id="cuffs_menu_config_master" name="Cuffs"
+			sequence="2" parent="menu_action_masters" action="action_cuffs" />
+
+		<menuitem id="necklace_menu_config_master" name="Necklace"
+			sequence="3" parent="menu_action_masters" action="action_necklace" />
+
+		<menuitem id="ring_menu_config_master" name="Ring"
+			sequence="4" parent="menu_action_masters" action="action_ring" />
+
+		<menuitem id="pendant_menu_config_master" name="Pendant"
+			sequence="5" parent="menu_action_masters" action="action_pendant" />
+
+		<menuitem id="ear_ring_menu_config_master" name="Ear Ring"
+			sequence="6" parent="menu_action_masters" action="action_ear_ring" />
+
+		<menuitem id="bracelet_menu_config_master" name="Bracelet"
+			sequence="7" parent="menu_action_masters" action="action_bracelet" /> -->
+
+
+		<menuitem id="menu_action_submasters" name="Sub Masters"
+			parent="stock.menu_stock_config_settings" sequence="14" />
+			
+		<menuitem id="clasp_menu_config_master"
+			name="Clasp" sequence="9" parent="menu_action_submasters"
+			action="action_clasp" />
+			
+		<menuitem id="chain_type_menu_config_master"
+			name="Chain Type" sequence="9" parent="menu_action_submasters"
+			action="action_chain_type" />
+			
+		<menuitem id="bracelet_safety_config_master" name="Safety"
+			sequence="6" parent="menu_action_submasters"
+			action="action_bracelet_safety" />
+			
+		<record id="finding_type_tree_view" model="ir.ui.view">
+			<field name="name">finding.type.tree</field>
+			<field name="model">finding.type</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+					<field name="code" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="finding_type_form_view" model="ir.ui.view">
+			<field name="name">finding.type.form</field>
+			<field name="model">finding.type</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="stone_shape">
+							<group>
+								<field name="name" />
+							</group>
+							<group>
+								<field name="code" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_finding_type" model="ir.actions.act_window">
+			<field name="name">Finding Type</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">finding.type</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="finding_type_menu_config_master"
+			name="Finding Type" sequence="2" parent="menu_action_finding_masters"
+			action="action_finding_type" />
+			
+		<record id="finding_sub_type_tree_view" model="ir.ui.view">
+			<field name="name">finding.sub.type.tree</field>
+			<field name="model">finding.sub.type</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+					<field name="finding_type_id" />
+				</tree>
+			</field>
+		</record>
+		
+		
+		<record id="finding_sub_type_form_view" model="ir.ui.view">
+			<field name="name">finding.sub.type.form</field>
+			<field name="model">finding.sub.type</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="stone_shape">
+							<group>
+								<field name="name" />
+							</group>
+							<group>
+								<field name="finding_type_id" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_finding_sub_type" model="ir.actions.act_window">
+			<field name="name">Finding Sub Type</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">finding.sub.type</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="finding_sub_type_menu_config_masters"
+			name="Finding Sub Type" sequence="3" parent="menu_action_finding_masters"
+			action="action_finding_sub_type" />
+
+
+		<!-- <menuitem id="bangles_length_menu_config_master"
+			name="Bangles Length" sequence="1" parent="menu_action_submasters"
+			action="action_bangles_length" />
+
+
+		<menuitem id="bangles_clasp_menu_config_master"
+			name="Bangles Clasp" sequence="2" parent="menu_action_submasters"
+			action="action_bangles_clasp" />
+
+
+		<menuitem id="cuffs_length_menu_config_master"
+			name="Cuffs Length" sequence="3" parent="menu_action_submasters"
+			action="action_cuffs_length" />
+
+
+
+		<menuitem id="bracelet_length_config_master" name="Length"
+			sequence="4" parent="menu_action_submasters"
+			action="action_bracelet_length" />
+
+		<menuitem id="bracelet_clasp_config_master" name="Clasp"
+			sequence="5" parent="menu_action_submasters"
+			action="action_bracelet_clasp" />
+
+		
+
+		<menuitem id="extender_length_config_master"
+			name="Extender Length" sequence="7" parent="menu_action_submasters"
+			action="action_extender_length" />
+
+
+
+		<menuitem id="chain_length_menu_config_master"
+			name="Chain Length" sequence="8" parent="menu_action_submasters"
+			action="action_chain_length" />
+
+		
+
+
+
+		<menuitem id="ear_clasp_menu_config_master" name="Ear Clasp"
+			sequence="10" parent="menu_action_submasters"
+			action="action_ear_clasp" />
+ -->
+
+
+		<record id="res_partner_form_view_inherited" model="ir.ui.view">
+			<field name="name">res.partner.form.view.inherited</field>
+			<field name="model">res.partner</field>
+			<field name="inherit_id" ref="base.view_partner_form" />
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='child_ids']" position="inside">
+					<field name="first_name" />
+				</xpath>
+
+			</field>
+		</record>
+		
+		<record id="product_attribute_form_view_inherited" model="ir.ui.view">
+			<field name="name">product.attribute.form.view.inherited</field>
+			<field name="model">product.attribute</field>
+			<field name="inherit_id" ref="product.product_attribute_view_form" />
+			<field name="arch" type="xml">
+				<xpath expr="//page/field[@name='value_ids']/tree/field[@name='name']" position="after">
+					<field name="code"/>
+					<field name="code2" attrs="{'column_invisible': [('parent.name', 'not in', ['Center stone', 'Plating', 'Center stone'])]}"/>
+					<field name="jewel_code" attrs="{'column_invisible': [('parent.name', 'not in', ['Fineness', 'Plating'])]}"/>
+					<field name="gemstone" attrs="{'column_invisible': [('parent.name', '!=', 'Center stone')]}"/>
+					<field name="diamond" attrs="{'column_invisible': [('parent.name', '!=', 'Center stone')]}"/>
+					<field name="birth_stone" attrs="{'column_invisible': [('parent.name', '!=', 'Center stone')]}"/>
+					<field name="jtype" attrs="{'column_invisible': [('parent.name', '!=', 'Jewel Size')]}"/>
+				</xpath>
+
+			</field>
+		</record>
+
+		
+
+
+	</data>
+</odoo>

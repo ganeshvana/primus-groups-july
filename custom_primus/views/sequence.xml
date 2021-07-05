@@ -1,0 +1,13 @@
+<odoo>
+	<data>
+        <record id="stock_quant_seq" model="ir.sequence">
+            <field name="name">quant.lot</field>
+            <field name="code">quant.lot</field>
+            <field name="prefix"></field>
+            <field name="padding">4</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="False" name="company_id"/>
+        </record>        
+	</data>
+</odoo>

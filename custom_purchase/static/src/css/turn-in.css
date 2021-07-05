@@ -1,0 +1,85 @@
+.modal-header { background-color: #0062BD !important; padding: 5px 10px; }
+.modal-header h4 { color: #fff; font-size: 16px; }
+.modal-header button { color: #fff; font-size: 1rem;}
+.card-header { padding: 0.45rem 1.25rem; }
+
+.jobs_tabs > li > a { padding: 5px 15px; }
+.jobs_tabs .nav-item { margin-bottom: 3px; }
+.form-group { margin-bottom: 3px !important; }
+#job_witness_form_dialog .form-group { margin-bottom: 0px !important; }
+#job_rough_add_dialog { margin-bottom: 0px !important; }
+#job_witness_form_dialog .form-group label, #job_attorney_form_dialog .form-group label { font-size: 13px; }
+.resource { padding: 4%; margin-top:20px; }
+.resource-box { background: #fff; }            
+.offer{ background:#fff; border:1px solid #ddd; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); margin: 0px 0px 20px 0px; overflow:hidden; }           
+.offer-radius{ border-radius:7px; }
+.offer-primary { border-color: #428bca; background-color: #0062BD !important; color:#fff! important;}
+.offer-info { border-color: #5bc0de; }                
+.offer-content{ padding:4px; border-top:1px solid #aaa; color:#fff! important;background-color:#fff! important; height:220px; overflow-y: auto; }
+.offer-footer { padding: 5px 10px;font-size: 14px;background-color: #eaeaea;color: #666;font-style: italic; }
+.lead { margin-left: 5px; margin-top: 5px;margin-bottom: 3px; color:#fff;}
+.lead a { float:right; margin-right: 6px; text-transform: capitalize; padding: 3px 8px;}
+.ccapl { text-align: left; color:#00395c; flex:0 0 10.667%; }
+.ccapt { flex: 0 0 89.333%; max-width: 89.333%; }
+label { margin-top: 0.19rem; margin-bottom: 0px; color:#00395c; }
+.tbl_boxlet { margin-bottom:6px; }
+.tbl_boxlet th { position: sticky; background-color: #cacaca; top: 0;color: #0000FF;padding: 3px 5px; border: 1px solid #ccc; font-size: 12px; vartical-align:middle; }
+.tbl_boxlet td { color: #0000FF;padding: 3px 3px; border: 1px solid #ccc; font-size: 12px; vartical-align:middle; }
+.tbl_boxlet td.edit { width: 18px; padding: 2px 4px; cursor:pointer; }
+@media (max-width: 768px) {                  
+    .ccapl { flex:0 0 100%; max-width: 100%; }
+    .ccapt { flex: 0 0 100%; max-width: 100%; } 
+    label { padding-left:15px; }                 
+}
+
+.fstQueryInput { padding:0px !important; margin:0px !important;}
+.fstControls { padding-bottom:0.2em !important; }
+.fstChoiceRemove { top:44%;}
+.fstResultItem { font-size: 1.2em;padding: .3em .71429em; }
+#wrap .container { width:98%! important; max-width:98%! important;}
+.header-wrap { width:100%! important; }
+.main-form-container { padding-left: 10px;padding-top: 5px; }
+.check { display:inherit; }
+#job_files_upload_dialog_attachment.help-inline+p { color:#ff0000;}
+
+.dropzone {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  display: table;
+  table-layout: fixed;
+  width: 96%;
+  height: 100px;
+  top: 10px;
+  left: 2%;
+  border: 2px dashed #A4A4A4;
+  border-radius: 3px;
+  text-align: center;
+  overflow: hidden;
+}
+.dropzone.is-dragover {
+  border-color: #666;
+  background: #eee;
+}
+.dropzone .content {
+  display: table-cell;
+  vertical-align: middle;
+}
+.dropzone .upload {
+  margin: 6px 0 0 2px;
+}
+.dropzone .filename {
+  display: block;
+  color: #676767;
+  font-size: 14px;
+  line-height: 18px;
+}
+.dropzone .input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  width:100%;
+}

@@ -1,0 +1,85 @@
+<odoo>
+	 <record model="ir.ui.view" id="view_template_mass_edit">
+        <field name="name">template.mass.edit.form</field>
+        <field name="model">template.mass.edit</field>
+        <field name="arch" type="xml">
+            <form string="Make Project Payment Approved">
+            	<group>
+            		<field name="prod_ids" widget="many2many_tags" invisible="1"/>
+            	</group>
+            	<notebook>
+            		<page string="Customer">
+	                     <field name="code_ids">
+	                        <tree string="Product Customer Code" editable="bottom">
+	                            <field name="partner_id" domain="[('customer_rank','>', 0)]"/>
+	                            <field name="prod_id" domain="[('id', 'in', parent.prod_ids)]"/>
+	                            <field name="product_name"/>
+	                            <field name="product_code"/>
+	                        </tree>
+	                    </field>
+	                </page>
+            	</notebook>
+                <footer>
+                	<button type="object" class="oe_highlight" string="Update" name="create_product_codes"/>
+                	<button string="Discard" class="btn btn-secondary" special="cancel"/>
+                </footer>
+            </form>            
+        </field>
+    </record>
+    
+    <record id="action_template_mass_edit" model="ir.actions.act_window">
+        <field name="name">Customer Product Code - Bulk Update</field>
+        <field name="res_model">template.mass.edit</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="oi_primus_product_extended.view_template_mass_edit"/>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="product.model_product_template"/>
+        <field name="binding_view_types">form,list</field>
+    </record>
+    
+    <record model="ir.ui.view" id="view_bom_bulk_update">
+        <field name="name">product.bom.bulk.form</field>
+        <field name="model">product.bom.bulk</field>
+        <field name="arch" type="xml">
+            <form string="Make Project Payment Approved">
+            	<group>
+            		<field name="bom_type"/>
+            	</group>
+            	<notebook>
+            		<page string="Bom Lines">
+	                     <field name="bulk_bom_ids">
+	                        <tree editable="bottom">
+			                     <field name="bom_line_type_id"/>	 
+				    	 		 <field name="prototype" string="Temporary Name"/> 
+			                     <field name="product_id" context="{'default_type': 'product'}" string="Description" required="0"/>
+			                     <field name="sku_number"/>
+			                     <field name="product_qty"/>
+			                     <field name="product_uom_id" options="{'no_open':True,'no_create':True}" string="Uom"/>
+			                     <field name="sec_quantity" string="Pcs."/>
+					    	 	 <field name="min_weight"/>
+					    	 	 <field name="unit_cost"/>
+					    	 	 <field name="total"/>
+					    	 	 <field name="provided_by" domain="[('supplier_rank','&gt;', 0)]"/>	  
+	                        </tree>
+	                    </field>
+	                </page>
+            	</notebook>
+                <footer>
+                	<button type="object" class="oe_highlight" string="Update" name="create_bom"/>
+                	<button string="Discard" class="btn btn-secondary" special="cancel"/>
+                </footer>
+            </form>            
+        </field>
+    </record>
+    
+    <record id="action_bom_bulk_update" model="ir.actions.act_window">
+        <field name="name">BoM - Bulk Update</field>
+        <field name="res_model">product.bom.bulk</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="oi_primus_product_extended.view_bom_bulk_update"/>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="product.model_product_product"/>
+        <field name="binding_view_types">form,list</field>
+    </record>
+    
+</odoo>

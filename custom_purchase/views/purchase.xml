@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="view_purchase_order_form_inherit" model="ir.ui.view">
+	    <field name="name">purchase.order.form.inherit</field>
+	    <field name="model">purchase.order</field>
+	    <field name="inherit_id" ref="purchase.purchase_order_form"/>
+	    <field name="arch" type="xml">
+	        <xpath expr="//page[@name='products']/field/form/group/group/field[@name='taxes_id']" position="after">
+                <field name="shipped_qty" readonly="1"/>
+                <field name="shipping_number" readonly="1"/>
+                <field name="balance_to_ship" readonly="1"/>
+            </xpath>
+	    </field>
+	</record>
+	
+	<record id="view_move_tree_receipt_pickinginherit" model="ir.ui.view">
+	    <field name="name">stock.move.form.inherit</field>
+	    <field name="model">stock.move</field>
+	    <field name="inherit_id" ref="stock.view_move_tree_receipt_picking"/>
+	    <field name="arch" type="xml">
+	        <xpath expr="//field[@name='product_uom_qty']" position="before">
+                <field name="shipped_qty" readonly="1"/>
+            </xpath>
+	    </field>
+	</record>	
+	
+	<record id="view_view_picking_forminherit" model="ir.ui.view">
+	    <field name="name">stock.picking.form.inherit</field>
+	    <field name="model">stock.picking</field>
+	    <field name="inherit_id" ref="stock.view_picking_form"/>
+	    <field name="arch" type="xml">
+	        <xpath expr="//page[@name='operations']/field/tree/field[@name='product_uom_qty']" position="before">
+                <field name="shipped_qty" readonly="1"/>
+            </xpath>
+	    </field>
+	</record>	
+</odoo>

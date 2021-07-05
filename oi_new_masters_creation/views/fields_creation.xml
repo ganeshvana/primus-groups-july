@@ -1,0 +1,754 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+<record id="product_template_page_view" model="ir.ui.view">
+<field name="name">product.template.page.view</field>
+<field name="model">product.template</field>
+<field name="inherit_id" ref="product.product_template_only_form_view"/>
+<field name="arch" type="xml">
+<xpath expr="/form/sheet/notebook/page[@name='general_information']" position="replace">
+<page string="Product Information" name="general_information">
+<group>
+<group name="group_general">
+<field name="active" invisible="1"/>
+<field name="stone"/>
+<field name="metal"/>
+<field name="type"/>
+<field name="categ_id" string="Product Category"/>
+<field name="name" string="Name" attrs="{'invisible': [('stone','=',False)]}"/>
+<field name="shape" string="Shape" attrs="{'invisible': [('stone','=',False)]}"/>
+<field name="size" string="Size" attrs="{'invisible': [('stone','=',False)]}"/>
+<field name="color" string="Color" attrs="{'invisible': [('stone','=',False)]}"/>
+<field name="cutting" string="Cutting" attrs="{'invisible': [('stone','=',False)]}"/>
+<field name="quality" string="Quality" attrs="{'invisible': [('stone','=',False)]}"/>
+
+<field name="finess" string="Fineness" attrs="{'invisible': [('metal','=',False)]}"/>
+<field name="plating" string="Plating" attrs="{'invisible': [('metal','=',False)]}"/>
+<field name="plating_thickness" string="Plating Thickness" attrs="{'invisible': [('metal','=',False)]}"/>
+<field name="vendor" string="Vendor" attrs="{'invisible': [('metal','=',False)]}"/>
+<field name="uom" string="UOM" attrs="{'invisible': [('metal','=',False)]}"/>
+
+</group>
+<group name="group_standard_price">
+<label for="list_price"/>
+<div name="pricing">
+<field name="list_price" class="oe_inline" widget='monetary'
+options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+<button name="open_pricelist_rules" icon="fa-arrow-right" type="object"
+groups="product.group_product_pricelist" class="oe_inline">
+<field name="pricelist_item_count" attrs="{'invisible': [('pricelist_item_count', '=', 0)]}"/>
+<span attrs="{'invisible': [('pricelist_item_count', '=', 1)]}">
+Extra Prices
+</span>
+<span attrs="{'invisible': [('pricelist_item_count', '!=', 1)]}">
+Extra Price
+</span>
+</button>
+</div>
+<label for="standard_price" groups="base.group_user" attrs="{'invisible': [('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False)]}"/>
+<div name="standard_price_uom" groups="base.group_user" attrs="{'invisible': [('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False)]}" class="o_row">
+<field name="standard_price" widget='monetary' options="{'currency_field': 'cost_currency_id', 'field_digits': True}"/>
+<span groups="uom.group_uom" class="oe_read_only">per
+<field name="uom_name"/>
+</span>
+</div>
+
+<field name="origin" attrs="{'invisible': [('stone','=',False)]}"/>
+<field name="treatment" attrs="{'invisible': [('stone','=',False)]}"/>
+<field name="certification_lab" attrs="{'invisible': [('stone','=',False)]}"/>
+<field name="min_weight" attrs="{'invisible': [('stone','=',False)]}"/>
+<field name="avg" attrs="{'invisible': [('stone','=',False)]}"/>
+<field name="vendor" attrs="{'invisible': [('stone','=',False)]}"/>
+<field name="avg_cost" string="Average Cost" attrs="{'invisible': [('metal','=',False)]}"/>
+<field name="last_revised_cost" string="Last Revised Cost" attrs="{'invisible': [('metal','=',False)]}"/>
+
+<field name="company_id" groups="base.group_multi_company"
+options="{'no_create': True}"/>
+<field name="uom_id" groups="uom.group_uom" options="{'no_create': True}"/>
+<field name="uom_po_id" groups="uom.group_uom" options="{'no_create': True}"/>
+<field name="currency_id" invisible="1"/>
+<field name="cost_currency_id" invisible="1"/>
+<field name="product_variant_id" invisible="1"/>
+</group>
+</group>
+<group string="Internal Notes">
+<field name="description" nolabel="1" placeholder="This note is only for internal purposes."/>
+</group>
+</page>
+</xpath>
+</field>
+</record>
+
+
+
+ <record id="ear_ring_tree_view" model="ir.ui.view">
+        <field name="name">ear.ring.tree</field>
+        <field name="model">ear.ring</field>
+        <field name="arch" type="xml">
+            <tree string="name">
+                <field name="name"/> 
+                <field name="drop_length"/>
+                <field name="drop_width"/>
+                <field name="ear_clasp"/>
+                <field name="inside_dia"/>
+            </tree>
+            </field>
+        </record>
+
+
+
+        <record id="ear_ring_form_view" model="ir.ui.view">
+        <field name="name">ear.ring.form</field>
+        <field name="model">ear.ring</field>
+        <field name="arch" type="xml">
+            <form string="name">
+               <sheet>
+                    <group name="ear_ring">
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="drop_length"/>
+                        </group>
+                        <group>
+                            <field name="drop_width"/>
+                        </group>
+                        <group>
+                            <field name="ear_clasp"/>
+                        </group>
+                        <group>
+                            <field name="inside_dia"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+        </record>
+   
+        <record id="action_ear_ring" model="ir.actions.act_window">         
+        <field name="name">Ear Ring</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">ear.ring</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            Create the first record</p>
+        </field>
+        </record>
+
+         <record id="ear_clasp_tree_view" model="ir.ui.view">
+        <field name="name">ear.clasp.tree</field>
+        <field name="model">ear.clasp</field>
+        <field name="arch" type="xml">
+            <tree string="name">
+                <field name="name"/> 
+            </tree>
+            </field>
+        </record>
+
+
+
+        <record id="ear_clasp_form_view" model="ir.ui.view">
+        <field name="name">ear.clasp.form</field>
+        <field name="model">ear.clasp</field>
+        <field name="arch" type="xml">
+            <form string="name">
+               <sheet>
+                    <group name="ear_clasp">
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+        </record>
+   
+        <record id="action_ear_clasp" model="ir.actions.act_window">         
+        <field name="name">Ear Clasp</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">ear.clasp</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            Create the first record</p>
+        </field>
+        </record>
+
+
+ 		<record id="pendant_tree_view" model="ir.ui.view">
+        <field name="name">pendant.tree</field>
+        <field name="model">pendant</field>
+        <field name="arch" type="xml">
+            <tree string="name">
+                <field name="name"/> 
+                <field name="chain"/>
+                <field name="chain_length"/>
+                <field name="chain_clasp"/>
+                <field name="drop_length"/>
+            </tree>
+            </field>
+        </record>
+
+
+
+        <record id="pendant_form_view" model="ir.ui.view">
+        <field name="name">pendant.form</field>
+        <field name="model">pendant</field>
+        <field name="arch" type="xml">
+            <form string="name">
+               <sheet>
+                    <group name="pendant">
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="chain"/>
+                        </group>
+                        <group>
+                            <field name="chain_length"/>
+                        </group>
+                        <group>
+                            <field name="chain_clasp"/>
+                        </group>
+                        <group>
+                            <field name="drop_length"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+        </record>
+   
+        <record id="action_pendant" model="ir.actions.act_window">         
+        <field name="name">Pendant</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">pendant</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            Create the first record</p>
+        </field>
+        </record>
+
+
+
+
+ 		<record id="bracelet_tree_view" model="ir.ui.view">
+        <field name="name">bracelet.tree</field>
+        <field name="model">bracelet</field>
+        <field name="arch" type="xml">
+            <tree string="name">
+                <field name="name"/> 
+                <field name="length"/>
+                <field name="clasp"/>
+                <field name="safety"/>
+                <field name="extender"/>
+                <field name="extender_length"/>
+            </tree>
+            </field>
+        </record>
+
+
+
+        <record id="bracelet_form_view" model="ir.ui.view">
+        <field name="name">bracelet.form</field>
+        <field name="model">bracelet</field>
+        <field name="arch" type="xml">
+            <form string="name">
+               <sheet>
+                    <group name="bracelet">
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="length"/>
+                        </group>
+                        <group>
+                            <field name="clasp"/>
+                        </group>
+                        <group>
+                            <field name="safety"/>
+                        </group>
+                        <group>
+                        	<field name="extender"/>
+                        </group>
+                        <group>
+                            <field name="extender_length"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+        </record>
+   
+        <record id="action_bracelet" model="ir.actions.act_window">         
+        <field name="name">Bracelet</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">bracelet</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            Create the first record</p>
+        </field>
+        </record>
+
+		<record id="chain_length_tree_view" model="ir.ui.view">
+        <field name="name">chain.length.tree</field>
+        <field name="model">chain.length</field>
+        <field name="arch" type="xml">
+            <tree string="name">
+                <field name="name"/> 
+            </tree>
+            </field>
+        </record>
+
+
+
+        <record id="chain_length_form_view" model="ir.ui.view">
+        <field name="name">chain.length.form</field>
+        <field name="model">chain.length</field>
+        <field name="arch" type="xml">
+            <form string="name">
+               <sheet>
+                    <group name="chain_length">
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+        </record>
+   
+        <record id="action_chain_length" model="ir.actions.act_window">         
+        <field name="name">Chain Length</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">chain.length</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            Create the first record</p>
+        </field>
+        </record>
+
+        <record id="chain_clasp_tree_view" model="ir.ui.view">
+        <field name="name">chain.clasp.tree</field>
+        <field name="model">chain.clasp</field>
+        <field name="arch" type="xml">
+            <tree string="name">
+                <field name="name"/> 
+            </tree>
+            </field>
+        </record>
+
+
+
+        <record id="chain_clasp_form_view" model="ir.ui.view">
+        <field name="name">chain.clasp.form</field>
+        <field name="model">chain.clasp</field>
+        <field name="arch" type="xml">
+            <form string="name">
+               <sheet>
+                    <group name="chain_clasp">
+                        <group>
+                            <field name="name"/>
+                        </group>
+                
+                    </group>
+                </sheet>
+            </form>
+        </field>
+        </record>
+   
+        <record id="action_chain_clasp" model="ir.actions.act_window">         
+        <field name="name">Chain Clasp</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">chain.clasp</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            Create the first record</p>
+        </field>
+        </record>
+
+
+
+
+ 		<record id="bracelet_length_tree_view" model="ir.ui.view">
+        <field name="name">bracelet.length.tree</field>
+        <field name="model">bracelet.length</field>
+        <field name="arch" type="xml">
+            <tree string="name">
+                <field name="name"/> 
+            </tree>
+            </field>
+        </record>
+
+
+
+        <record id="bracelet_length_form_view" model="ir.ui.view">
+        <field name="name">bracelet.length.form</field>
+        <field name="model">bracelet.length</field>
+        <field name="arch" type="xml">
+            <form string="name">
+               <sheet>
+                    <group name="bracelet_length">
+                        <group>
+                            <field name="name"/>
+                        </group>
+                      
+                    </group>
+                </sheet>
+            </form>
+        </field>
+        </record>
+   
+        <record id="action_bracelet_length" model="ir.actions.act_window">         
+        <field name="name">Bracelet Length</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">bracelet.length</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            Create the first record</p>
+        </field>
+        </record>
+
+
+
+ 		<record id="bracelet_clasp_tree_view" model="ir.ui.view">
+        <field name="name">bracelet.clasp.tree</field>
+        <field name="model">bracelet.clasp</field>
+        <field name="arch" type="xml">
+            <tree string="name">
+                <field name="name"/> 
+            </tree>
+            </field>
+        </record>
+
+
+
+        <record id="bracelet_clasp_form_view" model="ir.ui.view">
+        <field name="name">bracelet.clasp.form</field>
+        <field name="model">bracelet.clasp</field>
+        <field name="arch" type="xml">
+            <form string="name">
+               <sheet>
+                    <group name="bracelet_clasp">
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+        </record>
+   
+        <record id="action_bracelet_clasp" model="ir.actions.act_window">         
+        <field name="name">Bracelet Clasp</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">bracelet.clasp</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            Create the first record</p>
+        </field>
+        </record>
+
+
+ 		<record id="bracelet_safety_view" model="ir.ui.view">
+        <field name="name">bracelet.safety.tree</field>
+        <field name="model">bracelet.safety</field>
+        <field name="arch" type="xml">
+            <tree string="name">
+                <field name="name"/> 
+            </tree>
+            </field>
+        </record>
+
+
+
+        <record id="bracelet_safety_form_view" model="ir.ui.view">
+        <field name="name">bracelet.safety.form</field>
+        <field name="model">bracelet.safety</field>
+        <field name="arch" type="xml">
+            <form string="name">
+               <sheet>
+                    <group name="bracelet_safety">
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+        </record>
+   
+        <record id="action_bracelet_safety" model="ir.actions.act_window">         
+        <field name="name">Safety</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">bracelet.safety</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            Create the first record</p>
+        </field>
+        </record>
+
+
+
+ 		<record id="extender_length_tree_view" model="ir.ui.view">
+        <field name="name">extender.length.tree</field>
+        <field name="model">extender.length</field>
+        <field name="arch" type="xml">
+            <tree string="name">
+                <field name="name"/> 
+            
+            </tree>
+            </field>
+        </record>
+
+
+
+        <record id="extender_length_form_view" model="ir.ui.view">
+        <field name="name">extender.length.form</field>
+        <field name="model">extender.length</field>
+        <field name="arch" type="xml">
+            <form string="name">
+               <sheet>
+                    <group name="extender_length">
+                        <group>
+                            <field name="name"/>
+                        </group>
+
+                    </group>
+                </sheet>
+            </form>
+        </field>
+        </record>
+   
+        <record id="action_extender_length" model="ir.actions.act_window">         
+        <field name="name">Extender Length</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">extender.length</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            Create the first record</p>
+        </field>
+        </record>
+
+         <record id="ring_tree_view" model="ir.ui.view">
+        <field name="name">ring.tree</field>
+        <field name="model">ring</field>
+        <field name="arch" type="xml">
+            <tree string="name">
+                <field name="name"/> 
+                <field name="under_gallery"/>
+                <field name="shank_width"/>
+            </tree>
+            </field>
+        </record>
+
+
+
+        <record id="ring_form_view" model="ir.ui.view">
+        <field name="name">ring.form</field>
+        <field name="model">ring</field>
+        <field name="arch" type="xml">
+            <form string="name">
+               <sheet>
+                    <group name="ring">
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="under_gallery"/>
+                        </group>
+                        <group>
+                            <field name="shank_width"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+        </record>
+   
+        <record id="action_ring" model="ir.actions.act_window">         
+        <field name="name">Ring</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">ring</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            Create the first record</p>
+        </field>
+        </record>
+
+ 		<record id="necklace_tree_view" model="ir.ui.view">
+        <field name="name">necklace.tree</field>
+        <field name="model">necklace</field>
+        <field name="arch" type="xml">
+            <tree string="name">
+                <field name="name"/> 
+                <field name="necklace_extender"/>
+                <field name="necklace_extender_length"/>
+            </tree>
+            </field>
+        </record>
+
+
+
+        <record id="necklace_form_view" model="ir.ui.view">
+        <field name="name">necklace.form</field>
+        <field name="model">necklace</field>
+        <field name="arch" type="xml">
+            <form string="name">
+               <sheet>
+                    <group name="necklace">
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="necklace_extender"/>
+                        </group>
+                        <group>
+                            <field name="necklace_extender_length"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+        </record>
+   
+        <record id="action_necklace" model="ir.actions.act_window">         
+        <field name="name">Necklace</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">necklace</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            Create the first record</p>
+        </field>
+        </record>
+
+        <record id="cuffs_tree_view" model="ir.ui.view">
+        <field name="name">cuffs.tree</field>
+        <field name="model">cuffs</field>
+        <field name="arch" type="xml">
+            <tree string="name">
+                <field name="name"/> 
+                <field name="cuffs_length"/>
+            </tree>
+            </field>
+        </record>
+
+
+
+        <record id="cuffs_form_view" model="ir.ui.view">
+        <field name="name">cuffs.form</field>
+        <field name="model">cuffs</field>
+        <field name="arch" type="xml">
+            <form string="name">
+               <sheet>
+                    <group name="cuffs">
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="cuffs_length"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+        </record>
+   
+        <record id="action_cuffs" model="ir.actions.act_window">         
+        <field name="name">Cuffs</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">cuffs</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            Create the first record</p>
+        </field>
+        </record>
+
+        <record id="cuffs_length_tree_view" model="ir.ui.view">
+        <field name="name">cuffs.length.tree</field>
+        <field name="model">cuffs.length</field>
+        <field name="arch" type="xml">
+            <tree string="name">
+                <field name="name"/> 
+            </tree>
+            </field>
+        </record>
+
+
+
+        <record id="cuffs_length_form_view" model="ir.ui.view">
+        <field name="name">cuffs.length.form</field>
+        <field name="model">cuffs.length</field>
+        <field name="arch" type="xml">
+            <form string="name">
+               <sheet>
+                    <group name="cuffs_length">
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+        </record>
+   
+        <record id="action_cuffs_length" model="ir.actions.act_window">         
+        <field name="name">Cuffs Length</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">cuffs.length</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            Create the first record</p>
+        </field>
+        </record>
+
+        <menuitem id="cuffs_length_menu_config_master" name="Cuffs Length"
+        sequence="3" parent="stock.menu_stock_config_settings" action="action_cuffs_length"/>
+        
+   		<menuitem id="cuffs_menu_config_master" name="Cuffs"
+        sequence="3" parent="stock.menu_stock_config_settings" action="action_cuffs"/>
+
+   		<menuitem id="necklace_menu_config_master" name="Necklace"
+        sequence="3" parent="stock.menu_stock_config_settings" action="action_necklace"/>
+
+   		<menuitem id="ring_menu_config_master" name="Ring"
+        sequence="3" parent="stock.menu_stock_config_settings" action="action_ring"/>
+
+        <menuitem id="bracelet_length_config_master" name="Length"
+        sequence="3" parent="stock.menu_stock_config_settings" action="action_bracelet_length"/>
+        <menuitem id="bracelet_clasp_config_master" name="Clasp"
+        sequence="3" parent="stock.menu_stock_config_settings" action="action_bracelet_clasp"/>
+        <menuitem id="bracelet_safety_config_master" name="Safety"
+        sequence="3" parent="stock.menu_stock_config_settings" action="action_bracelet_safety"/>
+        <menuitem id="extender_length_config_master" name="Extender Length"
+        sequence="3" parent="stock.menu_stock_config_settings" action="action_extender_length"/>
+        
+        <menuitem id="pendant_menu_config_master" name="Pendant"
+        sequence="3" parent="stock.menu_stock_config_settings" action="action_pendant"/>
+
+        <menuitem id="chain_length_menu_config_master" name="Chain Length"
+        sequence="3" parent="stock.menu_stock_config_settings" action="action_chain_length"/>
+        <menuitem id="chain_clasp_menu_config_master" name="Chain Clasp"
+        sequence="3" parent="stock.menu_stock_config_settings" action="action_chain_clasp"/>
+
+        <menuitem id="ear_ring_menu_config_master" name="Ear Ring"
+        sequence="3" parent="stock.menu_stock_config_settings" action="action_ear_ring"/>
+
+  		<menuitem id="ear_clasp_menu_config_master" name="Ear Clasp"
+        sequence="3" parent="stock.menu_stock_config_settings" action="action_ear_clasp"/>
+
+</data>
+</odoo>

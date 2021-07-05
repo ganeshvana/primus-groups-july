@@ -1,0 +1,165 @@
+<odoo>
+  <data>
+    <record id="view_order_form_inherit_bom1" model="ir.ui.view">
+	    <field name="name">sale.order.form</field>
+	    <field name="model">sale.order</field>
+	    <field name="inherit_id" ref="sale.view_order_form"/>
+	    <field name="arch" type="xml">
+	    	<xpath expr="//field[@name='payment_term_id']" position="after">
+	    		<field name="sale_type_id"/>
+	    		<field name="buying_group_id"/>
+	    		<field name="priority" widget="priority"/>
+	    		<field name="user_id" domain="[('share', '=', False)]" widget="many2one_avatar_user"/> 
+	    		<field name="discount"/>
+	    		<field name="ordered_by"/>	
+	    		 		
+	    	</xpath>
+	    	<xpath expr="//page[@name='order_lines']/field[@name='order_line']" position="attributes">
+	    		<attribute name="context">{'default_discount': discount, 'partner_id': partner_id}</attribute>
+	    	</xpath>	    	
+            <xpath expr="//page[@name='order_lines']/field/form/div[@name='invoice_lines']" position="after">
+            	<div name="bom" attrs="{'invisible': [('display_type', '!=', False)]}">
+                    <label for="bom_ids"/>
+                    <field name="bom_ids"/>
+                </div>
+            </xpath>
+            <xpath expr="//field[@name='user_id']" position="replace">
+	    		<field name="user_id" domain="[('share', '=', False)]" widget="many2one_avatar_user" invisible="1"/>
+	    	</xpath>
+	    </field>
+	</record>
+	
+	<record id="view_order_tree_inherit_bom" model="ir.ui.view">
+	    <field name="name">sale.order.tree</field>
+	    <field name="model">sale.order</field>
+	    <field name="inherit_id" ref="sale.view_order_tree"/>
+	    <field name="arch" type="xml">
+	    	<xpath expr="//field[@name='invoice_status']" position="after">
+	    		<field name="priority" widget="priority"/>
+	    	</xpath>
+	    </field>
+	</record>
+	
+	<record id="view_quotation_tree_inherit_bom" model="ir.ui.view">
+	    <field name="name">sale.order.tree</field>
+	    <field name="model">sale.order</field>
+	    <field name="inherit_id" ref="sale.view_quotation_tree"/>
+	    <field name="arch" type="xml">
+	    	<xpath expr="//field[@name='invoice_status']" position="after">
+	    		<field name="priority" widget="priority"/>
+	    	</xpath>
+	    </field>
+	</record>
+	
+	<record id="product_template_form_view_inherit_bom" model="ir.ui.view">
+	    <field name="name">product.template.form</field>
+	    <field name="model">product.template</field>
+	    <field name="inherit_id" ref="product.product_template_form_view"/>
+	    <field name="arch" type="xml">	    	
+            <xpath expr="//notebook" position="inside">
+            	<page name="bom" string="BoM" groups="custom_primus.group_product_bom">
+            		<group>
+            			<group>
+            				<field name="bom_id" invisible="1"/>
+            				<field name="product_qty"/>
+            			</group>
+            			<group>
+            				<field name="code"/>
+            				<field name="bom_type"/>
+            				<field name="bom_company_id"/>
+            			</group>
+            		</group>
+            		<notebook>
+            			<page string="Components">
+            				<field name="bom_id_line" widget="one2many" readonly="1">
+                                <tree string="Components">
+                                     <field name="bom_line_type_id"/>	 
+					    	 		 <field name="prototype" string="Temporary Name"/> 
+				                     <field name="product_id" context="{'default_type': 'product'}" string="Description" required="0"/>
+				                     <field name="sku_number"/>
+				                     <field name="product_tmpl_id" invisible="1"/>
+				                     <field name="product_qty"/>
+				                     <field name="product_uom_id" options="{'no_open':True,'no_create':True}" groups="uom.group_uom" string="Uom"/>
+				                     <field name="sec_quantity" string="Pcs."/>
+				                     <field name="secondary_uom_id" invisible="1"/>
+						    	 	 <field name="min_weight"/>
+						    	 	 <field name="unit_cost"/>
+						    	 	 <field name="total"/>
+						    	 	 <field name="provided_by" domain="[('supplier_rank','&gt;', 0)]"/>	  
+				                     <field name="product_uom_category_id" invisible="1"/>
+				                     <field name="parent_product_tmpl_id" invisible="1" />
+				                     <field name="possible_bom_product_template_attribute_value_ids" invisible="1"/>
+				                     <field name="allowed_operation_ids" invisible="1"/>
+                                </tree>          			
+            				</field>
+            			</page>
+            			<page string="Operations" name="operations" groups="mrp.group_mrp_routings">
+                        	<field name="bom_operation_ids" groups="mrp.group_mrp_routings"/>
+                        </page>
+            			 <page string="Miscellaneous" name="miscellaneous">
+                            <group>
+                                <group>
+                                    <field name="ready_to_produce" widget="radio" groups="mrp.group_mrp_routings"/>
+                                    <field name="consumption"/>
+                                </group>
+                                <group>
+                                    <field name="picking_type_id" attrs="{'invisible': [('bom_type','!=','normal')]}" string="Operation"/>
+                                </group>
+                            </group>
+                        </page>
+            		</notebook>
+            	</page>
+            </xpath>
+	    </field>
+	</record>
+	
+	<record id="mrp_bom_form_view_inherit_bom" model="ir.ui.view">
+	    <field name="name">mrp.bom.form</field>
+	    <field name="model">mrp.bom</field>
+	    <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
+	    <field name="arch" type="xml">
+	    	<xpath expr="//page[@name='components']/field[@name='bom_line_ids']/tree" position="replace">
+	    		<tree string="Components" editable="bottom">
+                     <field name="company_id" invisible="1"/>
+                     <field name="sequence" widget="handle"/>
+                     <field name="bom_line_type_id"/>	 
+	    	 		 <field name="prototype" string="Temporary Name"/> 
+                     <field name="product_id" context="{'default_type': 'product'}" string="Description" required="0"/>
+                     <field name="sku_number"/>
+                     <field name="product_tmpl_id" invisible="1"/>
+                     <field name="product_qty"/>
+                     <field name="product_uom_id" options="{'no_open':True,'no_create':True}" groups="uom.group_uom" string="Uom"/>
+                     <field name="sec_quantity" string="Pcs."/>
+                     <field name="secondary_uom_id" invisible="1"/>
+		    	 	 <field name="min_weight"/>
+		    	 	 <field name="unit_cost"/>
+		    	 	 <field name="total"/>
+		    	 	 <field name="provided_by" domain="[('supplier_rank','&gt;', 0)]"/>	  
+                     <field name="product_uom_category_id" invisible="1"/>
+                     <field name="parent_product_tmpl_id" invisible="1" />
+                     <field name="possible_bom_product_template_attribute_value_ids" invisible="1"/>
+                     <field name="bom_product_template_attribute_value_ids" optional="hide" widget="many2many_tags" options="{'no_create': True}" attrs="{'column_invisible': [('parent.product_id', '!=', False)]}" groups="product.group_product_variant"/>
+                     <field name="allowed_operation_ids" invisible="1"/>
+                     <field name="operation_id" groups="mrp.group_mrp_routings" optional="hidden" attrs="{'column_invisible': [('parent.type','not in', ('normal', 'phantom'))]}" options="{'no_quick_create':True,'no_create_edit':True}"/>
+                 </tree>
+	    	</xpath>
+	    	 
+	    	 
+	    </field>
+	</record>
+	
+	<record id="mrp_bom_filter_view_inherit_bom" model="ir.ui.view">
+	    <field name="name">mrp.bom.filter</field>
+	    <field name="model">mrp.bom</field>
+	    <field name="inherit_id" ref="mrp.view_mrp_bom_filter"/>
+	    <field name="arch" type="xml">
+	    	<xpath expr="//search/field[@name='product_tmpl_id']" position="after">
+	    		<field name="bom_line_ids" string="Temporary Name" filter_domain="[('bom_line_ids.prototype', 'ilike', self)]"/>
+	    	</xpath>
+	    </field>
+	</record>
+	
+	
+	
+  </data>
+</odoo>

@@ -1,0 +1,22 @@
+<odoo>
+	<data noupdate="1">
+		<record id="sequence_mold_seq" model="ir.sequence">
+            <field name="name">Mold</field>
+            <field name="code">mold</field>
+            <field name="prefix"></field>
+            <field name="padding">3</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="False" name="company_id"/>
+        </record>
+        <record id="sequence_style_seq" model="ir.sequence">
+            <field name="name">Style</field>
+            <field name="code">style</field>
+            <field name="prefix"></field>
+            <field name="padding">3</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="False" name="company_id"/>
+        </record>        
+	</data>
+</odoo>

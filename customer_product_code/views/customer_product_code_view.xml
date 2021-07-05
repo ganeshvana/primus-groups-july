@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+    <data>
+    
+    	<template id="report_saleorder_document_inherit_sale_code" inherit_id="sale.report_saleorder_document">
+	        <xpath expr="//th[@name='th_description']" position="after">
+	            <th name="th_code" class="text-left">SKU Number</th>
+	        </xpath>
+	        <xpath expr="//td[@name='td_name']" position="after">
+	            <td name="td_code">	            
+	            <span t-field="line.customer_code"/></td>
+	        </xpath>
+	        <xpath expr="//td[@name='td_name']" position="replace">
+	            <td name="td_name">	            
+	            <span t-field="line.customer_desc"/></td>
+	        </xpath>
+	    </template>
+	    
+	    <template id="report_invoice_document_inherit_sale_code" inherit_id="account.report_invoice_document">
+	        <xpath expr="//th[@name='th_description']" position="after">
+	            <th name="th_code" class="text-left">SKU Number</th>
+	        </xpath>
+	        <xpath expr="//td[@name='account_invoice_line_name']" position="after">
+	            <td name="td_code">	            
+	            <span t-field="line.customer_code"/></td>
+	        </xpath>
+	        <xpath expr="//td[@name='account_invoice_line_name']" position="replace">
+	            <td name="account_invoice_line_name">	            
+	            <span t-field="line.customer_desc"/></td>
+	        </xpath>
+	    </template>
+
+        <record model="ir.ui.view" id="view_product_customer_code_form">
+            <field name="name">view.product.customer.code.form</field>
+            <field name="model">product.customer.code</field>
+            <field name="arch" type="xml">
+                <form string="Product Customer Code">
+                    <field name="partner_id" domain="[('customer_rank','>', 0)]"/>
+                    <field name="product_id"/>
+                    <field name="product_code"/>
+                    <field name="product_name"/>
+                    <field name="company_id" widget="selection" groups="base.group_multi_company"/>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_product_customer_code_tree">
+            <field name="name">view.product.customer.code.tree</field>
+            <field name="model">product.customer.code</field>
+            <field name="arch" type="xml">
+                <tree string="Product Customer Code">
+                    <field name="partner_id" domain="[('customer_rank','>', 0)]"/>
+                    <field name="product_id"/>
+                    <field name="product_code"/>
+                    <field name="product_name"/>
+                    <field name="company_id" widget="selection" groups="base.group_multi_company"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_product_customer_code_filter" model="ir.ui.view">
+            <field name="name">view.product.customer.code.search</field>
+            <field name="model">product.customer.code</field>
+            <field name="arch" type="xml">
+                <search string="Product Customer Code">
+                    <field name="product_code"/>
+                    <field name="partner_id" domain="[('customer_rank','>', 0)]"/>
+                    <field name="company_id"/>
+                    <field name="product_id"/>
+                    <group expand="0" string="Group By..." name="group_by_customer_code">
+                        <filter string="Company" name="company" icon="terp-partner" domain="[]" context="{'group_by':'company_id'}"/>
+                        <filter string="Product" name="product" icon="terp-accessories-archiver" domain="[]" context="{'group_by':'product_id'}"/>
+                        <filter string="Partner" name="partner" icon="terp-partner" domain="[]" context="{'group_by':'partner_id'}"/>
+                        <separator orientation="vertical"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_product_customer_code_tree" model="ir.actions.act_window">
+            <field name="name">Product Customer Code</field>
+            <field name="res_model">product.customer.code</field>
+            <field name="view_id" ref="view_product_customer_code_tree"/>
+        </record>
+
+         <!-- <menuitem action="action_product_customer_code_tree" id="menu_product_customer_code" sequence="50" parent="sale.prod_config_main" groups="group_product_customer_code_manager"/> -->
+
+    </data>
+</odoo>
