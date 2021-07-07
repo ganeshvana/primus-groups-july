@@ -721,7 +721,9 @@ class Product_Master_Creation(models.Model):
             sname = res.stone_name_id.code
             sshape = res.stone_shape_id.code
             scut = res.stone_cutting_id.code
-            stone_rec = self.env['product.template'].search_count([('products_types', '=', 'stone')])
+            stone_rec = self.env['product.template'].search_count([('products_types', '=', 'stone'),('stone_name_id', '=', res.stone_name_id.id),
+                                                                   ('stone_shape_id', '=', res.stone_shape_id.id),('stone_cutting_id', '=', res.stone_cutting_id.id),
+                                                                   ('size_width', '=', res.size_width),('size_length', '=', res.size_length)])
             if stone_rec < 10:
                 res.rseq = '0' + str(stone_rec)
             else:
@@ -750,7 +752,7 @@ class Product_Master_Creation(models.Model):
         if res.products_types == 'metal':
             fineness = res.finess.code
             plating = res.plating.code
-            metal_rec = self.env['product.template'].search_count([('products_types', '=', 'metal')])
+            metal_rec = self.env['product.template'].search_count([('products_types', '=', 'metal'),('finess','=',res.finess.id),('plating','=',res.plating.id)])
             if metal_rec < 10:
                 res.rseq = '0' + str(metal_rec)
             else:
@@ -780,7 +782,9 @@ class Product_Master_Creation(models.Model):
                 type = res.certification_type.code
             if res.certification_no:
                 no = res.certification_no[-5:]
-            cert_rec = self.env['product.template'].search_count([('products_types', '=', 'certification')])
+            cert_rec = self.env['product.template'].search_count([('products_types', '=', 'certification'),('certification_lab', '=', res.certification_lab.id),
+                                                                 ('certification_type', '=', res.certification_type.id),
+                                                                 ('certification_no', '=', res.certification_no)])
             if cert_rec < 10:
                 res.rseq = '0' + str(cert_rec)
             else:
@@ -1186,7 +1190,9 @@ class ProductProduct(models.Model):
             sname = res.stone_name_id.code
             sshape = res.stone_shape_id.code
             scut = res.stone_cutting_id.code
-            stone_rec = self.env['product.product'].search_count([('products_types', '=', 'stone')])
+            stone_rec = self.env['product.product'].search_count([('products_types', '=', 'stone'),('stone_name_id', '=', res.stone_name_id.id),
+                                                                   ('stone_shape_id', '=', res.stone_shape_id.id),('stone_cutting_id', '=', res.stone_cutting_id.id),
+                                                                   ('size_width', '=', res.size_width),('size_length', '=', res.size_length)])
             if stone_rec < 10:
                 res.rseq = '0' + str(stone_rec)
             else:
@@ -1215,7 +1221,7 @@ class ProductProduct(models.Model):
         if res.products_types == 'metal':
             fineness = res.finess.code
             plating = res.plating.code
-            metal_rec = self.env['product.product'].search_count([('products_types', '=', 'metal')])
+            metal_rec = self.env['product.product'].search_count([('products_types', '=', 'metal'),('finess','=',res.finess.id),('plating','=',res.plating.id)])
             if metal_rec < 10:
                 res.rseq = '0' + str(metal_rec)
             else:
@@ -1245,7 +1251,9 @@ class ProductProduct(models.Model):
                 type = res.certification_type.code
             if res.certification_no:
                 no = res.certification_no[-5:]
-            cert_rec = self.env['product.product'].search_count([('products_types', '=', 'certification')])
+            cert_rec = self.env['product.product'].search_count([('products_types', '=', 'certification'),('certification_lab', '=', res.certification_lab.id),
+                                                                 ('certification_type', '=', res.certification_type.id),
+                                                                 ('certification_no', '=', res.certification_no)])
             if cert_rec < 10:
                 res.rseq = '0' + str(cert_rec)
             else:
