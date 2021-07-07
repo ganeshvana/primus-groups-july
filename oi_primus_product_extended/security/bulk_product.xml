@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+    <data noupdate="0">
+        <record id="group_bulk_product_bom" model="res.groups">
+            <field name="name">Bulk BoM Update</field>
+        </record>
+        
+        <record id="group_bulk_product_cost" model="res.groups">
+            <field name="name">Bulk Cost Update</field>
+        </record>
+    </data>
+</odoo>

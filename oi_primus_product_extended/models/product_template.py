@@ -175,7 +175,7 @@ class Product_Master_Creation(models.Model):
     qty_available = fields.Float('Quantity On Hand', compute='_compute_quantities', search='_search_qty_available', compute_sudo=False, digits=(12,3))
     ir_attachment_ids = fields.One2many('ir.attachment', 'product_tmpl_id', "Files")
     center_color_stone_id = fields.Many2one('center.color.stone', "Center Stone Color")
-    provided_by = fields.Many2one('res.partner', "Provided By") 
+    provided_by = fields.Selection([('vendor','Vendor'),('factory','Factory')], "Provided By") 
     stone_applicable = fields.Boolean("Stone Applicable", default=True)
     certificate_product_ids = fields.Many2many('product.product','product_certificates_rel', 'product_id', 'certificate_id', "Certificate Products")
     certificate_origin_product_ids = fields.Many2many('product.product','product_certificates_origin_rel', 'product_id', 'certificate_id', "Certificate Origin Products")
@@ -1161,7 +1161,7 @@ class ProductProduct(models.Model):
     finding_Thickness_id = fields.Many2one('metal.thickness',  'Thickness', store=True)
     finding_plating_thickness_id = fields.Many2one('metal.platingfiness',  'Plating Fineness', store=True)
     center_color_stone_id = fields.Many2one('center.color.stone', "Center Stone Color")
-    provided_by = fields.Many2one('res.partner', "Provided By") 
+    provided_by = fields.Selection([('vendor','Vendor'),('factory','Factory')], "Provided By") 
     ir_attachment_ids = fields.One2many('ir.attachment', 'product_id', "Files")
     
     @api.onchange('default_code')
@@ -1181,7 +1181,7 @@ class ProductProduct(models.Model):
         if not res.name:
             res.name = res.product_tmpl_id.name
         if not res.provided_by:
-            res.provided_by = res.product_tmpl_id.provided_by.id
+            res.provided_by = res.product_tmpl_id.provided_by
         if res.products_types == 'stone':
             sname = res.stone_name_id.code
             sshape = res.stone_shape_id.code

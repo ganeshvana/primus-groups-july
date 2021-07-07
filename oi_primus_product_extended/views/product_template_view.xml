@@ -187,7 +187,7 @@
 								<field name="child_sub_brand_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('products_types','not in',['is_jewellery', 'design'])]}"
 									domain="[('sub_brand_id','=',sub_brand_id)]" />
-								<field name="provided_by" domain="[('supplier_rank','&gt;', 0)]" options="{'no_create': True, 'no_edit': True, 'no_open': True}"/>	 
+								<field name="provided_by"/>	 
 							</group>
 						</group>
 						<group attrs="{'invisible': [('products_types','!=','stone')]}">
@@ -439,7 +439,7 @@
 					<separator/>
 					<filter string="Design Work" name="design" domain="[('products_types', '=', ['design'])]"/>
 					<filter string="Findings" name="finding" domain="[('products_types', '=', ['finding'])]"/>
-					<filter string="Jewelry" name="jewellery" domain="[('products_types', '=', ['is_jewellery'])]"/>
+					<filter string="Finished Jewelry" name="jewellery" domain="[('products_types', '=', ['is_jewellery'])]"/>
 				</xpath>
 				<xpath expr="/search/field[@name='name']" position="after">
 					<field name="design_product_id" string="Design - Style SKU" filter_domain="[ ('design_product_id.default_code', 'ilike', self)]"/>
@@ -448,6 +448,9 @@
 					<field name="style" string="Style" filter_domain="[ ('style', 'ilike', self)]"/>
 					<field name="default_code" string="SKU Number" filter_domain="[ ('default_code', 'ilike', self)]"/>
 					<field name="products_types" string="Product Type" filter_domain="[ ('products_types', 'ilike', self)]"/>
+					<!-- <field name="products_types" string="Finished Jewelry" filter_domain="[ ('products_types', '=', 'is_jewellery')]"/>
+					<field name="products_types" string="Findings" filter_domain="[ ('products_types', '=', 'finding')]"/>
+					<field name="products_types" string="Design Work" filter_domain="[ ('products_types', '=', 'design')]"/> -->
 					<field name="product_customer_code_ids" string="Customer Code" filter_domain="[ ('product_customer_code_ids.product_code', 'ilike', self)]"/>
 				</xpath>
 				<xpath expr="/search/group" position="inside">

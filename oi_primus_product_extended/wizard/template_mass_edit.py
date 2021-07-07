@@ -94,7 +94,7 @@ class BOMBulk(models.TransientModel):
                                 'min_weight': line.min_weight,
                                 'unit_cost': line.unit_cost,
                                 'total': line.total,
-                                'provided_by': line.provided_by.id,
+                                'provided_by': line.provided_by,
                                 'bom_id': wb.bom_id.id
                                 })
                     if not wb.bom_id.bom_line_ids:
@@ -109,7 +109,7 @@ class BOMBulk(models.TransientModel):
                             'min_weight': line.min_weight,
                             'unit_cost': line.unit_cost,
                             'total': line.total,
-                            'provided_by': line.provided_by.id,
+                            'provided_by': line.provided_by,
                             'bom_id': wb.bom_id.id
                             })
             for rec in products:
@@ -135,7 +135,7 @@ class BOMBulk(models.TransientModel):
                                 'min_weight': line.min_weight,
                                 'unit_cost': line.unit_cost,
                                 'total': line.total,
-                                'provided_by': line.provided_by.id,
+                                'provided_by': line.provided_by,
                                 'bom_id': bom.id
                                 })
         return True
@@ -163,7 +163,7 @@ class BOMBulk(models.TransientModel):
     sku_number = fields.Char("SKU Number")
     unit_cost = fields.Float("Unit Cost")
     total = fields.Float("Total")  
-    provided_by = fields.Many2one('res.partner', "Provided By") 
+    provided_by = fields.Selection([('vendor','Vendor'),('factory','Factory')], "Provided By") 
     min_weight = fields.Float("Min weight")
     prototype = fields.Char("Prototype")
     product_id = fields.Many2one('product.product', 'Description', required=False)
@@ -182,5 +182,5 @@ class BOMBulk(models.TransientModel):
             self.secondary_uom_id = self.product_id.secondary_uom_id.id
             self.min_weight = self.product_id.min_weight
             self.total = self.unit_cost * self.product_qty
-            self.provided_by = self.product_id.provided_by.id
+            self.provided_by = self.product_id.provided_by
     

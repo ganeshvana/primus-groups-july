@@ -123,7 +123,7 @@ class MrpBomLine(models.Model):
     description = fields.Char("Description")
     unit_cost = fields.Float("Unit Cost", compute='compute_unit_cost', store=True)
     total = fields.Float("Total", compute='compute_total', store=True)  
-    provided_by = fields.Many2one('res.partner', "Provided By") 
+    provided_by = fields.Selection([('vendor','Vendor'),('factory','Factory')], "Provided By") 
     min_weight = fields.Float("Min weight")
     prototype = fields.Char("Prototype")
     product_id = fields.Many2one('product.product', 'Component', required=False, check_company=True)
@@ -149,7 +149,7 @@ class MrpBomLine(models.Model):
             self.sku_number = self.product_id.default_code
             self.unit_cost = self.product_id.standard_price
             self.secondary_uom_id = self.product_id.secondary_uom_id.id
-            self.provided_by = self.product_id.provided_by.id
+            self.provided_by = self.product_id.provided_by
             self.min_weight = self.product_id.min_weight
             
 class MrpBom(models.Model):

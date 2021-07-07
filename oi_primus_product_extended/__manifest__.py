@@ -11,6 +11,7 @@
     'depends': ['base','l10n_in','stock','product','account', 'mrp', 'secondary_uom_app'],
     'data': [
         'security/ir.model.access.csv',
+        'security/bulk_product.xml',
         'wizard/template_mass_edit.xml',
         'views/sequence.xml',
 		'views/product_template_view.xml'
