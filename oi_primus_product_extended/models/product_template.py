@@ -873,15 +873,11 @@ class Product_Master_Creation(models.Model):
                 res.rseq = ''
 #             seq = self.env['ir.sequence'].next_by_code('mold')
             mold_rec = self.env['product.template'].search_count([('products_types', '=', 'mold')])
-            print(mold_rec, "mold_rec===========")
-            if mold_rec + 1 < 10:
-                print("1")
+            if mold_rec < 10:
                 res.rseq = '00' + str(mold_rec)
-            if mold_rec + 1 >= 10:
-                print("12")
+            if mold_rec >= 10:
                 res.rseq = '0' + str(mold_rec)
-            if mold_rec + 1 >= 100:
-                print("123")
+            if mold_rec  >= 100:
                 res.rseq =  str(mold_rec)
             Jewel = mlp = mat = ''            
             if res.mold_line_part_id:
@@ -1356,11 +1352,11 @@ class ProductProduct(models.Model):
                 res.rseq = ''
 #             seq = self.env['ir.sequence'].next_by_code('mold')
             mold_rec = self.env['product.template'].search_count([('products_types', '=', 'mold')])
-            if mold_rec + 1 < 10:
+            if mold_rec < 10:
                 res.rseq = '00' + str(mold_rec)
-            if mold_rec + 1 >= 10:
+            if mold_rec >= 10:
                 res.rseq = '0' + str(mold_rec)
-            if mold_rec + 1 >= 100:
+            if mold_rec  >= 100:
                 res.rseq =  str(mold_rec)
             Jewel = mlp = mat = ''            
             if res.mold_line_part_id:
