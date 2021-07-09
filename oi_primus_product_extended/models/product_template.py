@@ -693,11 +693,12 @@ class Product_Master_Creation(models.Model):
     
     @api.onchange('finding_type_id', 'finding_subtype_id', 'finding_fineness_id', 'finding_plating_id', 'finding_Thickness_id', 'finding_plating_thickness_id')
     def onchange_finding(self):
-        find = 'F'
+        
         if not self.rseq:
             self.rseq = ''
         year = str(datetime.now().year)[-2:]
         type = find = stype = finess = pfine = plating = thick = ''
+        find = 'F'
         if self.finding_type_id:
             find += self.finding_type_id.code + year + self.rseq
             self.default_code = find
@@ -868,7 +869,20 @@ class Product_Master_Creation(models.Model):
                         product += ' ' +res.diaclaritygrade.name
 #             res.name = product
         if res.products_types == 'mold':
-            seq = self.env['ir.sequence'].next_by_code('mold')
+            if not res.rseq:
+                res.rseq = ''
+#             seq = self.env['ir.sequence'].next_by_code('mold')
+            mold_rec = self.env['product.template'].search_count([('products_types', '=', 'mold')])
+            print(mold_rec, "mold_rec===========")
+            if mold_rec + 1 < 10:
+                print("1")
+                res.rseq = '00' + str(mold_rec)
+            if mold_rec + 1 >= 10:
+                print("12")
+                res.rseq = '0' + str(mold_rec)
+            if mold_rec + 1 >= 100:
+                print("123")
+                res.rseq =  str(mold_rec)
             Jewel = mlp = mat = ''            
             if res.mold_line_part_id:
                 mlp = res.mold_line_part_id.name
@@ -876,7 +890,7 @@ class Product_Master_Creation(models.Model):
             if res.mold_material_id:
                 mat = res.mold_material_id.name  
                 Jewel = res.mold_line_part_id.code          
-            res.default_code = 'M' + Jewel + year + seq
+            res.default_code = 'M' + Jewel + year + res.rseq
 #             res.name = mlp + ' ' + mat + ' ' + ' Mold'
         if res.products_types == 'is_jewellery':
             if res.jewel_mold == 'no' and 'style' in vals and vals['style'] == False:
@@ -1337,7 +1351,17 @@ class ProductProduct(models.Model):
                         product += ' ' +res.diaclaritygrade.name
 #             res.name = product
         if res.products_types == 'mold':
-            seq = self.env['ir.sequence'].next_by_code('mold')
+#             seq = self.env['ir.sequence'].next_by_code('mold')
+            if not res.rseq:
+                res.rseq = ''
+#             seq = self.env['ir.sequence'].next_by_code('mold')
+            mold_rec = self.env['product.template'].search_count([('products_types', '=', 'mold')])
+            if mold_rec + 1 < 10:
+                res.rseq = '00' + str(mold_rec)
+            if mold_rec + 1 >= 10:
+                res.rseq = '0' + str(mold_rec)
+            if mold_rec + 1 >= 100:
+                res.rseq =  str(mold_rec)
             Jewel = mlp = mat = ''            
             if res.mold_line_part_id:
                 mlp = res.mold_line_part_id.name
@@ -1345,7 +1369,7 @@ class ProductProduct(models.Model):
             if res.mold_material_id:
                 mat = res.mold_material_id.name  
                 Jewel = res.mold_line_part_id.code          
-            res.default_code = 'M' + Jewel + year + seq
+            res.default_code = 'M' + Jewel + year + res.rseq
 #             res.name = mlp + ' ' + mat + ' ' + ' Mold'
         if res.products_types == 'is_jewellery':
             if res.jewel_mold == 'no' and 'style' in vals and vals['style'] == False:

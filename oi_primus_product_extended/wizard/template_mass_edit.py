@@ -62,7 +62,7 @@ class BOMBulk(models.TransientModel):
     _description = "Bulk BOM"   
     
     option = fields.Selection([('bom', 'BoM'), ('cost', 'Cost')])    
-    bom_type = fields.Selection([('normal', 'Manufacture this product'), ('phantom', 'Kit')], "Type", default='normal')
+    bom_type = fields.Selection([('normal', 'Manufacture this product'), ('phantom', 'Kit'),('subcontract', 'Subcontracting')], "Type", default='normal')
     bulk_bom_ids = fields.One2many('product.bom.bulk.line', 'bulk_bom_id', "Bom" )
     percentage = fields.Float("Percentage")
     
