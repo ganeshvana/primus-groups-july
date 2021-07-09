@@ -49,7 +49,8 @@ class Product(models.Model):
     code = fields.Char(compute='compute_bom_id', string="Reference", store=True)
     bom_type = fields.Selection([
         ('normal', 'Manufacture this product'),
-        ('phantom', 'Kit')], 'BoM Type',
+        ('phantom', 'Kit'),
+        ('subcontract', 'Subcontracting')], 'BoM Type',
         default='normal', compute='compute_bom_id', store=True)
     consumption = fields.Selection([
         ('flexible', 'Allowed'),

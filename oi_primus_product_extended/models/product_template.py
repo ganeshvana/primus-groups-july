@@ -312,7 +312,15 @@ class Product_Master_Creation(models.Model):
     def onchange_stone_name_id(self):
         sshape = scut = sname = ''
         if not self.rseq:
-            self.rseq =  ''              
+            self.rseq =  ''  
+        stone_rec = self.env['product.template'].search_count([('products_types', '=', 'stone'),('stone_name_id', '=', self.stone_name_id.id),
+                                                               ('stone_shape_id', '=', self.stone_shape_id.id),('stone_cutting_id', '=', self.stone_cutting_id.id),
+                                                               ('size_width', '=', self.size_width),('size_length', '=', self.size_length)])
+        stone_rec += 1
+        if stone_rec < 10:
+            self.rseq = '0' + str(stone_rec)
+        else:
+            self.rseq =  str(stone_rec)            
         if self.stone_name_id:
             self.birth_stone = self.stone_name_id.birth_stone
             sname = self.stone_name_id.code
@@ -641,14 +649,22 @@ class Product_Master_Creation(models.Model):
     def onchange_certification_lab(self):   
         lab = type = no = cert_rec = ''
         product = ''
+        
         if self.products_types == 'certification':
+            cert_rec = self.env['product.template'].search_count([('products_types', '=', 'certification'),('certification_lab', '=', self.certification_lab.id),
+                                                                 ('certification_type', '=', self.certification_type.id),
+                                                                 ('certification_no', '=', self.certification_no)])
+            if cert_rec + 1 < 10:
+                    self.rseq = '0' + str(cert_rec)
+            else:
+                self.rseq =  str(cert_rec)
             if self.certification_lab:
                 lab = self.certification_lab.code
             if self.certification_type:
                 type = self.certification_type.code
             if self.certification_no:
                 no = self.certification_no[-5:]        
-            sku = str(lab) + str(type) + str(no)
+            sku = str(lab) + str(type) + str(no) + self.rseq
             sku = sku.replace('False', '')
             sku = sku.replace('.','')
             self.default_code = sku  
@@ -785,7 +801,7 @@ class Product_Master_Creation(models.Model):
             cert_rec = self.env['product.template'].search_count([('products_types', '=', 'certification'),('certification_lab', '=', res.certification_lab.id),
                                                                  ('certification_type', '=', res.certification_type.id),
                                                                  ('certification_no', '=', res.certification_no)])
-            if cert_rec < 10:
+            if cert_rec + 1 < 10:
                 res.rseq = '0' + str(cert_rec)
             else:
                 res.rseq =  str(cert_rec)
