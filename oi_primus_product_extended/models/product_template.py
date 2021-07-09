@@ -606,9 +606,17 @@ class Product_Master_Creation(models.Model):
     @api.onchange('jfiness', 'jtype', 'jplating','jewel_size', 'jstone_name_id')
     def onchange_jfiness(self):   
         fineness = plating = jsize = sname = ''
-        if not self.rseq:
-            self.rseq = ''
+        if not self.jewel_seq:
+            self.jewel_seq = ''
+            seq = ''
         if self.products_types in ['is_jewellery', 'design']:
+            
+            if int(self.jewel_seq) < 10:
+                seq = '00' + str(self.jewel_seq)
+            if int(self.jewel_seq) >= 10:
+                seq = '0' + str(self.jewel_seq)
+            if int(self.jewel_seq)  >= 100:
+                seq =  str(self.jewel_seq)
             self.style = False
             self.default_code = False
             new_lines = []
@@ -638,7 +646,8 @@ class Product_Master_Creation(models.Model):
             if self.jstone_name_id:
                 sname = self.jstone_name_id.code
             year = str(datetime.now().year)[-2:]
-            sku = Jewel + sname + str(fineness) + str(plating) + str(year) + self.rseq + jsize
+#             sku = Jewel + sname + str(fineness) + str(plating) + str(year) + str(seq) + jsize
+            sku = Jewel +  str(year) + str(seq)
             sku = sku.replace('False', '')
             sku = sku.replace('.','')
             self.default_code = sku   
@@ -965,10 +974,13 @@ class Product_Master_Creation(models.Model):
             seqrec = self.env['product.template'].search([('jtype', '=', res.jtype)])
             seq = len(seqrec) + 1
             res.jewel_seq = seq
-            if int(seq) < 10:
-                seq = '00' + str(seq)
-            if int(seq) < 100:
-                seq = '0' + str(seq)
+            if int(res.jewel_seq) < 10:
+                seq = '00' + str(res.jewel_seq)
+            if int(res.jewel_seq) >= 10:
+                seq = '0' + str(res.jewel_seq)
+            if int(res.jewel_seq)  >= 100:
+                seq =  str(res.jewel_seq)
+            res.jewel_seq = seq
             Jewel = jsize = ''
             if res.jtype == 'ring':
                 Jewel = 'R'
