@@ -41,8 +41,7 @@ class salesorderinherit(models.Model):
 	    ('symbol', str(symbol)),
 	)
 
-	@api.onchange('Gold_Currency')
-	def inr(self):
+	def generate_button(self,context=None):
 		if self.Gold_Currency=='INR':
 
 			response = requests.get('https://proxy.kitco.com/getPM', headers=self.headers, params=self.params)
@@ -59,9 +58,8 @@ class salesorderinherit(models.Model):
 			inr10 = float(gold_inr) * 10/24;self.Price_gold10 = inr10
 			self.Price_Silver = sliver_inr
 			self.Price_Platinum = Platinum_inr
-	
-	@api.onchange('Gold_Currency')
-	def usd(self):
+		
+		
 		if self.Gold_Currency=='USD':
 			response = requests.get('https://proxy.kitco.com/getPM', headers=self.headers, params=self.params)
 			res = response.text
@@ -77,6 +75,6 @@ class salesorderinherit(models.Model):
 			ca10 = float(gold_usd) * 10/24;self.Price_gold10 = ca10
 			self.Price_Silver = sliver_usd
 			self.Price_Platinum = Platinum_usd
-   
+
 
 		

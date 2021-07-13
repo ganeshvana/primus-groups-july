@@ -7,9 +7,9 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
            
-            <!-- <div class="oe_button_box">
-                <button class="oe_stat_button" width="200" name="generate_button" string="Jewelley_Prices"  type="object" icon="fa-edit"/>
-            </div> -->
+            <div class="oe_button_box">
+                <button class="oe_stat_button" width="220" name="generate_button" string="Jewelley Prices Update"  type="object" icon="fa-edit"/>
+            </div>
             
             <!-- </field> -->
             <field name="sale_order_template_id" position="after">
