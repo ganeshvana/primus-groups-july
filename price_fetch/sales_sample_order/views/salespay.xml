@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="sale_oders_inherit" model="ir.ui.view">
+        <field name="name">sale.order.inherited</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+           
+            <div class="oe_button_box">
+                <button class="oe_stat_button" width="220" name="generate_button" string="Jewelley Prices Update"  type="object" icon="fa-edit"/>
+            </div>
+            
+            <!-- </field> -->
+            <field name="sale_order_template_id" position="after">
+                <field name="Gold_Currency" string="Metal price Currency"/>
+           </field>
+
+            <field name="payment_term_id" position="after">
+                <field name="Price_gold24" string="Gold Price 24k" readonly="1" force_save="1"/>
+           </field>
+           <field name="Price_gold24" position="after">
+                <field name="Price_gold22" string="Gold Price 22k" readonly="1" force_save="1"/>
+           </field>
+           <field name="Price_gold22" position="after">
+                <field name="Price_gold18" string="Gold Price 18k" readonly="1" force_save="1"/>
+           </field>
+           <field name="Price_gold18" position="after">
+                <field name="Price_gold14" string="Gold Price 14K" readonly="1" force_save="1"/>
+           </field>
+           <field name="Price_gold14" position="after">
+                <field name="Price_gold10" string="Gold Price 10K" readonly="1" force_save="1"/>
+           </field>
+
+           <field name="Price_gold10" position="after">
+                <field name="Price_Silver" string="Price Silver" readonly="1" force_save="1"/>
+           </field>
+           <field name="Price_Silver" position="after">
+                <field name="Price_Platinum" string="Price Platinum" readonly="1" force_save="1"/>
+           </field>
+           
+        </field>
+    </record>
+
+</odoo>
