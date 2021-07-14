@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="sale_oders_inherit" model="ir.ui.view">
-        <field name="name">sale.order.inherited</field>
-        <field name="model">sale.order</field>
-        <field name="inherit_id" ref="sale.view_order_form"/>
+    <record id="purchase_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.inherited</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
         <field name="arch" type="xml">
            
             <div class="oe_button_box">
@@ -12,13 +12,13 @@
             </div>
             
             <!-- </field> -->
-            <field name="sale_order_template_id" position="after">
+            <field name="currency_id" position="after">
                 <field name="Gold_Currency" string="Metal price Currency"/>
            </field>
 
-            <field name="payment_term_id" position="after">
+            <div name="date_planned_div" position="after">
                 <field name="Price_gold24" string="Gold Price 24k" readonly="1" force_save="1"/>
-           </field>
+           </div>
            <field name="Price_gold24" position="after">
                 <field name="Price_gold22" string="Gold Price 22k" readonly="1" force_save="1"/>
            </field>

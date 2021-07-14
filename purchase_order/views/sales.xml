@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+   
+<!--action1-->
+    <record id="sale_trees" model="ir.ui.view">
+        <field name="name">sales.customer.tree</field>
+        <field name="model">sales.customer</field>
+        <field name="arch" type="xml">
+            <tree>
+                
+                <field name="current_date"/>
+                <field name="jewellery_type"/>
+                <field name="Price" readonly="1"/>
+            </tree>
+        </field>
+    </record>
+ 
+
+	<record id="customer_forms" model="ir.ui.view">
+        <field name="name">sales.customer.form</field>
+        <field name="model">sales.customer</field>
+        <field name="arch" type="xml">
+            <form>
+            	<sheet>
+            		<group>
+        				
+                        <field name="current_date"/>
+                        <field name="jewellery_type"/>
+                        <field name="Price" readonly="1"/>
+            		</group>
+            	</sheet>
+            </form>
+        </field>
+    </record>
+	<record id="sales_action" model="ir.actions.act_window">
+        <field name="name">jewellery</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sales.customer</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                jewellery Shop!
+            </p>
+        </field>
+    </record>
+
+<!--action2-->
+
+    <record id="sale_tree" model="ir.ui.view">
+        <field name="name">sales_detail.customers.tree</field>
+        <field name="model">sales_detail.customers</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="current_date"/>
+                <field name="jewellery_type"/>
+                <field name="Price"/>
+                
+            </tree>
+        </field>
+    </record>
+
+    <record id="customer_form" model="ir.ui.view">
+        <field name="name">sales_detail.customers.form</field>
+        <field name="model">sales_detail.customers</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                      <field name="current_date"/>
+                        <field name="jewellery_type"/>
+                        <field name="Price"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action2" model="ir.actions.act_window">
+        <field name="name">jewellerys</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sales_detail.customers</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+<!-- menuitem -->
+
+    <menuitem id="sale_menu_root"
+        name="Online Jewellery"
+        web_icon="sales_sample_order,static/icon/icon.png"
+        active="True"
+        sequence="10"/>
+
+    <menuitem id="sale_order_menu"
+            name="Shop"
+            parent="sale_menu_root"
+            sequence="10"/>
+
+    <menuitem id="sale_order"
+            name="Config"
+            parent="sale_menu_root"
+            sequence="10"/>
+
+    <menuitem id="report_sales_team1"
+        name="Sales"
+        parent="sale_order_menu"
+        action="sales_action"
+        sequence="10"/>
+
+    <menuitem id="report_sales_team2"
+        name="Price-config"
+        parent="sale_order"
+        action="action2"
+        sequence="20"/>
+
+
+</odoo>

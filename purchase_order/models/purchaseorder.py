@@ -6,7 +6,7 @@ _logger = logging.getLogger(__name__)
 
 
 class salesorderinherit(models.Model):
-	_inherit = "sale.order"
+	_inherit = "purchase.order"
 
 	Gold_Currency  = fields.Selection([
         ('USD', 'USD'),
