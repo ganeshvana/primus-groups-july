@@ -191,9 +191,16 @@ class Quant(models.Model):
                                                                  'company_id': self.env.company.id
                                                                  })
             self.lot_id = stock_lot.id
+            
+class Procurement(models.Model):
+    _inherit = 'procurement.group'
+    
+    origin_product_id = fields.Many2one('product.product', "Subcontract Product")
               
 class Pick(models.Model):
     _inherit = 'stock.picking'
+    
+    origin_product_id = fields.Many2one(related='group_id.origin_product_id', string="Subcontract Product", store=True)
     
     def button_validate(self):
         if self.picking_type_code == 'incoming':
@@ -209,7 +216,10 @@ class Pick(models.Model):
                         line.qty_done = line.product_uom_qty
         res = super(Pick, self).button_validate()
         return res
-
+    
+    
+        
+        
     def action_view_delivery(self):
         self.ensure_one()
         action = self.env.ref('stock.action_picking_tree_all').read()[0]
@@ -221,6 +231,29 @@ class Pick(models.Model):
         action = self.env.ref('purchase.purchase_rfq').read()[0]
         action['domain'] = [('name','=', self.origin)]
         return action
+    
+    def _prepare_subcontract_mo_vals(self, subcontract_move, bom):
+        subcontract_move.ensure_one()
+        group = self.env['procurement.group'].create({
+            'name': self.name,
+            'partner_id': self.partner_id.id,
+            'origin_product_id': subcontract_move.product_id.id
+        })
+        product = subcontract_move.product_id
+        warehouse = self._get_warehouse(subcontract_move)
+        vals = {
+            'company_id': subcontract_move.company_id.id,
+            'procurement_group_id': group.id,
+            'product_id': product.id,
+            'product_uom_id': subcontract_move.product_uom.id,
+            'bom_id': bom.id,
+            'location_src_id': subcontract_move.picking_id.partner_id.with_company(subcontract_move.company_id).property_stock_subcontractor.id,
+            'location_dest_id': subcontract_move.picking_id.partner_id.with_company(subcontract_move.company_id).property_stock_subcontractor.id,
+            'product_qty': subcontract_move.product_uom_qty,
+            'picking_type_id': warehouse.subcontracting_type_id.id,
+            'date_planned_start': subcontract_move.date
+        }
+        return vals
 
 class SaleType(models.Model):
     _name = 'sale.type'
