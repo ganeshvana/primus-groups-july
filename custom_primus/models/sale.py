@@ -207,12 +207,20 @@ class Pick(models.Model):
                         lot = 'LOT' + str(year) + '0' + str(month) + seq
                         line.lot_name = lot
                         line.qty_done = line.product_uom_qty
-                        
-                    
         res = super(Pick, self).button_validate()
         return res
 
+    def action_view_delivery(self):
+        self.ensure_one()
+        action = self.env.ref('stock.action_picking_tree_all').read()[0]
+        action['domain'] = [('name','=', self.origin),('picking_type_code', '=', 'incoming')]
+        return action
     
+    def action_view_purchase(self):
+        self.ensure_one()
+        action = self.env.ref('purchase.purchase_rfq').read()[0]
+        action['domain'] = [('name','=', self.origin)]
+        return action
 
 class SaleType(models.Model):
     _name = 'sale.type'

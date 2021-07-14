@@ -159,6 +159,18 @@
 	    </field>
 	</record>
 	
+	<record id="view_picking_form_inherit" model="ir.ui.view">
+	    <field name="name">stock.picking.form.inherit</field>
+	    <field name="model">stock.picking</field>
+	    <field name="inherit_id" ref="stock.view_picking_form"/>
+	    <field name="arch" type="xml">
+	    	<xpath expr="//sheet/div[@name='button_box']" position="inside">
+               <button name="action_view_delivery" attrs="{'invisible': [('picking_type_code', '!=', 'outgoing')]}" string="Receipts"  type="object" icon="fa-truck"/>
+               <button name="action_view_purchase" attrs="{'invisible': [('picking_type_code', 'in', ['outgoing','internal','mrp_operation'])]}" string="Purchase Order"  type="object" icon="fa-shopping-cart"/>	                
+            </xpath>		    	
+	    </field>
+	</record>
+	
 	
 	
   </data>

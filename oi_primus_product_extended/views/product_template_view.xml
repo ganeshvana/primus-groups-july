@@ -164,15 +164,14 @@
 								<field name="appraisal" invisible="1"/>
 								<field name="appraisal_value" widget="monetary"
 									attrs="{'invisible': [('appraisal','=',False)]}" />
-								<field name="avg"
-									attrs="{'invisible': [('products_types','!=','stone')]}" />
+								<field name="avg"/>
 								<field name="stone_class" string="Class" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('products_types','!=','stone')]}" />
 								<field name="birth_stone" attrs="{'invisible': [('products_types','!=','stone')]}" />
 								<field name="product_tags" widget="many2many_tags" options="{'no_create': True, 'no_edit': True, 'no_open': True}"/>
 								<field name="min_weight"/>
-								<field name="avg_cost" string="Average Cost"
-									attrs="{'invisible': [('products_types','!=','metal')]}" />
+								<!-- <field name="avg_cost" string="Average Weight"
+									attrs="{'invisible': [('products_types','!=','metal')]}" /> -->
 								<field name="last_revised_cost" string="Last Revised Cost"
 									attrs="{'invisible': [('products_types','!=','metal')]}" />
 								<field name="dimension" placeholder="LxWxH" string="Dimension"

@@ -49,7 +49,7 @@ class Product_Master_Creation(models.Model):
     certification_lab=fields.Many2one('certification.lab',string='Certification Lab')
     certification_type = fields.Many2one('certification.type',string='Certification Type')
     min_weight=fields.Float(string='Min Weight', digits = (12,3))
-    avg=fields.Float(string='Average', digits = (12,3), compute='_compute_avg', store=True)
+    avg=fields.Float(string='Average Weight', digits = (12,3), compute='_compute_avg', store=True)
     # vendor=fields.Many2one('res.partner',string='Vendor')
     finess=fields.Many2one('metal.finess',string='Fineness')
     plating=fields.Many2one('metal.plating',string='Plating')
@@ -180,6 +180,13 @@ class Product_Master_Creation(models.Model):
     certificate_product_ids = fields.Many2many('product.product','product_certificates_rel', 'product_id', 'certificate_id', "Certificate Products")
     certificate_origin_product_ids = fields.Many2many('product.product','product_certificates_origin_rel', 'product_id', 'certificate_id', "Certificate Origin Products")
     jtypes = fields.Many2one('jewel.tags', "Jewel Type")
+    
+    @api.onchange('provided_by')
+    def onchange_provided_by(self):
+        if self.provided_by == 'vendor':
+            route = self.env['stock.location.route'].search([('name', 'ilike', 'Resupply Subcontractor on Order')])
+            if route:
+                self.route_ids = [(6,0,[route.id])]
     
     @api.onchange('jtype')
     def onchange_jtype(self):
