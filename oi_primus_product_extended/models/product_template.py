@@ -186,7 +186,7 @@ class Product_Master_Creation(models.Model):
         if self.provided_by == 'vendor':
             route = self.env['stock.location.route'].search([('name', 'ilike', 'Resupply Subcontractor on Order')])
             if route:
-                self.route_ids = [(6,0,[route.id])]
+                self.route_ids = [(4,route.id)]
     
     @api.onchange('jtype')
     def onchange_jtype(self):
