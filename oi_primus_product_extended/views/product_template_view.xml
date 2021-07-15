@@ -399,7 +399,7 @@
 			</field>
 		</record>
 		
-		<record id="product_template_form_view_ecom_inherit"
+		<!-- <record id="product_template_form_view_ecom_inherit"
 			model="ir.ui.view">
 			<field name="name">product.template.form.view.inherit</field>
 			<field name="model">product.template</field>
@@ -426,7 +426,7 @@
                   <a t-att-href="'https://ganeshvana-primus-groups.odoo.com/web/content/%i?download=true' % att.id" oncontextmenu="return false;" download="file.pdf"><span t-esc="att.description" class="fa fa-download"/></a>
                 </t>
 			</xpath>
-		</template>
+		</template> -->
 		
 		
 		<record id="product_template_search_view_inherit" model="ir.ui.view">
@@ -457,6 +457,28 @@
 				</xpath>
 				<xpath expr="/search/group/filter[@name='type']" position="replace">
 					<filter string="Item Type" name="type" context="{'group_by':'type'}"/>
+				</xpath>
+			</field>
+		</record>
+		
+		<record id="product_template_tree_view_inherit11" model="ir.ui.view">
+			<field name="name">product.template.tree.view.inherit</field>
+			<field name="model">product.template</field>
+			<field name="inherit_id" ref="product.product_template_tree_view" />
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='name']" position="before">
+					<field name="image_1024" widget="image" class="oe_avatar" string="Image"/>
+				</xpath>
+			</field>
+		</record>
+		
+		<record id="product_product_tree_view_inherit11" model="ir.ui.view">
+			<field name="name">product.product.search.view.inherit</field>
+			<field name="model">product.product</field>
+			<field name="inherit_id" ref="product.product_product_tree_view" />
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='default_code']" position="before">
+					<field name="image_1024" widget="image" class="oe_avatar" string="Image"/>
 				</xpath>
 			</field>
 		</record>

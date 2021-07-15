@@ -170,7 +170,7 @@ class Product_Master_Creation(models.Model):
     mold_product_ids = fields.Many2many('product.template','product_mold_rel', 'product_id', 'mold_id', "Mold Products")
     design_product_ids = fields.Many2many('product.template','product_design_rel', 'product_id', 'design_id', "Design Products")
     design_product_id = fields.Many2one('product.template', "Design Product")
-    company_id = fields.Many2one('res.company', default=lambda self: self.env.company)
+#     company_id = fields.Many2one('res.company', default=lambda self: self.env.company)
     jewel_product_ids = fields.Many2many('product.template','product_jewel_rel', 'product_id', 'design_id', "Jewel Products")
     qty_available = fields.Float('Quantity On Hand', compute='_compute_quantities', search='_search_qty_available', compute_sudo=False, digits=(12,3))
     ir_attachment_ids = fields.One2many('ir.attachment', 'product_tmpl_id', "Files")
@@ -222,6 +222,14 @@ class Product_Master_Creation(models.Model):
         for rec in self:
             if rec.secondary_qty != 0.0:
                 rec.avg = rec.qty_available / rec.secondary_qty
+                
+    @api.depends_context('company')
+    def _compute_second_quantities(self):
+        res = self._compute_second_quantities_dict()
+        for template in self:
+            template.secondary_qty = res[template.id]['second_qty_available']
+            template.update({'secondary_qty' : res[template.id]['second_qty_available']})
+            template.qty_available = template.qty_available
         
     
     @api.onchange('mold_part_id')
@@ -320,7 +328,7 @@ class Product_Master_Creation(models.Model):
         sshape = scut = sname = ''
         if not self.rseq:
             self.rseq =  ''  
-        stone_rec = self.env['product.template'].search_count([('products_types', '=', 'stone'),('stone_name_id', '=', self.stone_name_id.id),
+        stone_rec = self.env['product.template'].sudo().search_count([('products_types', '=', 'stone'),('stone_name_id', '=', self.stone_name_id.id),
                                                                ('stone_shape_id', '=', self.stone_shape_id.id),('stone_cutting_id', '=', self.stone_cutting_id.id),
                                                                ('size_width', '=', self.size_width),('size_length', '=', self.size_length)])
         stone_rec += 1
@@ -667,7 +675,7 @@ class Product_Master_Creation(models.Model):
         product = ''
         
         if self.products_types == 'certification':
-            cert_rec = self.env['product.template'].search_count([('products_types', '=', 'certification'),('certification_lab', '=', self.certification_lab.id),
+            cert_rec = self.env['product.template'].sudo().search_count([('products_types', '=', 'certification'),('certification_lab', '=', self.certification_lab.id),
                                                                  ('certification_type', '=', self.certification_type.id),
                                                                  ('certification_no', '=', self.certification_no)])
             if cert_rec + 1 < 10:
@@ -754,7 +762,7 @@ class Product_Master_Creation(models.Model):
             sname = res.stone_name_id.code
             sshape = res.stone_shape_id.code
             scut = res.stone_cutting_id.code
-            stone_rec = self.env['product.template'].search_count([('products_types', '=', 'stone'),('stone_name_id', '=', res.stone_name_id.id),
+            stone_rec = self.env['product.template'].sudo().search_count([('products_types', '=', 'stone'),('stone_name_id', '=', res.stone_name_id.id),
                                                                    ('stone_shape_id', '=', res.stone_shape_id.id),('stone_cutting_id', '=', res.stone_cutting_id.id),
                                                                    ('size_width', '=', res.size_width),('size_length', '=', res.size_length)])
             if stone_rec < 10:
@@ -785,7 +793,7 @@ class Product_Master_Creation(models.Model):
         if res.products_types == 'metal':
             fineness = res.finess.code
             plating = res.plating.code
-            metal_rec = self.env['product.template'].search_count([('products_types', '=', 'metal'),('finess','=',res.finess.id),('plating','=',res.plating.id)])
+            metal_rec = self.env['product.template'].sudo().search_count([('products_types', '=', 'metal'),('finess','=',res.finess.id),('plating','=',res.plating.id)])
             if metal_rec < 10:
                 res.rseq = '0' + str(metal_rec)
             else:
@@ -815,7 +823,7 @@ class Product_Master_Creation(models.Model):
                 type = res.certification_type.code
             if res.certification_no:
                 no = res.certification_no[-5:]
-            cert_rec = self.env['product.template'].search_count([('products_types', '=', 'certification'),('certification_lab', '=', res.certification_lab.id),
+            cert_rec = self.env['product.template'].sudo().search_count([('products_types', '=', 'certification'),('certification_lab', '=', res.certification_lab.id),
                                                                  ('certification_type', '=', res.certification_type.id),
                                                                  ('certification_no', '=', res.certification_no)])
             if cert_rec + 1 < 10:
@@ -888,7 +896,7 @@ class Product_Master_Creation(models.Model):
             if not res.rseq:
                 res.rseq = ''
 #             seq = self.env['ir.sequence'].next_by_code('mold')
-            mold_rec = self.env['product.template'].search_count([('products_types', '=', 'mold')])
+            mold_rec = self.env['product.template'].sudo().search_count([('products_types', '=', 'mold')])
             if mold_rec < 10:
                 res.rseq = '00' + str(mold_rec)
             if mold_rec >= 10:
@@ -908,7 +916,7 @@ class Product_Master_Creation(models.Model):
             if res.jewel_mold == 'no' and 'style' in vals and vals['style'] == False:
 #                 seq = self.env['ir.sequence'].next_by_code('style')
                 seq = ''
-                seqrec = self.env['product.template'].search([('jtype', '=', res.jtype),('jfiness', '=', res.jfiness.id),
+                seqrec = self.env['product.template'].sudo().search([('jtype', '=', res.jtype),('jfiness', '=', res.jfiness.id),
                                                               ('jplating', '=', res.jplating.id),('jstone_name_id', '=', res.jstone_name_id.id),
                                                               ('jewel_size', '=', res.jewel_size.id),('center_color_stone_id', '=', res.center_color_stone_id.id)])
                 seq = len(seqrec) + 1
@@ -944,7 +952,7 @@ class Product_Master_Creation(models.Model):
                 jsize = res.jewel_size.code
             else:
                 jsize = ''
-            jewel_rec = self.env['product.template'].search_count([('jtype', '=', res.jtype),('jfiness', '=', res.jfiness.id),
+            jewel_rec = self.env['product.template'].sudo().search_count([('jtype', '=', res.jtype),('jfiness', '=', res.jfiness.id),
                                                               ('jplating', '=', res.jplating.id),('jstone_name_id', '=', res.jstone_name_id.id),
                                                               ('jewel_size', '=', res.jewel_size.id),('center_color_stone_id', '=', res.center_color_stone_id.id)])
             if jewel_rec < 10:
@@ -978,7 +986,7 @@ class Product_Master_Creation(models.Model):
         if res.products_types == 'design':
 #             seq = self.env['ir.sequence'].next_by_code('style')
             seq = ''
-            seqrec = self.env['product.template'].search([('jtype', '=', res.jtype)])
+            seqrec = self.env['product.template'].sudo().search([('jtype', '=', res.jtype)])
             seq = len(seqrec) + 1
             res.jewel_seq = seq
             if int(res.jewel_seq) < 10:
@@ -1011,7 +1019,7 @@ class Product_Master_Creation(models.Model):
             type = find = stype = finess = pfine = plating = thick = ''
             if res.finding_type_id:
                 type = res.finding_type_id.code            
-            find_rec = self.env['product.template'].search_count([('products_types', '=', 'finding'), ('finding_type_id', '=', res.finding_type_id.id)])
+            find_rec = self.env['product.template'].sudo().search_count([('products_types', '=', 'finding'), ('finding_type_id', '=', res.finding_type_id.id)])
             if find_rec < 10:
                 res.rseq = '0' + str(find_rec)
             else:
@@ -1213,6 +1221,10 @@ class ProductProduct(models.Model):
     provided_by = fields.Selection([('vendor','Vendor'),('factory','Factory')], "Provided By") 
     ir_attachment_ids = fields.One2many('ir.attachment', 'product_id', "Files")
     
+    _sql_constraints = [
+        ('barcode_uniq', 'CHECK(1=1)', "A barcode can only be assigned to one product !"),
+    ]
+    
     @api.onchange('default_code')
     def onchange_default_code(self):
         if self.default_code:
@@ -1235,7 +1247,7 @@ class ProductProduct(models.Model):
             sname = res.stone_name_id.code
             sshape = res.stone_shape_id.code
             scut = res.stone_cutting_id.code
-            stone_rec = self.env['product.product'].search_count([('products_types', '=', 'stone'),('stone_name_id', '=', res.stone_name_id.id),
+            stone_rec = self.env['product.product'].sudo().search_count([('products_types', '=', 'stone'),('stone_name_id', '=', res.stone_name_id.id),
                                                                    ('stone_shape_id', '=', res.stone_shape_id.id),('stone_cutting_id', '=', res.stone_cutting_id.id),
                                                                    ('size_width', '=', res.size_width),('size_length', '=', res.size_length)])
             if stone_rec < 10:
@@ -1266,7 +1278,7 @@ class ProductProduct(models.Model):
         if res.products_types == 'metal':
             fineness = res.finess.code
             plating = res.plating.code
-            metal_rec = self.env['product.product'].search_count([('products_types', '=', 'metal'),('finess','=',res.finess.id),('plating','=',res.plating.id)])
+            metal_rec = self.env['product.product'].sudo().search_count([('products_types', '=', 'metal'),('finess','=',res.finess.id),('plating','=',res.plating.id)])
             if metal_rec < 10:
                 res.rseq = '0' + str(metal_rec)
             else:
@@ -1296,7 +1308,7 @@ class ProductProduct(models.Model):
                 type = res.certification_type.code
             if res.certification_no:
                 no = res.certification_no[-5:]
-            cert_rec = self.env['product.product'].search_count([('products_types', '=', 'certification'),('certification_lab', '=', res.certification_lab.id),
+            cert_rec = self.env['product.product'].sudo().search_count([('products_types', '=', 'certification'),('certification_lab', '=', res.certification_lab.id),
                                                                  ('certification_type', '=', res.certification_type.id),
                                                                  ('certification_no', '=', res.certification_no)])
             if cert_rec < 10:
@@ -1370,7 +1382,7 @@ class ProductProduct(models.Model):
             if not res.rseq:
                 res.rseq = ''
 #             seq = self.env['ir.sequence'].next_by_code('mold')
-            mold_rec = self.env['product.template'].search_count([('products_types', '=', 'mold')])
+            mold_rec = self.env['product.template'].sudo().search_count([('products_types', '=', 'mold')])
             if mold_rec < 10:
                 res.rseq = '00' + str(mold_rec)
             if mold_rec >= 10:
@@ -1389,7 +1401,7 @@ class ProductProduct(models.Model):
         if res.products_types == 'is_jewellery':
             if res.jewel_mold == 'no' and 'style' in vals and vals['style'] == False:
                 seq = ''
-                seqrec = self.env['product.product'].search([('jtype', '=', res.jtype)])
+                seqrec = self.env['product.product'].sudo().search([('jtype', '=', res.jtype)])
                 seq = len(seqrec) + 1
                 res.jewel_seq = seq
                 if int(seq) < 10:
@@ -1497,7 +1509,7 @@ class ProductProduct(models.Model):
 #             fineness = res.jfiness.jewel_code
 #             plating = res.jplating.jewel_code
 #             jsize = res.jewel_size.code
-            jewel_rec = self.env['product.product'].search_count([('products_types', '=', 'is_jewellery'), ('jtype', '=', res.jtype),('active', '=', True)])            
+            jewel_rec = self.env['product.product'].sudo().search_count([('products_types', '=', 'is_jewellery'), ('jtype', '=', res.jtype),('active', '=', True)])            
             if jewel_rec < 10:
                 res.rseq = '0' + str(jewel_rec)
             else:
@@ -1609,7 +1621,7 @@ class ProductProduct(models.Model):
             
 #             if res.finding_type_id:
 #                 type = res.finding_type_id.code            
-            find_rec = self.env['product.product'].search_count([('products_types', '=', 'finding'), ('finding_type_id', '=', res.finding_type_id.id)])
+            find_rec = self.env['product.product'].sudo().search_count([('products_types', '=', 'finding'), ('finding_type_id', '=', res.finding_type_id.id)])
             if find_rec < 10:
                 res.rseq = '0' + str(find_rec)
             else:

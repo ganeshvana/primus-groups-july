@@ -37,6 +37,12 @@ class StockMove(models.Model):
     
     shipped_qty = fields.Float("Shipped Qty", copy=False)
     shipping_number = fields.Char("Ship Number", copy=False)
+    pimage = fields.Binary(related='product_id.image_1024', store=True)
+    
+class StockMoveLine(models.Model):
+    _inherit = 'stock.move.line'
+
+    pimage = fields.Binary(related='product_id.image_1024', store=True)
     
 class PurchaseReport(models.Model):
     _inherit = "purchase.report"

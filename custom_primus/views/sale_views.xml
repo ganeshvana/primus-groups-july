@@ -168,11 +168,33 @@
                <button name="action_view_delivery" attrs="{'invisible': [('picking_type_code', '!=', 'outgoing')]}" string="Receipts"  type="object" icon="fa-truck"/>
                <button name="action_view_purchase" attrs="{'invisible': [('picking_type_code', 'in', ['outgoing','internal','mrp_operation'])]}" string="Purchase Order"  type="object" icon="fa-shopping-cart"/>	                
             </xpath>	
-            <xpath expr="//field[@name='group_id']" position="after">
-            	<field name="origin_product_id" attrs="{'invisible':[('origin_product_id', '=', False)] }"/>
+            <xpath expr="//field[@name='origin']" position="after">
+            	<field name="origin_product_id" attrs="{'invisible':[('origin_product_id', '=', False)] }" readonly="1"/>
             </xpath>
             	    	
 	    </field>
+	</record>
+	
+	<record id="vpicktree_inherit" model="ir.ui.view">
+	    <field name="name">stock.picking.form.inherit</field>
+	    <field name="model">stock.picking</field>
+	    <field name="inherit_id" ref="stock.vpicktree"/>
+	    <field name="arch" type="xml">
+	    <xpath expr="//field[@name='origin']" position="after">
+           	<field name="origin_product_id" attrs="{'invisible':[('origin_product_id', '=', False)] }" readonly="1"/>
+        </xpath>
+	   	</field>
+	</record>
+	
+	<record id="view_picking_internal_search_inherit" model="ir.ui.view">
+	    <field name="name">stock.picking.search.inherit</field>
+	    <field name="model">stock.picking</field>
+	    <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+	    <field name="arch" type="xml">
+	    <xpath expr="//field[@name='product_id']" position="after">
+           	<field name="origin_product_id"/>
+        </xpath>
+	   	</field>
 	</record>
 	
 	
