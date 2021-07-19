@@ -420,6 +420,28 @@
 			</field>
 		</record>
 		
+		<record id="view_product_image_form_ecom_inherit"
+			model="ir.ui.view">
+			<field name="name">product.image.view.form.inh</field>
+        	<field name="model">product.image</field>
+			<field name="inherit_id" ref="website_sale.view_product_image_form" />
+			<field name="arch" type="xml">
+				<xpath expr="//label[@for='name']" position="attributes">
+					<attribute name="invisible">True</attribute>
+					
+				</xpath>
+				<xpath expr="//field[@name='name']" position="attributes">
+					<attribute name="invisible">True</attribute>
+					
+				</xpath>
+				<xpath expr="//field[@name='name']" position="after">
+					<label for="name" string="Image Name"/>
+                        <h2><field name="product_image_desc_id" placeholder="Image Name"/></h2>
+				</xpath>
+			</field>
+		</record>
+		
+		
 		<template id="product_inh1" active="1" inherit_id="website_sale.product" name="Product">
 			<xpath expr="//section[@id='product_detail']/div/div/t" position="after">
 				<t t-foreach="product.ir_attachment_ids" t-as="att">
@@ -520,6 +542,50 @@
 				</p>
 			</field>
 		</record>
+
+		<record id="product_img_desc_tree_view" model="ir.ui.view">
+			<field name="name">product.image.desc.tree</field>
+			<field name="model">product.image.desc</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="product_img_desc_form_view" model="ir.ui.view">
+			<field name="name">product.image.desc.form</field>
+			<field name="model">product.image.desc</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="dimension">
+							<group>
+								<field name="name" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_product_img_desc" model="ir.actions.act_window">
+			<field name="name">Product Ecommerce Description</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">product.image.desc</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+		
+		<menuitem id="product_img_desc_menu_config_master"
+			name="Product Ecommerce Description" sequence="11" parent="menu_action_masters"
+			action="action_product_img_desc" />
+		
+
 
 		<record id="certification_lab_tree_view" model="ir.ui.view">
 			<field name="name">certification.lab.tree</field>

@@ -16,6 +16,17 @@ from odoo.osv import expression
 _logger = logging.getLogger(__name__)
 
 class Product_Master_Creation(models.Model):
+    _inherit = 'product.image'
+    
+    product_image_desc_id = fields.Many2one('product.image.desc', "Desc")
+    
+    @api.onchange('product_image_desc_id')
+    def onchange_product_image_desc_id(self):
+        if self.product_image_desc_id:
+            self.name = self.product_image_desc_id.name
+
+
+class Product_Master_Creation(models.Model):
     _inherit = 'product.template'
     
     bom_ids = fields.One2many('mrp.bom', 'product_tmpl_id', 'Bill of Materials', copy=True)
@@ -1995,6 +2006,11 @@ class SubBrandMaster(models.Model):
     _name = 'sub.brand.master'
     name=fields.Char('Name')
     brand_id = fields.Many2one('brand.master','Brand')
+    
+class ProductImgDesc(models.Model):
+    _name = 'product.image.desc'
+    
+    name = fields.Char("Description")
     
 class JewelSize(models.Model):
     _name='jewel.size'
