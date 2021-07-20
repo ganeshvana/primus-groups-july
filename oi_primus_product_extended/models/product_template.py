@@ -17,9 +17,9 @@ _logger = logging.getLogger(__name__)
 
 class Product_Master_Creation(models.Model):
     _inherit = 'product.image'
-    
+     
     product_image_desc_id = fields.Many2one('product.image.desc', "Desc")
-    
+     
     @api.onchange('product_image_desc_id')
     def onchange_product_image_desc_id(self):
         if self.product_image_desc_id:
@@ -1684,6 +1684,28 @@ class ProductProduct(models.Model):
                     pr_ids.append(res.id)
                     rec.certificate_product_ids = [(6,0,pr_ids)]
                     rec.certificate = 'yes'
+        if res.company_id:
+            reorder_rule = self.env['stock.warehouse.orderpoint']
+            warehouse = self.env['stock.warehouse'].search([('company_id', '=', res.company_id.id)], limit=1)
+            if warehouse:
+                reorder_rule.create({'product_id': res.id,
+                                 'company_id': res.company_id.id,
+                                 'warehouse_id': warehouse.id,
+                                 'location_id': warehouse.lot_stock_id.id,
+                                 'product_min_qty': 0.0,
+                                 'product_max_qty': 0.0})
+        if not res.company_id:
+            companies = self.env['res.company'].search([])
+            for company in companies:
+                reorder_rule = self.env['stock.warehouse.orderpoint']
+                warehouse = self.env['stock.warehouse'].sudo().search([('company_id', '=', company.id)], limit=1)
+                if warehouse:
+                    reorder_rule.sudo().create({'product_id': res.id,
+                                     'company_id': company.id,
+                                     'warehouse_id': warehouse.id,
+                                     'location_id': warehouse.lot_stock_id.id,
+                                     'product_min_qty': 0.0,
+                                     'product_max_qty': 0.0})        
         return res
     
     def write(self, vals):  
