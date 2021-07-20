@@ -1269,6 +1269,7 @@ class ProductProduct(models.Model):
         year = str(datetime.now().year)[-2:]
         if not res.name:
             res.name = res.product_tmpl_id.name
+            res.product_desc = res.product_tmpl_id.product_desc
         if not res.provided_by:
             res.provided_by = res.product_tmpl_id.provided_by
         if res.products_types == 'stone':
