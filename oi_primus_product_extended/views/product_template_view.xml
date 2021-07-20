@@ -437,7 +437,7 @@
 				</xpath>
 				<xpath expr="//field[@name='name']" position="after">
 					<label for="name" string="Image Name"/>
-                        <h2><field name="product_image_desc_id" placeholder="Image Name"/></h2>
+                        <h2><field name="product_image_desc_id" placeholder="Image Name" options="{'no_create': True, 'no_edit': True, 'no_open': True}"/></h2>
 				</xpath>
 			</field>
 		</record>

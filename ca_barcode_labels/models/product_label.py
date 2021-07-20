@@ -170,12 +170,11 @@ class ReportProductLabel(models.AbstractModel):
     def _get_report_values(self, docids, data=None):
         # if not data.get('form'):
         #     raise UserError(_("Form content is missing, this report cannot be printed."))
-        barcode_config = self.env['barcode.configuration.template'].search([], limit=1)
-        if not barcode_config:
-            raise ValidationError(_(" Please configure barcode data from configuration menu"))
+#         barcode_config = self.env['barcode.configuration.template'].search([('id', '=', data.get('barcode_template'))])        if not barcode_config:
+#             raise ValidationError(_(" Please configure barcode data from configuration menu"))
         docs = []
-
-        if barcode_config.barcode_field:
+        barcode_config = False
+        if barcode_config and barcode_config.barcode_field:
             barcode_field = barcode_config.barcode_field
         else:
             barcode_field = 'name'
