@@ -15,15 +15,15 @@ from odoo.osv import expression
 
 _logger = logging.getLogger(__name__)
 
-class Product_Master_Creation(models.Model):
-    _inherit = 'product.image'
-     
-    product_image_desc_id = fields.Many2one('product.image.desc', "Desc")
-     
-    @api.onchange('product_image_desc_id')
-    def onchange_product_image_desc_id(self):
-        if self.product_image_desc_id:
-            self.name = self.product_image_desc_id.name
+# class Product_Master_Creation(models.Model):
+#     _inherit = 'product.image'
+#      
+#     product_image_desc_id = fields.Many2one('product.image.desc', "Desc")
+#      
+#     @api.onchange('product_image_desc_id')
+#     def onchange_product_image_desc_id(self):
+#         if self.product_image_desc_id:
+#             self.name = self.product_image_desc_id.name
 
 
 class Product_Master_Creation(models.Model):

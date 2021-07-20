@@ -400,7 +400,7 @@
 			</field>
 		</record>
 		
-		<record id="product_template_form_view_ecom_inherit"
+		<!-- <record id="product_template_form_view_ecom_inherit"
 			model="ir.ui.view">
 			<field name="name">product.template.form.view.inherit</field>
 			<field name="model">product.template</field>
@@ -449,7 +449,7 @@
                   <a t-att-href="'https://ganeshvana-primus-groups.odoo.com/web/content/%i?download=true' % att.id" oncontextmenu="return false;" download="file.pdf"><span t-esc="att.description" class="fa fa-download"/></a>
                 </t>
 			</xpath>
-		</template>
+		</template> -->
 		
 		
 		<record id="product_template_search_view_inherit" model="ir.ui.view">
