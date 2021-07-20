@@ -170,7 +170,6 @@ class ReportProductLabel(models.AbstractModel):
     def _get_report_values(self, docids, data=None):
         # if not data.get('form'):
         #     raise UserError(_("Form content is missing, this report cannot be printed."))
-        print(data, "data----------------")
         if 'barcode_template' in data:
             barcode_config = self.env['barcode.configuration.template'].search([('id', '=', data.get('barcode_template'))])
         else:
@@ -182,11 +181,17 @@ class ReportProductLabel(models.AbstractModel):
             barcode_field = barcode_config.barcode_field
         else:
             barcode_field = 'name'
-        for rec in data['product_ids']:
-            for loop in range(0, int(rec['qty'])):
-                product = self.env['product.product'].browse(int(rec['product_id']))
-                barcode_value = getattr(product, barcode_field, '')
-                docs.append((product, rec['lot_number'], product.name_get()[0][1], barcode_value))
+        if 'product_ids' in data:
+            for rec in data['product_ids']:
+                for loop in range(0, int(rec['qty'])):
+                    product = self.env['product.product'].browse(int(rec['product_id']))
+                    barcode_value = getattr(product, barcode_field, '')
+                    docs.append((product, rec['lot_number'], product.name_get()[0][1], barcode_value))
+        else:
+            for rec in docids:
+                product = self.env['product.product'].browse(rec)
+                barcode_value = product.barcode
+                docs.append((product, False, product.name_get()[0][1], barcode_value))
         return {
             'is_humanreadable': self.check_hr(barcode_config),
             'docs': docs,
