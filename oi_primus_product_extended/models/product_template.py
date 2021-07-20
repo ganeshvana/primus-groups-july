@@ -191,6 +191,13 @@ class Product_Master_Creation(models.Model):
     certificate_product_ids = fields.Many2many('product.product','product_certificates_rel', 'product_id', 'certificate_id', "Certificate Products")
     certificate_origin_product_ids = fields.Many2many('product.product','product_certificates_origin_rel', 'product_id', 'certificate_id', "Certificate Origin Products")
     jtypes = fields.Many2one('jewel.tags', "Jewel Type")
+    product_desc = fields.Char("Desc.")    
+    
+    @api.onchange('name')
+    def onchange_name(self):
+        if self.name:
+            self.product_desc = self.name
+    
     
     @api.onchange('provided_by')
     def onchange_provided_by(self):
@@ -1071,6 +1078,10 @@ class Product_Master_Creation(models.Model):
                 if pt.product_variant_ids:
                     for va in pt.product_variant_ids:
                         va.name = pt.name
+            if 'product_desc' in vals:
+                if pt.product_variant_ids:
+                    for va in pt.product_variant_ids:
+                        va.product_desc = pt.product_desc
             if 'design_product_id' in vals:
                 if pt.design_product_id.bom_ids:
                     for bom in pt.design_product_id.bom_ids:
@@ -1231,6 +1242,12 @@ class ProductProduct(models.Model):
     center_color_stone_id = fields.Many2one('center.color.stone', "Center Stone Color")
     provided_by = fields.Selection([('vendor','Vendor'),('factory','Factory')], "Provided By") 
     ir_attachment_ids = fields.One2many('ir.attachment', 'product_id', "Files")
+    product_desc = fields.Char("Desc.")    
+    
+    @api.onchange('name')
+    def onchange_name(self):
+        if self.name:
+            self.product_desc = self.name
     
     _sql_constraints = [
         ('barcode_uniq', 'CHECK(1=1)', "A barcode can only be assigned to one product !"),
