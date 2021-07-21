@@ -498,7 +498,7 @@
 			<field name="inherit_id" ref="product.product_template_tree_view" />
 			<field name="arch" type="xml">
 				<xpath expr="//field[@name='name']" position="before">
-					<field name="image_1024" widget="image" class="oe_avatar" string="Image" width="50%"/>
+					<field name="image_1024" widget="image" height="50px" width="50px" string="Image"/>
 				</xpath>
 			</field>
 		</record>
@@ -509,7 +509,7 @@
 			<field name="inherit_id" ref="product.product_product_tree_view" />
 			<field name="arch" type="xml">
 				<xpath expr="//field[@name='default_code']" position="before">
-					<field name="image_1024" widget="image" class="oe_avatar" string="Image" width="50%"/>
+					<field name="image_1024" widget="image"  string="Image" height="50px" width="50px"/>
 				</xpath>
 			</field>
 		</record>
