@@ -30,6 +30,21 @@ class Product_Master_Creation(models.Model):
 class Product_Master_Creation(models.Model):
     _inherit = 'product.template'
     
+    def _get_images(self):
+        """Return a list of records implementing `image.mixin` to
+        display on the carousel on the website for this template.
+
+        This returns a list and not a recordset because the records might be
+        from different models (template and image).
+
+        It contains in this order: the main image of the template and the
+        Template Extra Images.
+        """
+        self.ensure_one()
+        product_templates = []
+        product_templates = self.product_template_image_ids.filtered(lambda pt: pt.not_to_website == False)
+        return [self] + list(product_templates)
+    
     bom_ids = fields.One2many('mrp.bom', 'product_tmpl_id', 'Bill of Materials', copy=True)
     products_types = fields.Selection([
         ('stone', 'Stone'),
