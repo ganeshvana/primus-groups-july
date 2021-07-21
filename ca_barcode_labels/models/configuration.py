@@ -55,6 +55,7 @@ class BarcodeConfigurationTemplate(models.Model):
     humanreadable = fields.Boolean("Human Readable")
 
     product_desc = fields.Boolean('Product Description', default=True)
+    company_id = fields.Many2one('res.company', "Company", default=lambda self: self.env.user.company_id.id)
     company_name = fields.Char('Company Name', default=lambda self: self.env.user.company_id.name)
     product_name = fields.Boolean('Product Name', default=True)
 

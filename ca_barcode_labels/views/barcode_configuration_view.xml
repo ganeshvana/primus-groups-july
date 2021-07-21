@@ -51,6 +51,7 @@
                         </group>
                         <group>
                             <group string="View Configuration">
+                            	<field name="company_id"/>
                                 <field name="company_name"/>
                                 <field name="default_qty_labels"/>
                                 <field name="select_default"/>
