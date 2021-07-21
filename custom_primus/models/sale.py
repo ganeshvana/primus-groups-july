@@ -124,7 +124,7 @@ class MrpBomLine(models.Model):
     description = fields.Char("Description")
     unit_cost = fields.Float("Unit Cost", compute='compute_unit_cost', store=True)
     total = fields.Float("Total", compute='compute_total', store=True)  
-    provided_by = fields.Selection(related='product_id.provided_by', string="Provided By") 
+    provided_by = fields.Selection([('vendor','Vendor'),('factory','Factory')], "Provided By") 
     min_weight = fields.Float("Min weight")
     prototype = fields.Char("Prototype")
     product_id = fields.Many2one('product.product', 'Component', required=False, check_company=True)
@@ -142,6 +142,21 @@ class MrpBomLine(models.Model):
         for rec in self:
             if rec.unit_cost and rec.product_qty:
                 rec.total = rec.unit_cost * rec.product_qty
+                
+    @api.model
+    def create(self, vals):
+        res = super(MrpBomLine, self).create(vals)
+        if res.product_id.provided_by:
+            res.provided_by = res.product_id.provided_by
+        return res
+    
+    def write(self, vals):
+        res = super(MrpBomLine, self).write(vals)
+        if 'product_id' in vals:
+            for rec in self:
+                if rec.product_id.provided_by:
+                    rec.provided_by = rec.product_id.provided_by
+        return res
                 
     @api.onchange('product_id')
     def onchange_product_id(self):
