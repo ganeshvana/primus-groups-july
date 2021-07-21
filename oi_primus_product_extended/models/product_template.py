@@ -17,9 +17,10 @@ _logger = logging.getLogger(__name__)
 
 class Product_Master_Creation(models.Model):
     _inherit = 'product.image'
-      
+       
     product_image_desc_id = fields.Many2one('product.image.desc', "Desc")
-      
+    not_to_website = fields.Boolean("Don't show in Website")
+       
     @api.onchange('product_image_desc_id')
     def onchange_product_image_desc_id(self):
         if self.product_image_desc_id:
@@ -191,12 +192,12 @@ class Product_Master_Creation(models.Model):
     certificate_product_ids = fields.Many2many('product.product','product_certificates_rel', 'product_id', 'certificate_id', "Certificate Products")
     certificate_origin_product_ids = fields.Many2many('product.product','product_certificates_origin_rel', 'product_id', 'certificate_id', "Certificate Origin Products")
     jtypes = fields.Many2one('jewel.tags', "Jewel Type")
-    product_desc = fields.Char("Desc.")    
+    product_desc = fields.Text("Detailed Description")    
     
-    @api.onchange('name')
-    def onchange_name(self):
-        if self.name:
-            self.product_desc = self.name
+#     @api.onchange('name')
+#     def onchange_name(self):
+#         if self.name:
+#             self.product_desc = self.name
     
     
     @api.onchange('provided_by')
@@ -205,6 +206,10 @@ class Product_Master_Creation(models.Model):
             route = self.env['stock.location.route'].search([('name', 'ilike', 'Resupply Subcontractor on Order')])
             if route:
                 self.route_ids = [(4,route.id)]
+        if self.provided_by != 'vendor':
+            route = self.env['stock.location.route'].search([('name', 'ilike', 'Buy')])
+            if route:
+                self.route_ids = [(6,0,[route.id])]
     
     @api.onchange('jtype')
     def onchange_jtype(self):
@@ -1242,7 +1247,18 @@ class ProductProduct(models.Model):
     center_color_stone_id = fields.Many2one('center.color.stone', "Center Stone Color")
     provided_by = fields.Selection([('vendor','Vendor'),('factory','Factory')], "Provided By") 
     ir_attachment_ids = fields.One2many('ir.attachment', 'product_id', "Files")
-    product_desc = fields.Char("Desc.")    
+    product_desc = fields.Text("Detailed Description")
+    
+    @api.onchange('provided_by')
+    def onchange_provided_by(self):
+        if self.provided_by == 'vendor':
+            route = self.env['stock.location.route'].search([('name', 'ilike', 'Resupply Subcontractor on Order')])
+            if route:
+                self.route_ids = [(4,route.id)]
+        if self.provided_by != 'vendor':
+            route = self.env['stock.location.route'].search([('name', 'ilike', 'Buy')])
+            if route:
+                self.route_ids = [(6,0,[route.id])]
     
     @api.onchange('name')
     def onchange_name(self):

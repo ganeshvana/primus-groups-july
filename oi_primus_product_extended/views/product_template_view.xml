@@ -28,6 +28,9 @@
 			<field name="inherit_id"
 				ref="product.product_template_form_view" />
 			<field name="arch" type="xml">
+				<xpath expr="//field[@name='name']" position="after">
+					<field name="product_desc" placeholder="Detailed Description"/>
+				</xpath>
 				<xpath
 					expr="/form/sheet/notebook/page[@name='general_information']"
 					position="replace">
@@ -438,6 +441,11 @@
 				<xpath expr="//field[@name='name']" position="after">
 					<label for="name" string="Image Name"/>
                         <h2><field name="product_image_desc_id" placeholder="Image Name" options="{'no_create': True, 'no_edit': True, 'no_open': True}"/></h2>
+				</xpath>
+				<xpath expr="//field[@name='video_url']" position="after">
+				<br/>
+					<label for="not_to_website" string="Don't show in Website"/>
+                        <field name="not_to_website" />
 				</xpath>
 			</field>
 		</record>

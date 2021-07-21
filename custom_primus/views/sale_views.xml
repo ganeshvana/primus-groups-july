@@ -134,7 +134,7 @@
 		    	 	 <field name="min_weight"/>
 		    	 	 <field name="unit_cost" readonly="0"/>
 		    	 	 <field name="total"/>
-		    	 	 <field name="provided_by"/>	  
+		    	 	 <field name="provided_by" readonly="1"/>	  
                      <field name="product_uom_category_id" invisible="1"/>
                      <field name="parent_product_tmpl_id" invisible="1" />
                      <field name="possible_bom_product_template_attribute_value_ids" invisible="1"/>
