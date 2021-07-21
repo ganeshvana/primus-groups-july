@@ -8,7 +8,7 @@
     'summary': 'Product Master - Extended',
     'description': "",
     'website': 'https://www.odooimplementers.com',
-    'depends': ['base','l10n_in','stock','product','account', 'mrp', 'secondary_uom_app', 'website_sale' ],
+    'depends': ['base','l10n_in','stock','product','account', 'mrp', 'secondary_uom_app', 'custom_primus','website_sale' ],
     'data': [
         'security/ir.model.access.csv',
         'security/bulk_product.xml',
