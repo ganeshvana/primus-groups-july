@@ -2018,6 +2018,7 @@ class BrandMaster(models.Model):
     _name = 'brand.master'
     
     name=fields.Char('Name')
+    logo = fields.Binary("Logo")
 
 class MoldType(models.Model):
     _name='mold.type'

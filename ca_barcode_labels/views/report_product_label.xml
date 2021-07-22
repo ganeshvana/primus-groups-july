@@ -21,9 +21,9 @@
 					<table style="border:none;" width="100%">
 						<tr style="border:none;">
 							<td style="border:none;">
-								<t t-if="barcode_config.company_id">
+								<t t-if="product[0].brand_id">
 									<img
-										t-att-src="image_data_uri(barcode_config.company_id.logo)"
+										t-att-src="image_data_uri(product[0].brand_id.logo)"
 										style="max-height: 1cm; max-width: 3cm;" />
 								</t>
 							</td>

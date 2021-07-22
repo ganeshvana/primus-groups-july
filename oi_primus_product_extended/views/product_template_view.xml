@@ -2649,6 +2649,9 @@
 							<group>
 								<field name="name" />
 							</group>
+							<group>
+								<field name="logo" widget="image"/>
+							</group>
 							<!-- <group> <field name="sub_brand_id"/> </group> -->
 						</group>
 					</sheet>
