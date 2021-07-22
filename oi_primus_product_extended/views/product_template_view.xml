@@ -37,7 +37,6 @@
 					<page string="Product Information" name="general_information">
 						<group>
 							<group name="group_general">
-								<field name="product_desc"/>
 								<field name="default_code" string="Style" attrs="{'invisible': [('products_types','not in',['design'])]}"/>
 								<field name="default_code" string="SKU Number" attrs="{'invisible': [('products_types','in',['design'])]}"/>
 								<field name="jewel_mold" attrs="{'invisible': [('products_types','not in',['is_jewellery'])]}"/>
