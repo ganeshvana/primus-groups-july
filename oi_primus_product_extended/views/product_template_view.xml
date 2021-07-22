@@ -28,8 +28,8 @@
 			<field name="inherit_id"
 				ref="product.product_template_form_view" />
 			<field name="arch" type="xml">
-				<xpath expr="//field[@name='name']" position="after">
-					<field name="product_desc" placeholder="Detailed Description"/>
+				<xpath expr="//field[@name='name']" position="before">
+					<label for="name" string="Product Name"/>
 				</xpath>
 				<xpath
 					expr="/form/sheet/notebook/page[@name='general_information']"
@@ -189,7 +189,8 @@
 								<field name="child_sub_brand_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}"
 									attrs="{'invisible': [('products_types','not in',['is_jewellery', 'design'])]}"
 									domain="[('sub_brand_id','=',sub_brand_id)]" />
-								<field name="provided_by"/>	 
+								<field name="provided_by"/>	
+								<field name="product_desc" placeholder="Detailed Description"/>  
 							</group>
 						</group>
 						<group attrs="{'invisible': [('products_types','!=','stone')]}">
