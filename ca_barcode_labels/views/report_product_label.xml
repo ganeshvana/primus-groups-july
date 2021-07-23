@@ -27,14 +27,14 @@
 										style="max-height: 1cm; max-width: 3cm;" />
 								</t>
 							</td>
-							<td style="text-align:right">
+							<td style="text-align:center">
 								<t t-if="barcode_config.barcode" style="color:black;"
 									align="right">
 									<img
 										t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=%s' %(barcode_config.barcode_type, product[3], int(barcode_config.display_width), int(barcode_config.display_height),is_humanreadable)" />
 								</t>
 							</td>
-							<td style="font-size:6px;">
+							<td style="font-size:6px;text-align:right">
 								<t style="font-size:8px;">
 									<strong>
 										SKU:
