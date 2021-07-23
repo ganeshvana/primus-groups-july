@@ -34,7 +34,7 @@
 										t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=%s' %(barcode_config.barcode_type, product[3], int(barcode_config.display_width), int(barcode_config.display_height),is_humanreadable)" />
 								</t>
 							</td>
-							<td style="font-size:6px;text-align:right">
+							<td style="font-size:6px;">
 								<t style="font-size:8px;">
 									<strong>
 										SKU:
