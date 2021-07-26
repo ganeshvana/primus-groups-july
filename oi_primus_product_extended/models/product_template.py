@@ -17,10 +17,10 @@ _logger = logging.getLogger(__name__)
 
 class Product_Master_Creation(models.Model):
     _inherit = 'product.image'
-       
+        
     product_image_desc_id = fields.Many2one('product.image.desc', "Desc")
     not_to_website = fields.Boolean("Don't show in Website")
-       
+        
     @api.onchange('product_image_desc_id')
     def onchange_product_image_desc_id(self):
         if self.product_image_desc_id:
@@ -207,7 +207,9 @@ class Product_Master_Creation(models.Model):
     certificate_product_ids = fields.Many2many('product.product','product_certificates_rel', 'product_id', 'certificate_id', "Certificate Products")
     certificate_origin_product_ids = fields.Many2many('product.product','product_certificates_origin_rel', 'product_id', 'certificate_id', "Certificate Origin Products")
     jtypes = fields.Many2one('jewel.tags', "Jewel Type")
-    product_desc = fields.Text("Detailed Description")    
+    product_desc = fields.Text("Detailed Description")  
+    
+    @api.depends('')  
     
 #     @api.onchange('name')
 #     def onchange_name(self):
