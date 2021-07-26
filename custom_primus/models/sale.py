@@ -163,7 +163,7 @@ class ProductProduct(models.Model):
                     description += '\n' + str("%.2f" % as_qty3) + ' Cts ' + accent_stone_name3
                 metal = rec.bom_id_line.filtered(lambda b: b.bom_line_type_id.name == 'Metal')
                 if metal[0]:
-                    description += '\n' + str(metal.product_qty) + ' Grams'
+                    description += '\n' + str("%.2f" % metal.product_qty) + ' Grams'
             rec.product_desc = description
     
     @api.depends('bom_ids','bom_id', 'bom_id.code', 'bom_id.bom_line_ids')
