@@ -25,3 +25,9 @@ class StockQuant(models.Model):
 # 				uom_quantity = quant.product_id.uom_id._compute_quantity(quant.quantity, quant.product_id.secondary_uom_id, rounding_method='HALF-UP')
 				quant.secondary_uom_id = quant.product_id.secondary_uom_id
 # 				quant.secondary_quantity = uom_quantity
+	def create(self, vals):
+		res = super(StockQuant, self).create(vals)
+		for quant in res:
+			if quant.product_id.is_secondary_uom:
+				uom_quantity = quant.product_id.uom_id._compute_quantity(quant.quantity, quant.product_id.secondary_uom_id, rounding_method='HALF-UP')
+				quant.secondary_quantity = uom_quantity
