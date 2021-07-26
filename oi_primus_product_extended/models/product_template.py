@@ -15,16 +15,16 @@ from odoo.osv import expression
 
 _logger = logging.getLogger(__name__)
 
-class Product_Master_Creation(models.Model):
-    _inherit = 'product.image'
-        
-    product_image_desc_id = fields.Many2one('product.image.desc', "Desc")
-    not_to_website = fields.Boolean("Don't show in Website")
-        
-    @api.onchange('product_image_desc_id')
-    def onchange_product_image_desc_id(self):
-        if self.product_image_desc_id:
-            self.name = self.product_image_desc_id.name
+# class Product_Master_Creation(models.Model):
+#     _inherit = 'product.image'
+#         
+#     product_image_desc_id = fields.Many2one('product.image.desc', "Desc")
+#     not_to_website = fields.Boolean("Don't show in Website")
+#         
+#     @api.onchange('product_image_desc_id')
+#     def onchange_product_image_desc_id(self):
+#         if self.product_image_desc_id:
+#             self.name = self.product_image_desc_id.name
 
 
 class Product_Master_Creation(models.Model):
@@ -269,7 +269,6 @@ class Product_Master_Creation(models.Model):
         for template in self:
             template.secondary_qty = res[template.id]['second_qty_available']
             template.update({'secondary_qty' : res[template.id]['second_qty_available']})
-            template.qty_available = template.qty_available
         
     
     @api.onchange('mold_part_id')

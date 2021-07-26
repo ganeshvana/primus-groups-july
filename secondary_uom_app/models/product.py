@@ -50,6 +50,7 @@ class ProductTemplate(models.Model):
 		for template in self:
 			template.secondary_qty = res[template.id]['second_qty_available']
 			template.update({'secondary_qty' : res[template.id]['second_qty_available']})
+			template.qty_available = template.qty_available
 
 	def _is_cost_method_standard(self):
 		return True
