@@ -33,7 +33,7 @@ class StockMove(models.Model):
 				quantity_done = 0
 				for move_line in move._get_move_lines():
 					quantity_done += move_line.product_uom_id._compute_quantity(
-						move_line.qty_done, move.secondary_uom_id, round=False)
+						move_line.secondary_done_qty, move.secondary_uom_id, round=False)
 				move.secondary_done_qty = quantity_done
 		else:
 			# compute
@@ -54,10 +54,11 @@ class StockMove(models.Model):
 			for move in self:
 				uom = move.secondary_uom_id
 				if uom:
-					move.secondary_done_qty = sum(
-						self.env['uom.uom'].browse(line_uom_id)._compute_quantity(qty, uom, round=False)
-						 for line_uom_id, qty in rec.get(move.ids[0] if move.ids else move.id, [])
-					)
+# 					move.secondary_done_qty = sum(
+# 						self.env['uom.uom'].browse(line_uom_id)._compute_quantity(qty, uom, round=False)
+# 						 for line_uom_id, qty in rec.get(move.ids[0] if move.ids else move.id, [])
+# 					)
+					move.secondary_done_qty = sum([line.secondary_done_qty for line in move.move_line_nosuggest_ids])
 				else:
 					move.secondary_done_qty = 0.0
 
@@ -77,7 +78,7 @@ class StockMove(models.Model):
 				# Bypass the error if we're trying to write the same value.
 				ml_quantity_done = 0
 				for move_line in move_lines:
-					ml_quantity_done += move_line.product_uom_id._compute_quantity(move_line.qty_done, move.secondary_uom_id, round=False)
+					ml_quantity_done += move_line.product_uom_id._compute_quantity(move_line.secondary_done_qty, move.secondary_uom_id, round=False)
 				if float_compare(quantity_done, ml_quantity_done, precision_rounding=move.secondary_uom_id.rounding) != 0:
 					raise UserError(_("Cannot set the done quantity from this stock move, work directly with the move lines."))
 
@@ -103,19 +104,19 @@ class StockMoveLine(models.Model):
 	_inherit = 'stock.move.line'
 
 	secondary_uom_id = fields.Many2one('uom.uom', string="Secondary UOM",compute="secondary_qty_compute" ,store=True)
-	secondary_quantity = fields.Float("Secondary Qty", digits='Product Unit of Measure' ,compute="secondary_qty_compute" ,store=True)
+	secondary_quantity = fields.Float("Secondary Qty", digits='Product Unit of Measure')
 	secondary_done_qty = fields.Float("Secondary Done Qty", digits='Product Unit of Measure')
 
-
-	@api.depends('product_id','product_id.uom_id','product_uom_qty','qty_done','product_id.secondary_uom_id')
+	
+	@api.depends('product_id','product_id.uom_id','product_uom_qty','product_id.secondary_uom_id')
 	def secondary_qty_compute(self):
 		for move_line in self:
 			if move_line.product_id.is_secondary_uom:
 				move_line.update({'secondary_uom_id' : move_line.product_id.secondary_uom_id})
 				uom_quantity = move_line.product_id.uom_id._compute_quantity(move_line.product_uom_qty or move_line.qty_done, move_line.product_id.secondary_uom_id, rounding_method='HALF-UP')
 				move_line.update({'secondary_quantity' : uom_quantity})
-				uom_done_quantity = move_line.product_id.uom_id._compute_quantity(move_line.qty_done, move_line.product_id.secondary_uom_id, rounding_method='HALF-UP')
-				move_line.update({'secondary_done_qty' : uom_done_quantity})
+# 				uom_done_quantity = move_line.product_id.uom_id._compute_quantity(move_line.qty_done, move_line.product_id.secondary_uom_id, rounding_method='HALF-UP')
+# 				move_line.update({'secondary_done_qty' : uom_done_quantity})
 
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4::

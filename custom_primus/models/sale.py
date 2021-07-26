@@ -292,6 +292,7 @@ class Pick(models.Model):
                         lot = 'LOT' + str(year) + '0' + str(month) + seq
                         line.lot_name = lot
                         line.qty_done = line.product_uom_qty
+                        line.secondary_done_qty = line.move_id.secondary_quantity
         res = super(Pick, self).button_validate()
         return res
     
