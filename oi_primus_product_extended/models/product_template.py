@@ -263,13 +263,13 @@ class Product_Master_Creation(models.Model):
             if rec.secondary_qty != 0.0:
                 rec.avg = rec.qty_available / rec.secondary_qty
                 
-    @api.depends_context('company')
-    def _compute_second_quantities(self):
-        res = self._compute_second_quantities_dict()
-        for template in self:
-            template.secondary_qty = res[template.id]['second_qty_available']
-            template.update({'secondary_qty' : res[template.id]['second_qty_available']})
-        
+#     @api.depends_context('company')
+#     def _compute_second_quantities(self):
+#         res = self._compute_second_quantities_dict()
+#         for template in self:
+#             template.secondary_qty = res[template.id]['second_qty_available']
+#             template.update({'secondary_qty' : res[template.id]['second_qty_available']})
+#         
     
     @api.onchange('mold_part_id')
     def onchange_mold_part_id(self):
