@@ -27,9 +27,12 @@ class StockQuant(models.Model):
 # 				quant.secondary_quantity = uom_quantity
 	def create(self, vals):
 		res = super(StockQuant, self).create(vals)
+		qty = 0
 		for quant in res:
 			if quant.product_id.is_secondary_uom:
 				move_line = self.env['stock.move.line'].search([('lot_id', '=', res.lot_id.id)])
 				if move_line:
-					uom_quantity = move_line.secondary_done_qty
+					for line in move_line:
+						qty += line.secondary_done_qty
+					uom_quantity = qty
 				quant.secondary_quantity = uom_quantity

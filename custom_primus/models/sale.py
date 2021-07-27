@@ -116,17 +116,13 @@ class ProductProduct(models.Model):
                 if center_stone:
                     for cs in center_stone:
                         cs_qty += cs.product_qty
-                    csn = center_stone[0].product_id.name.split() 
-                    if csn:
-                        center_stone_name = csn[2] 
+                    center_stone_name = center_stone.product_id.stone_name_id.name
                     description += str("%.2f" % cs_qty) + ' Cts ' + center_stone_name 
                 accent_stone = rec.bom_id_line.filtered(lambda b: b.bom_line_type_id.name == 'Accent Stone 1')
                 if accent_stone:
                     for ast in accent_stone:
                         as_qty += ast.product_qty
-                    asn = accent_stone[0].product_id.name.split() 
-                    if asn:
-                        accent_stone_name = asn[3] + ' ' + asn[4]
+                    accent_stone_name = accent_stone.product_id.stone_name_id.name
                     description += ' and ' + str("%.2f" % as_qty) + ' Cts ' + accent_stone_name
                 if rec.jtype == 'ring':
                     Jewel = 'Ring'
@@ -149,17 +145,13 @@ class ProductProduct(models.Model):
                 if accent_stone2:
                     for ast in accent_stone2:
                         as_qty2 += ast.product_qty
-                    asn2 = accent_stone2[0].product_id.name.split() 
-                    if asn2:
-                        accent_stone_name2 = asn2[3] + ' ' + asn2[4]
+                    accent_stone_name2 = accent_stone2.product_id.stone_name_id.name
                     description += '\n' + str("%.2f" % as_qty2) + ' Cts ' + accent_stone_name2
                 accent_stone3 = rec.bom_id_line.filtered(lambda b: b.bom_line_type_id.name == 'Accent Stone 3')
                 if accent_stone3:
                     for ast in accent_stone3:
                         as_qty3 += ast.product_qty
-                    asn3 = accent_stone2[0].product_id.name.split() 
-                    if asn3:
-                        accent_stone_name3 = asn3[2] + asn3[3]
+                    accent_stone_name3 = accent_stone3.product_id.stone_name_id.name
                     description += '\n' + str("%.2f" % as_qty3) + ' Cts ' + accent_stone_name3
                 metal = rec.bom_id_line.filtered(lambda b: b.bom_line_type_id.name == 'Metal')
                 if metal[0]:
