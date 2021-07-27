@@ -30,9 +30,7 @@ class StockQuant(models.Model):
 		qty = 0
 		for quant in res:
 			if quant.product_id.is_secondary_uom:
-				move_line = self.env['stock.move.line'].search([('lot_id', '=', res.lot_id.id)])
+				move_line = self.env['stock.move.line'].search([('lot_id', '=', res.lot_id.id)], limit=1, order='id desc')
 				if move_line:
-					for line in move_line:
-						qty += line.secondary_done_qty
-					uom_quantity = qty
+					uom_quantity = move_line.secondary_done_qty
 				quant.secondary_quantity = uom_quantity
