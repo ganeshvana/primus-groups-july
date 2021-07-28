@@ -94,13 +94,13 @@ class Product(models.Model):
 		, compute_sudo=False)
 	is_secondary_uom = fields.Boolean("Secondary Unit", default=True)
 
-
 	@api.depends('stock_move_ids.product_qty', 'stock_move_ids.state')
 	def _compute_second_quantities(self):
 		products = self.filtered(lambda p: p.type != 'service')
 		res = products._compute_quantities_dict(self._context.get('lot_id'), self._context.get('owner_id'), self._context.get('package_id'), self._context.get('from_date'), self._context.get('to_date'))
 		for product in products:
 			product.secondary_qty = res[product.id]['second_qty_available']
+			product.qty_available = product.qty_available
 		services = self - products
 		services.secondary_qty = 0.0
 
