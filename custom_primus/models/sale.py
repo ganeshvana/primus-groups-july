@@ -140,7 +140,7 @@ class ProductProduct(models.Model):
                     Jewel = 'Bangle'
                 if rec.jtype == 'cuff':
                     Jewel = 'Cuff'
-                description += ' ' + Jewel +  ' ' +str(rec.jfiness.code) + ' ' + str(rec.jplating.code)
+                description += ' ' + Jewel +  ' ' +str(rec.jfiness.code) + ' ' + str(rec.jplating.name)
                 accent_stone2 = rec.bom_id_line.filtered(lambda b: b.bom_line_type_id.name == 'Accent Stone 2')
                 if accent_stone2:
                     for ast in accent_stone2:

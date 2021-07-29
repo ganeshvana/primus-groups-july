@@ -55,7 +55,8 @@
 								</t> -->
 							</td>
 							<td style="text-align:left;font-size:6px;" width="50%">
-								<span t-field="product[0].product_desc"/>
+								<span t-field="product[0].product_desc"/><br/>
+								<span t-esc="product[2]"/>
 								<!-- <t t-if="barcode_config.barcode" style="color:black;"
 									align="right">
 									<img

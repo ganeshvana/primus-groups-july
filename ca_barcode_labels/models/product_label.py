@@ -102,7 +102,6 @@ class ProdcutLabel(models.TransientModel):
         if not self.product_lines:
             raise ValidationError(_(""" No Product Lines To Print."""))
         qty_set_one = False
-
         if self.barcode_template.default_qty_labels and self.barcode_template.default_qty_labels == 'one_qty':
             qty_set_one = True
 
@@ -170,6 +169,7 @@ class ReportProductLabel(models.AbstractModel):
     def _get_report_values(self, docids, data=None):
         # if not data.get('form'):
         #     raise UserError(_("Form content is missing, this report cannot be printed."))
+        mrp = 0.0
         if 'barcode_template' in data:
             barcode_config = self.env['barcode.configuration.template'].search([('id', '=', data.get('barcode_template'))])
         else:
@@ -185,11 +185,24 @@ class ReportProductLabel(models.AbstractModel):
             for rec in data['product_ids']:
                 for loop in range(0, int(rec['qty'])):
                     product = self.env['product.product'].browse(int(rec['product_id']))
+                    if 'active_model' in self._context:
+                        if self._context['active_model'] == 'sale.order':
+                            for sale in self._context['active_ids']:
+                                so = self.env['sale.order'].browse(sale)
+                                if so:
+                                    if so.order_line:
+                                        sale_line = so.order_line.filtered(lambda sol: sol.product_id.id == product.id)
+                                        if sale_line:
+                                            mrp = sale_line.price_unit
+                    if 'active_model' in self._context:
+                        if self._context['active_model'] == 'product.product':
+                            mrp = product.standard_price
                     barcode_value = getattr(product, barcode_field, '')
-                    docs.append((product, rec['lot_number'], product.name_get()[0][1], barcode_value))
+                    docs.append((product, rec['lot_number'],mrp, product.name_get()[0][1], barcode_value))
         else:
             for rec in docids:
                 product = self.env['product.product'].browse(rec)
+                mrp = product.standard_price
                 barcode_value = product.barcode
                 docs.append((product, False, product.name_get()[0][1], barcode_value))
         return {
