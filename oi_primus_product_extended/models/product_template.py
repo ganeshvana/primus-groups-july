@@ -17,10 +17,10 @@ _logger = logging.getLogger(__name__)
 
 class Product_Master_Creation(models.Model):
     _inherit = 'product.image'
-           
+            
     product_image_desc_id = fields.Many2one('product.image.desc', "Desc")
     not_to_website = fields.Boolean("Don't show in Website")
-           
+            
     @api.onchange('product_image_desc_id')
     def onchange_product_image_desc_id(self):
         if self.product_image_desc_id:
@@ -208,6 +208,7 @@ class Product_Master_Creation(models.Model):
     certificate_origin_product_ids = fields.Many2many('product.product','product_certificates_origin_rel', 'product_id', 'certificate_id', "Certificate Origin Products")
     jtypes = fields.Many2one('jewel.tags', "Jewel Type")
     product_desc = fields.Text("Detailed Description")  
+    automatic_desc = fields.Boolean("Auto Desc.", default=True)
     
     @api.depends('')  
     
@@ -1265,6 +1266,7 @@ class ProductProduct(models.Model):
     provided_by = fields.Selection([('vendor','Vendor'),('factory','Factory')], "Provided By") 
     ir_attachment_ids = fields.One2many('ir.attachment', 'product_id', "Files")
     product_desc = fields.Text("Detailed Description")
+    automatic_desc = fields.Boolean("Auto Desc.", default=True)
     avg=fields.Float(string='Average Weight', digits = (12,3), compute='_compute_avg', store=True)
     
     @api.depends('qty_available', 'secondary_qty')

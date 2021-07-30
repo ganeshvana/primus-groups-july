@@ -187,7 +187,8 @@
 									attrs="{'invisible': [('products_types','not in',['is_jewellery', 'design'])]}"
 									domain="[('sub_brand_id','=',sub_brand_id)]" />
 								<field name="provided_by"/>	
-								<field name="product_desc" placeholder="Detailed Description"/>  
+								<field name="automatic_desc" />
+								<field name="product_desc" placeholder="Detailed Description" attrs="{'readonly': [('automatic_desc','=',True)]}"/>  
 							</group>
 						</group>
 						<group attrs="{'invisible': [('products_types','!=','stone')]}">
@@ -1088,9 +1089,9 @@
 			</field>
 		</record>
 
-		<menuitem id="stone_color_menu_config_master" name="Color"
+		<!-- <menuitem id="stone_color_menu_config_master" name="Color"
 			sequence="3" parent="menu_action_stone_masters"
-			action="action_stone_color" />
+			action="action_stone_color" /> -->
 
 		<record id="stone_cutting_tree_view" model="ir.ui.view">
 			<field name="name">stone.cutting.tree</field>

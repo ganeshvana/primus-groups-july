@@ -22,13 +22,13 @@
 						<tr style="border:none;">
 							<td style="border:none;" width="25%">
 								<t t-if="barcode_config.barcode" style="color:black;"
-									align="right">
+									align="left">
 									<img
 										t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=%s' %(barcode_config.barcode_type, product[3], int(barcode_config.display_width), int(barcode_config.display_height),is_humanreadable)" />
 								</t>
 								
 							</td>
-							<td style="font-size:6px;" width="25%">
+							<td style="font-size:6px;" width="25%" align="center">
 								<t t-if="product[0].brand_id">
 									<img
 										t-att-src="image_data_uri(product[0].brand_id.logo)"
