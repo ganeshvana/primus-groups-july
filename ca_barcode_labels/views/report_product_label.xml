@@ -20,7 +20,7 @@
 				<div class="page">
 					<table style="border:none;" width="100%">
 						<tr style="border:none;">
-							<td style="border:none;" width="25%">
+							<td style="border:none;" width="20%">
 								<t t-if="barcode_config.barcode" style="color:black;"
 									align="left">
 									<img
@@ -28,7 +28,7 @@
 								</t>
 								
 							</td>
-							<td style="font-size:6px;" width="25%" align="center">
+							<td style="font-size:6px;text-align:left;" width="30%">
 								<t t-if="product[0].brand_id">
 									<img
 										t-att-src="image_data_uri(product[0].brand_id.logo)"
