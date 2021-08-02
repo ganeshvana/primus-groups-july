@@ -263,7 +263,6 @@ class Product_Master_Creation(models.Model):
         for rec in self:
             if rec.secondary_qty != 0.0:
                 rec.avg = rec.qty_available / rec.secondary_qty
-                print(rec.avg, "+++++++++++++++++++++++++++++++++++++rec.qty_available / rec.secondary_qty")
                 
 #     @api.depends_context('company')
 #     def _compute_second_quantities(self):
@@ -957,10 +956,8 @@ class Product_Master_Creation(models.Model):
             if res.jewel_mold == 'no' and 'style' in vals and vals['style'] == False:
 #                 seq = self.env['ir.sequence'].next_by_code('style')
                 seq = ''
-                seqrec = self.env['product.template'].sudo().search([('jtype', '=', res.jtype),('jfiness', '=', res.jfiness.id),
-                                                              ('jplating', '=', res.jplating.id),('jstone_name_id', '=', res.jstone_name_id.id),
-                                                              ('jewel_size', '=', res.jewel_size.id),('center_color_stone_id', '=', res.center_color_stone_id.id)])
-                seq = len(seqrec) + 1
+                seqrec = self.env['product.template'].sudo().search_count([('jtype', '=', res.jtype)])
+                seq = seqrec + 1
                 res.jewel_seq = seq
                 if int(seq) < 10:
                     seq = '00' + str(seq)
