@@ -17,10 +17,10 @@ _logger = logging.getLogger(__name__)
 
 class Product_Master_Creation(models.Model):
     _inherit = 'product.image'
-            
+             
     product_image_desc_id = fields.Many2one('product.image.desc', "Desc")
     not_to_website = fields.Boolean("Don't show in Website")
-            
+             
     @api.onchange('product_image_desc_id')
     def onchange_product_image_desc_id(self):
         if self.product_image_desc_id:
@@ -953,7 +953,8 @@ class Product_Master_Creation(models.Model):
             res.default_code = 'M' + Jewel + year + res.rseq
 #             res.name = mlp + ' ' + mat + ' ' + ' Mold'
         if res.products_types == 'is_jewellery':
-            if res.jewel_mold == 'no' and 'style' in vals and vals['style'] == False:
+#             if res.jewel_mold == 'no' and 'style' in vals and vals['style'] == False:
+            if res.jewel_mold == 'no':
 #                 seq = self.env['ir.sequence'].next_by_code('style')
                 seq = ''
                 seqrec = self.env['product.template'].sudo().search_count([('jtype', '=', res.jtype)])
