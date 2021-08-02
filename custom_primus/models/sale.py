@@ -73,7 +73,7 @@ class Product(models.Model):
     product_desc = fields.Text("Detailed Description", compute='compute_product_desc', store=True)
     automatic_desc = fields.Boolean("Auto Desc.", default=True)
     
-    @api.depends('bom_id_line','bom_id_line.bom_line_type_id', 'bom_id_line.product_qty', 'bom_id_line.product_id', 'automatic_desc')
+    @api.depends('bom_id_line','bom_id_line.bom_line_type_id', 'bom_id_line.product_qty', 'bom_id_line.product_id', 'automatic_desc', 'bom_id_line.product_id.stone_name_id', 'bom_id_line.product_id.plating', 'bom_id_line.product_id.finess')
     def compute_product_desc(self):
         cs_qty = as_qty = as_qty2 = as_qty3 = as_qty4 = as_qty5 = as_qty6 = 0.0
         accent_stone = []
@@ -187,7 +187,7 @@ class ProductProduct(models.Model):
     product_desc = fields.Text("Detailed Description", compute='compute_product_desc', store=True)
     automatic_desc = fields.Boolean("Auto Desc.", default=True)
     
-    @api.depends('bom_id_line','bom_id_line.bom_line_type_id', 'bom_id_line.product_qty', 'bom_id_line.product_id', 'automatic_desc')
+    @api.depends('bom_id_line','bom_id_line.bom_line_type_id', 'bom_id_line.product_qty', 'bom_id_line.product_id', 'automatic_desc', 'bom_id_line.product_id.stone_name_id', 'bom_id_line.product_id.plating', 'bom_id_line.product_id.finess')
     def compute_product_desc(self):
         cs_qty = as_qty = as_qty2 = as_qty3 = as_qty4 = as_qty5 = as_qty6 = 0.0
         accent_stone = []
