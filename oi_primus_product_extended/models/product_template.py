@@ -957,7 +957,7 @@ class Product_Master_Creation(models.Model):
 #                 seq = self.env['ir.sequence'].next_by_code('style')
                 seq = ''
                 seqrec = self.env['product.template'].sudo().search_count([('jtype', '=', res.jtype)])
-                seq = seqrec + 1
+                seq = seqrec
                 res.jewel_seq = seq
                 if int(seq) < 10:
                     seq = '00' + str(seq)
