@@ -1214,7 +1214,8 @@ class Product_Master_Creation(models.Model):
                 dbom.product_id = variants_to_activate.id
                 variants_to_activate.bom_id = dbom.id
                 for l in dbom.bom_line_ids:
-                    l.pro_pro_id = variants_to_activate.id
+                    for vta in variants_to_activate:
+                        l.pro_pro_id = vta.id
         if variants_to_create:
             variants = Product.create(variants_to_create)
             if self.bom_ids:
