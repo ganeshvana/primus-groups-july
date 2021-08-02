@@ -93,7 +93,7 @@ class Product_Master_Creation(models.Model):
     status = fields.Selection([
         ('active', 'Active'),
         ('inactive', 'Inactive')], string='Status')
-    style = fields.Char('Style')
+    style = fields.Char('Style', copy=False)
     jtype = fields.Selection([('earring', 'Earring'),
                              ('pendant', 'Pendant'),
                              ('bracelet', 'Bracelet'),
