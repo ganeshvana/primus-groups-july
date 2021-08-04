@@ -961,8 +961,10 @@ class Product_Master_Creation(models.Model):
                 seq = seqrec
                 res.jewel_seq = seq
                 if int(seq) < 10:
+                    seq = '000' + str(seq)
+                if int(seq) >= 10 and int(seq) <= 99:
                     seq = '00' + str(seq)
-                if int(seq) < 100:
+                if int(seq) >= 100:
                     seq = '0' + str(seq)
                 Jewel = jsize = ''
                 if res.jtype == 'ring':
@@ -1471,7 +1473,7 @@ class ProductProduct(models.Model):
             res.default_code = 'M' + Jewel + year + res.rseq
 #             res.name = mlp + ' ' + mat + ' ' + ' Mold'
         if res.products_types == 'is_jewellery':
-            if res.jewel_mold == 'no' and 'style' in vals and vals['style'] == False:
+            if res.jewel_mold == 'no':
                 seq = ''
                 seqrec = self.env['product.product'].sudo().search([('jtype', '=', res.jtype)])
                 seq = len(seqrec) + 1

@@ -34,25 +34,6 @@
 										t-att-src="image_data_uri(product[0].brand_id.logo)"
 										style="max-height: 1cm; max-width: 3cm;" />
 								</t>
-								<!-- <t style="font-size:8px;">
-									<strong>
-										SKU:
-										<span t-field="product[0].default_code" />
-									</strong>
-								</t>
-								<br />
-								<t t-if="barcode_config.product_name" align="left"
-									style="font-size:6px;">
-									<span t-field="product[0].name" />
-								</t>
-								<br />
-								<t align="left" style="font-size:6px;">
-									1.00 Grams
-									<br />
-									MSRP
-									<span t-field="product[0].standard_price"
-										t-options='{"widget": "monetary", "display_currency": barcode_config.company_id.currency_id}' />
-								</t> -->
 							</td>
 							<td style="text-align:left;font-size:6px;" width="50%">
 								<span t-field="product[0].product_desc"/><br/>
