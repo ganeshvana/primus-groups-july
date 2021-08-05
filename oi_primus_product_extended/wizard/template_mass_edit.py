@@ -97,6 +97,12 @@ class BOMBulk(models.TransientModel):
                                 'provided_by': line.provided_by,
                                 'bom_id': wb.bom_id.id
                                 })
+                        if exist:
+                            exist.bom_line_type_id = line.bom_line_type_id.id,
+                            exist.product_qty = line.product_qty,
+                            exist.sec_quantity = line.sec_quantity,
+                            exist.unit_cost = line.unit_cost,
+                            exist.provided_by = line.provided_by
                     if not wb.bom_id.bom_line_ids:
                         bomline = self.env['mrp.bom.line'].create({
                             'pro_pro_id': wb.id,
