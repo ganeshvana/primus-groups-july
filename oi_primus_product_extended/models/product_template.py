@@ -15,16 +15,16 @@ from odoo.osv import expression
 
 _logger = logging.getLogger(__name__)
 
-# class Product_Master_Creation(models.Model):
-#     _inherit = 'product.image'
-#              
-#     product_image_desc_id = fields.Many2one('product.image.desc', "Desc")
-#     not_to_website = fields.Boolean("Don't show in Website")
-#              
-#     @api.onchange('product_image_desc_id')
-#     def onchange_product_image_desc_id(self):
-#         if self.product_image_desc_id:
-#             self.name = self.product_image_desc_id.name
+class Product_Master_Creation(models.Model):
+    _inherit = 'product.image'
+              
+    product_image_desc_id = fields.Many2one('product.image.desc', "Desc")
+    not_to_website = fields.Boolean("Don't show in Website")
+              
+    @api.onchange('product_image_desc_id')
+    def onchange_product_image_desc_id(self):
+        if self.product_image_desc_id:
+            self.name = self.product_image_desc_id.name
 
 
 class Product_Master_Creation(models.Model):
@@ -201,7 +201,7 @@ class Product_Master_Creation(models.Model):
     jewel_product_ids = fields.Many2many('product.template','product_jewel_rel', 'product_id', 'design_id', "Jewel Products")
     qty_available = fields.Float('Quantity On Hand', compute='_compute_quantities', search='_search_qty_available', compute_sudo=False, digits=(12,3))
     ir_attachment_ids = fields.One2many('ir.attachment', 'product_tmpl_id', "Files")
-    center_color_stone_id = fields.Many2one('center.color.stone', "Center Stone Color")
+    center_color_stone_id = fields.Many2one('center.color.stone', "Stone Color")
     provided_by = fields.Selection([('vendor','Vendor'),('factory','Factory')], "Provided By") 
     stone_applicable = fields.Boolean("Stone Applicable", default=True)
     certificate_product_ids = fields.Many2many('product.product','product_certificates_rel', 'product_id', 'certificate_id', "Certificate Products")
@@ -210,7 +210,6 @@ class Product_Master_Creation(models.Model):
     product_desc = fields.Text("Detailed Description")  
     automatic_desc = fields.Boolean("Auto Desc.", default=True)
     
-    @api.depends('')  
     
 #     @api.onchange('name')
 #     def onchange_name(self):
@@ -644,7 +643,7 @@ class Product_Master_Creation(models.Model):
     def onchange_center_color_stone_id(self):
         if self.center_color_stone_id:
             new_lines = []
-            attribute = self.env['product.attribute'].search([('name', '=', 'Center Stone Color')])
+            attribute = self.env['product.attribute'].search([('name', '=', 'Stone Color')])
             exist = self.attribute_line_ids.filtered(lambda ptal: ptal.attribute_id.id == attribute.id)
             if not exist:
                 att_val = self.env['product.attribute.value'].search([('name', '=', self.center_color_stone_id.name),('attribute_id', '=', attribute.id)])
@@ -1110,7 +1109,6 @@ class Product_Master_Creation(models.Model):
                     for bom in pt.design_product_id.bom_ids:
                         newbom = bom.copy()
                         newbom.product_tmpl_id = pt.id
-    
             if pt.products_types == 'mold':
                 if 'design_product_ids' in vals:
                     for rec in pt.design_product_ids:
@@ -1120,9 +1118,16 @@ class Product_Master_Creation(models.Model):
 #                 if pt.certificate_origin_product_ids:
 #                     for rec in pt.certificate_origin_product_ids:
 #                         pr_ids = rec.certificate_product_ids.ids
-#                         pr_ids.append(pt.id)
+#                         pr = self.env['product.product'].search([('product_tmpl_id', '=', pt.id)])
+#                         pr_ids.append(pr.id)
 #                         rec.certificate_product_ids = [(6,0,pr_ids)]
 #                         rec.certificate = 'yes'
+            if 'certificate_product_ids' in vals:
+                if pt.certificate_product_ids:
+                    for rec in pt.certificate_product_ids:
+                        pr = self.env['product.product'].search([('product_tmpl_id', '=', pt.id)])
+                        rec.certificate_origin_product_ids = [(4,pr.id)]
+                        rec.certificate = 'yes'
             if pt.products_types == 'is_jewellery':
                 if 'design_product_id' in vals:
                     if pt.design_product_id:
@@ -1263,7 +1268,7 @@ class ProductProduct(models.Model):
     finding_plating_id = fields.Many2one('metal.plating',  'F Plating', store=True)
     finding_Thickness_id = fields.Many2one('metal.thickness',  'Thickness', store=True)
     finding_plating_thickness_id = fields.Many2one('metal.platingfiness',  'Plating Fineness', store=True)
-    center_color_stone_id = fields.Many2one('center.color.stone', "Center Stone Color")
+    center_color_stone_id = fields.Many2one('center.color.stone', "Stone Color")
     provided_by = fields.Selection([('vendor','Vendor'),('factory','Factory')], "Provided By") 
     ir_attachment_ids = fields.One2many('ir.attachment', 'product_id', "Files")
     product_desc = fields.Text("Detailed Description")
@@ -1527,7 +1532,7 @@ class ProductProduct(models.Model):
                                 'name': tempvar.product_attribute_value_id.name,
                                 'jewel_code': tempvar.product_attribute_value_id.code})
                             fine = fines.id
-                    if tempvar.attribute_id.name == 'Center Stone Color':
+                    if tempvar.attribute_id.name == 'Stone Color':
                         center_stone = self.env['center.color.stone'].search([('name', '=', tempvar.product_attribute_value_id.name)])
                         if center_stone:
                             ccs = center_stone.id
@@ -1839,7 +1844,7 @@ class ProductAttVal(models.Model):
                     'name': tempvar.name,
                     'code': tempvar.code,
                     'jewel_code': tempvar.jewel_code})
-        if tempvar.attribute_id.name == 'Center Stone Color':
+        if tempvar.attribute_id.name == 'Stone Color':
             center_stone = self.env['center.color.stone'].search([('name', '=', tempvar.name)])
             if not center_stone:
                 center_stone = self.env['center.color.stone'].create({
@@ -1911,7 +1916,7 @@ class ProductAttVal(models.Model):
                     fines.code = vals['code']
                 if 'jewel_code' in vals:
                     fines.jewel_code = vals['jewel_code']
-        if tempvar.attribute_id.name == 'Center Stone Color':
+        if tempvar.attribute_id.name == 'Stone Color':
             center_stone = self.env['center.color.stone'].search([('name', '=', tempvar.name)])
             if center_stone:
                 if 'name' in vals:
