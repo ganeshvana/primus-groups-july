@@ -71,6 +71,7 @@ class BOMBulk(models.TransientModel):
         active_ids = context['active_ids']  
         no_bom = []
         with_bom = []
+        pq = 0.0
         if active_ids:
             products = self.env['product.product'].search([('id', 'in', active_ids)])
 #             no_bom = products.filtered(lambda p: p.bom_id == False)
@@ -99,9 +100,11 @@ class BOMBulk(models.TransientModel):
                                 })
                         if exist:
                             exist.bom_line_type_id = line.bom_line_type_id.id,
-                            exist.product_qty = line.product_qty,
-                            exist.sec_quantity = line.sec_quantity,
-                            exist.unit_cost = line.unit_cost,
+                            exist.write({'bom_line_type_id': line.bom_line_type_id.id,
+                                         'product_qty': line.product_qty,
+                                         'sec_quantity': line.sec_quantity,
+                                         'unit_cost': line.unit_cost,
+                                         'provided_by': line.provided_by})
                             exist.provided_by = line.provided_by
                     if not wb.bom_id.bom_line_ids:
                         bomline = self.env['mrp.bom.line'].create({
