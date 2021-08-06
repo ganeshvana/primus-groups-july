@@ -186,6 +186,83 @@
 			ref="custom_primus_report.paperformat_disclosure" />
 		<field name="binding_type">report</field>
 	</record>
+	
+	<template id="report_sku_template">
+		<t t-call="custom_primus_report.treatment_disclosure_external_layout">
+			<t t-set="o" t-value="doc.with_context(lang=doc.partner_id.lang)" />
+			<div class="page">
+				<left>
+					<h3><strong>SKU Template</strong></h3>
+				</left>
+				<table class="table table-bordered" width="100%" style="font-size:12px;">
+					<thead>
+						<td>Vendor SKU</td>
+						<td>IMAGE  (if Avail)</td>
+						<td>METAL Type </td>
+						<td>Plating type</td>
+						<td>*Min gram Wt. Use smallest Size</td>
+						<td>MFG Country of Origin</td>
+						<td>Gem Type</td>
+						<td>Specify Treatment Type</td>
+						<td>MM Size and Shape</td>
+						<td>Stone Count</td>
+						<td>Min Carat Weight</td>
+						<td>Color and Dia CTWs</td>
+						<td>Stone Country of Origin</td>
+						<td>QTY Avail</td>
+						<td>JTV COST</td>
+						<td>P1</td>
+						<td>COMMENTS</td>
+						<td>Time needed to ship</td>
+					</thead>
+					<tbody>	
+						<t t-foreach="doc.invoice_line_ids" t-as="line">
+						<tr>
+							<td><span t-field="line.product_id.default_code" /></td>
+							<td><img t-if="line.product_id.image_1920" t-att-src="image_data_uri(line.product_id.image_1920)" style="max-height: 45px;"/></td>
+							<td>METAL Type </td>
+							<td>Plating type</td>
+							<td>*Min gram Wt. Use smallest Size</td>
+							<td>MFG Country of Origin</td>
+							<td>Gem Type</td>
+							<td>Specify Treatment Type</td>
+							<td>MM Size and Shape</td>
+							<td>Stone Count</td>
+							<td>Min Carat Weight</td>
+							<td>Color and Dia CTWs</td>
+							<td>Stone Country of Origin</td>
+							<td>QTY Avail</td>
+							<td>JTV COST</td>
+							<td>P1</td>
+							<td>COMMENTS</td>
+							<td>Time needed to ship</td>
+						</tr>
+						</t>
+					</tbody>
+				</table>
+			</div>
+		</t>
+	</template>
+
+	<template id="report_sku_template_main">
+		<t t-call="web.html_container">
+			<t t-foreach="docs" t-as="doc">
+				<t t-call="custom_primus_report.report_sku_template" t-lang="doc.partner_id.lang" />
+			</t>
+		</t>
+	</template>
+
+	<record id="action_report_sku_template" model="ir.actions.report">
+		<field name="name">SKU Template</field>
+		<field name="model">account.move</field>
+		<field name="report_type">qweb-pdf</field>
+		<field name="report_name">custom_primus_report.report_sku_template_main</field>
+		<field name="report_file">custom_primus_report.report_sku_template_main</field>
+		<field name="print_report_name">'SKU Template - %s' % (object.name)</field>
+		<field name="binding_model_id" ref="account.model_account_move" />
+		<field name="paperformat_id" ref="custom_primus_report.paperformat_disclosure" />
+		<field name="binding_type">report</field>
+	</record>
    
 	
 	
