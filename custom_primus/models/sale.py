@@ -73,7 +73,7 @@ class Product(models.Model):
     product_desc = fields.Text("Detailed Description", compute='compute_product_desc', store=True)
     automatic_desc = fields.Boolean("Auto Desc.", default=True)
     
-    @api.depends('bom_id_line','bom_id_line.bom_line_type_id', 'bom_id_line.product_qty', 'bom_id_line.product_id', 'automatic_desc', 'bom_id_line.product_id.stone_name_id', 'bom_id_line.product_id.plating', 'bom_id_line.product_id.finess')
+    @api.depends('bom_id_line','bom_id_line.bom_line_type_id', 'bom_id_line.product_qty', 'bom_id_line.product_id', 'automatic_desc', 'bom_id_line.product_id.stone_name_id', 'bom_id_line.product_id.plating', 'bom_id_line.product_id.finess', 'certificate_product_ids')
     def compute_product_desc(self):
         cs_qty = as_qty = as_qty2 = as_qty3 = as_qty4 = as_qty5 = as_qty6 = 0.0
         accent_stone = []
@@ -150,6 +150,8 @@ class Product(models.Model):
                     metal = rec.bom_id_line.filtered(lambda b: b.bom_line_type_id.name == 'Metal')
                     if metal:
                         description += '\n' + str("%.2f" % metal[0].product_qty) + ' Grams'
+                    if rec.certificate_product_ids:
+                        description += '\n' + rec.certificate_product_ids[0].certification_lab.code + ' ' + rec.certificate_product_ids[0].certification_lno
                 rec.product_desc = description
                 description = ''
     
@@ -160,7 +162,6 @@ class Product(models.Model):
                 bom = rec.bom_ids[0]
                 self.bom_id = bom.id
                 
-                    
     @api.depends('bom_ids','bom_id', 'bom_id.product_qty', 'bom_id.code', 'bom_id.type', 'bom_id.consumption', 'bom_id.ready_to_produce', 'bom_id.picking_type_id','bom_id.company_id', 'bom_id.bom_line_ids')
     def compute_bom_id(self):
         for rec in self:
@@ -187,7 +188,7 @@ class ProductProduct(models.Model):
     product_desc = fields.Text("Detailed Description", compute='compute_product_desc', store=True)
     automatic_desc = fields.Boolean("Auto Desc.", default=True)
     
-    @api.depends('bom_id_line','bom_id_line.bom_line_type_id', 'bom_id_line.product_qty', 'bom_id_line.product_id', 'automatic_desc', 'bom_id_line.product_id.stone_name_id', 'bom_id_line.product_id.plating', 'bom_id_line.product_id.finess')
+    @api.depends('bom_id_line','bom_id_line.bom_line_type_id', 'bom_id_line.product_qty', 'bom_id_line.product_id', 'automatic_desc', 'bom_id_line.product_id.stone_name_id', 'bom_id_line.product_id.plating', 'bom_id_line.product_id.finess', 'certificate_product_ids')
     def compute_product_desc(self):
         cs_qty = as_qty = as_qty2 = as_qty3 = as_qty4 = as_qty5 = as_qty6 = 0.0
         accent_stone = []
@@ -264,6 +265,8 @@ class ProductProduct(models.Model):
                     metal = rec.bom_id_line.filtered(lambda b: b.bom_line_type_id.name == 'Metal')
                     if metal:
                         description += '\n' + str("%.2f" % metal[0].product_qty) + ' Grams'
+                    if rec.certificate_product_ids:
+                        description += '\n' + rec.certificate_product_ids[0].certification_lab.code + ' ' + rec.certificate_product_ids[0].certification_lno
                 rec.product_desc = description
                 description = ''
     
