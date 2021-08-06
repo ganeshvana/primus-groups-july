@@ -1,0 +1,193 @@
+<odoo>
+  <data>
+    <record id="paperformat_disclosure" model="report.paperformat">
+		<field name="name">Disclosure-A4</field>
+		<field name="default" eval="True" />
+		<field name="format">A4</field>
+		<field name="page_height">0</field>
+		<field name="page_width">0</field>
+		<field name="orientation">Portrait</field>
+		<field name="margin_top">5</field>
+		<field name="margin_bottom">10</field>
+		<field name="margin_left">7</field>
+		<field name="margin_right">7</field>
+		<field name="header_line" eval="False" />
+		<field name="header_spacing">10</field>
+		<field name="dpi">90</field>
+	</record>
+
+	<template id="treatment_disclosure_external_layout">
+		<div t-attf-class="header" t-att-style="report_header_style">
+		</div>
+		<div t-attf-class="article o_report_layout_standard "
+			t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id"
+			t-att-data-oe-lang="o and o.env.context.get('lang')">
+			<div class="pt-5">
+				<t t-call="web.address_layout" />
+			</div>
+			<t t-raw="0" />
+		</div>
+
+		<div t-attf-class="footer o_standard_footer ">
+			<div class="text-center">
+				<div t-if="report_type == 'pdf'" class="text-muted">
+					Page:
+					<span class="page" />
+					/
+					<span class="topage" />
+				</div>
+			</div>
+		</div>
+	</template>
+
+	<template id="report_treatment_disclosure_template">
+		<t t-call="custom_primus_report.treatment_disclosure_external_layout">
+			<t t-set="o" t-value="doc.with_context(lang=doc.partner_id.lang)" />
+			<div class="page">
+				<left>
+					<h3><strong>Jewelry Gemstone Treatment Disclosure Form</strong></h3>
+				</left>
+				<table class="table table-bordered" width="100%" style="font-size:13px;">
+					<tr width="100%"><th colspan="6" style="background:#EBEDEF;border-top:3px solid #3984C6;padding:3px" class="text-center" width="100%">
+					</th></tr>
+					<tr>
+						<td colspan="6">	
+							<p style="font-size:12px;">
+							This form must be completed for every jewelry product purchase.  
+							A buyer may not authorize a product purchase if this form is not completed.  In answering the questions below, if item contains multiple gemstones, please specify requested information for each gemstone contained therein to match the Gemstone Treatment Disclosure Form.  
+							Refer to the American Gem Trade Association (AGTA) Gemstone Information Manual (Eighth Edition December 2004 Page 105) for specific enhancement definitions.
+							</p>
+							<p style="font-size:12px;">
+							If the product described in this purchase contains more than one origin, more than one cutting location, more than one manufacturing, assembling, setting location, please attach additional sheets as needed.  
+							In addition, please create a separate invoice line item for each product to match the Gemstone Treatment Disclosure Form.
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<td width="13.4%">Supplier #</td>
+						<td width="20%">1231241</td>
+						<td width="13.3%">PO #</td>
+						<td width="20%">12312412</td>
+						<td width="13.3%">Invoice #</td>
+						<td width="20%">41241241</td>
+					</tr>
+					<tr>
+						<td colspan="1" width="25%">Supplier Name</td>
+						<td colspan="2" width="25%"></td>
+						<td colspan="1" width="25%">Phone Number</td>
+						<td colspan="2" width="25%"></td>
+					</tr>
+					<tr>
+						<td colspan="1" width="25%">Address 1</td>
+						<td colspan="2" width="25%"></td>
+						<td colspan="1" width="25%">Email</td>
+						<td colspan="2" width="25%"></td>
+					</tr>
+					<tr>
+						<td colspan="1" width="25%">Address 2</td>
+						<td colspan="2" width="25%"></td>
+						<td colspan="1" width="25%">Supplier Contact</td>
+						<td colspan="2" width="25%"></td>
+					</tr>
+					<tr>
+						<td colspan="1" width="25%">State/Province</td>
+						<td colspan="2" width="25%"></td>
+						<td colspan="1" width="25%">Phone</td>
+						<td colspan="2" width="25%"></td>
+					</tr>
+					<tr>
+						<td colspan="1" width="25%">Zip/Postal Code</td>
+						<td colspan="2" width="25%"></td>
+						<td colspan="1" width="25%">FAX</td>
+						<td colspan="2" width="25%"></td>
+					</tr>
+					<tr>
+						<td colspan="1" width="25%">Region / District / Territory</td>
+						<td colspan="2" width="25%"></td>
+						<td colspan="1" width="25%">Country</td>
+						<td colspan="2" width="25%"></td>
+					</tr>
+				</table>
+				<table class="table table-bordered" width="100%" style="font-size:13px;">
+					<tr width="100%"><th colspan="5" style="background:#EBEDEF;border-top:3px solid #3984C6;padding:3px" class="text-left" width="100%">
+					Jewelry</th></tr>
+					<tr>
+						<td width="20%"><center><strong>Vendor Item #<br/>JTV Item #</strong></center></td>
+						<td width="20%"><center><strong>Description</strong></center></td>
+						<td width="20%"><center><strong>Treatment</strong></center></td>
+						<td width="20%"><center><strong>Country of Origin (Manufactured)</strong></center></td>
+						<td width="20%"><center><strong>Country of Origin (Mine)</strong></center></td>
+					</tr>					
+				</table>
+				<table class="table table-bordered" width="100%" style="font-size:13px;">
+					<tr width="100%"><th colspan="3" style="background:#EBEDEF;border-top:3px solid #3984C6;padding:3px" class="text-left" width="100%">
+					Irradiation Treatment</th></tr>
+					<tr>
+						<td colspan="3">If Neutron irradiation treatment was used, was the supplier licensed by the U.S. Nuclear Regulatory Agency?</td>
+					</tr>	
+					<tr>
+						<td width="25%"> Yes | No</td>
+						<td width="45%"> If Yes - US Nuclear Regulatory Agency – License #</td>
+						<td width="30%"> </td>
+					</tr>				
+				</table>
+				
+				<table class="table table-bordered" width="100%" style="font-size:13px;">
+					<tr width="100%"><th colspan="1" style="background:#EBEDEF;border-top:3px solid #3984C6;padding:3px" class="text-left" width="100%">
+					Notes from Supplier: Treatment for additional stones(attach information to back if necessary)</th></tr>
+					<tr><td><br/><br/><br/><br/></td></tr>								
+				</table>
+				<table class="table table-bordered" width="100%" style="font-size:13px;">
+					<tr width="100%"><th colspan="4" style="background:#EBEDEF;border-top:3px solid #3984C6;padding:3px" class="text-left" width="100%">
+					Supplier Acknowledgement and Signature</th></tr>
+					<tr><td colspan="4">
+					<p style="font-size:12px;">
+					Supplier warrants that the information contained in this Gemstone Treatment Disclosure is accurate and acknowledges that America’s Collectibles Network, Inc. dba Jewelry Television® (“JTV”) will rely on this information.  Supplier agrees to provide treatment documentation and testing information when requested by JTV.  
+					Supplier agrees to be responsible to JTV for any failure to disclose treatment or for any misinformation in this form or otherwise about treatment.
+					</p>
+					</td>
+					<td>
+					<tr>
+						<td colspan="1" width="25%">Signature</td>
+						<td colspan="1" width="25%"></td>
+						<td colspan="1" width="25%">Title</td>
+						<td colspan="1" width="25%"></td>
+					</tr>
+					<tr>
+						<td colspan="1" width="25%">Printed Name:</td>
+						<td colspan="1" width="25%"></td>
+						<td colspan="1" width="25%">Date:</td>
+						<td colspan="1" width="25%"></td>
+					</tr>
+					</td>
+					</tr>								
+				</table>
+			</div>
+		</t>
+	</template>
+
+	<template id="report_treatment_disclosure_main">
+		<t t-call="web.html_container">
+			<t t-foreach="docs" t-as="doc">
+				<t t-call="custom_primus_report.report_treatment_disclosure_template" t-lang="doc.partner_id.lang" />
+			</t>
+		</t>
+	</template>
+
+	<record id="action_report_treatment_disclosure" model="ir.actions.report">
+		<field name="name">Treatment Disclosure</field>
+		<field name="model">account.move</field>
+		<field name="report_type">qweb-pdf</field>
+		<field name="report_name">custom_primus_report.report_treatment_disclosure_main</field>
+		<field name="report_file">custom_primus_report.report_treatment_disclosure_main</field>
+		<field name="print_report_name">'Treatment Disclosure - %s' % (object.name)</field>
+		<field name="binding_model_id" ref="account.model_account_move" />
+		<field name="paperformat_id"
+			ref="custom_primus_report.paperformat_disclosure" />
+		<field name="binding_type">report</field>
+	</record>
+   
+	
+	
+  </data>
+</odoo>
