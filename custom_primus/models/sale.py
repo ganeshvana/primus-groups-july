@@ -151,7 +151,7 @@ class Product(models.Model):
                     if metal:
                         description += '\n' + str("%.2f" % metal[0].product_qty) + ' Grams'
                     if rec.certificate_product_ids:
-                        description += '\n' + rec.certificate_product_ids[0].certification_lab.code + ' ' + rec.certificate_product_ids[0].certification_lno
+                        description += '\n' + rec.certificate_product_ids[0].certification_lab.code + ' ' + rec.certificate_product_ids[0].certification_no
                 rec.product_desc = description
                 description = ''
     
@@ -266,7 +266,7 @@ class ProductProduct(models.Model):
                     if metal:
                         description += '\n' + str("%.2f" % metal[0].product_qty) + ' Grams'
                     if rec.certificate_product_ids:
-                        description += '\n' + rec.certificate_product_ids[0].certification_lab.code + ' ' + rec.certificate_product_ids[0].certification_lno
+                        description += '\n' + rec.certificate_product_ids[0].certification_lab.code + ' ' + rec.certificate_product_ids[0].certification_no
                 rec.product_desc = description
                 description = ''
     
