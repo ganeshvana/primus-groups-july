@@ -1126,7 +1126,8 @@ class Product_Master_Creation(models.Model):
                 if pt.certificate_product_ids:
                     for rec in pt.certificate_product_ids:
                         pr = self.env['product.product'].search([('product_tmpl_id', '=', pt.id)])
-                        rec.certificate_origin_product_ids = [(4,pr.id)]
+                        for t in pr:
+                            rec.certificate_origin_product_ids = [(4,t.id)]
                         rec.certificate = 'yes'
             if pt.products_types == 'is_jewellery':
                 if 'design_product_id' in vals:
