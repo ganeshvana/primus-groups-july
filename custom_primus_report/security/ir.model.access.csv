@@ -1,5 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_sale_type,sale_type,model_sale_type,base.group_user,1,1,1,1
-access_buying_group,buying_group,model_buying_group,base.group_user,1,1,1,1
-access_bom_line_type,bom_line_type,model_bom_line_type,base.group_user,1,1,1,1
-access_provided_by,provided_by,model_provided_by,base.group_user,1,1,1,1
+access_sku_tempalate_xl,sku.tempalate.xl,model_sku_tempalate_xl,,1,1,1,1

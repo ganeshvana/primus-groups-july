@@ -18,7 +18,8 @@
     'depends': ['base', 'account'],
 
     'data': [
-        
+        'security/ir.model.access.csv',
+        'wizard/sku_template.xml',
         'views/report_views.xml',
     ],
     

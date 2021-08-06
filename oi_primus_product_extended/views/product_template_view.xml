@@ -471,7 +471,7 @@
 				</xpath>
 				<xpath expr="/search/field[@name='name']" position="after">
 					<field name="design_product_id" string="Design - Style SKU" filter_domain="[ ('design_product_id.default_code', 'ilike', self)]"/>
-					<field name="bom_id_line" string="BOM component" filter_domain="[ ('bom_id_line.product_id.name', 'ilike', self)]"/>
+					<!-- <field name="bom_id_line" string="BOM component" filter_domain="[ ('bom_id_line.product_id.name', 'ilike', self)]"/> -->
 					<field name="mold_ids" string="Mould - SKU" filter_domain="[ ('mold_ids.name', 'ilike', self)]"/>
 					<field name="style" string="Style" filter_domain="[ ('style', 'ilike', self)]"/>
 					<field name="default_code" string="SKU Number" filter_domain="[ ('default_code', 'ilike', self)]"/>

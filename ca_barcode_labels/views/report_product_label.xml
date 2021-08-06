@@ -21,27 +21,19 @@
 					<table style="border:none;" width="100%">
 						<tr style="border:none;">
 							<td style="border:none;" width="20%">
-								<t t-if="barcode_config.barcode" style="color:black;"
-									align="left">
-									<img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=%s' %(barcode_config.barcode_type, product[3], int(barcode_config.display_width), int(barcode_config.display_height),is_humanreadable)" />
+								<t t-if="barcode_config.barcode" style="color:black;" align="left">
+									<img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=%s' %(barcode_config.barcode_type, product[3], int(barcode_config.display_width), int(barcode_config.display_height),is_humanreadable)"/>
 								</t>
 							</td>
-							<td style="font-size:6px;text-align:left;" width="30%">
+							<td style="font-size:8px;" width="30%">
 								<t t-if="product[0].brand_id">
-									<img
-										t-att-src="image_data_uri(product[0].brand_id.logo)"
-										style="max-height: 1cm; max-width: 3cm;" />
+									<img t-att-src="image_data_uri(product[0].brand_id.logo)" style="max-height: 1cm; max-width: 3cm;"/>
 								</t>
 							</td>
-							<td style="text-align:left;font-size:6px;" width="50%">
-								<span t-field="product[0].product_desc"/><br/>
-								<span t-esc="product[2]"/>
-								<!-- <t t-if="barcode_config.barcode" style="color:black;"
-									align="right">
-									<img
-										t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=%s' %(barcode_config.barcode_type, product[3], int(barcode_config.display_width), int(barcode_config.display_height),is_humanreadable)" />
-								</t> -->
-							</td>
+							    <td style="text-align:left;font-size:8px;vertical-align: top;" width="50%">
+    								<span style="padding:0px;" t-field="product[0].product_desc"/><br/>
+    								<span t-esc="product[2]"/>
+							    </td>
 						</tr>
 					</table>
 				</div>
