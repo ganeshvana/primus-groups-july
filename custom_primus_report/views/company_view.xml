@@ -15,14 +15,14 @@
 	    </record>
 	    
 	    <record id="view_users_form_inherit1" model="ir.ui.view">
-	    <field name="name">res.users.form.inherit</field>
-	    <field name="model">res.users</field>
-	    <field name="inherit_id" ref="base.view_users_form"/>
-	    <field name="arch" type="xml">
-	        <xpath expr="//page[@name='references']/group/field[@name='signature']" position="after">
-	        	<field name="sign" widget="image"/>
-	        </xpath>
-	    </field>
-	</record>
+		    <field name="name">res.users.form.inherit</field>
+		    <field name="model">res.users</field>
+		    <field name="inherit_id" ref="base.view_users_form"/>
+		    <field name="arch" type="xml">
+		        <xpath expr="//field[@name='signature']" position="after">
+		        	<field name="sign" widget="image"/>
+		        </xpath>
+		    </field>
+		</record>
 	</data>
 </odoo>

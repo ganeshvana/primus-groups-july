@@ -19,7 +19,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'sale', 'mrp', 'product','uom','stock', 'mrp_subcontracting', 'oi_primus_product_extended'],
+    'depends': ['base', 'sale', 'mrp', 'product','uom','stock', 'mrp_subcontracting'],
 # , 'website_sale'
     # always loaded
     'data': [

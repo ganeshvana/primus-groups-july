@@ -17,10 +17,10 @@ _logger = logging.getLogger(__name__)
 
 class Product_Master_Creation(models.Model):
     _inherit = 'product.image'
-               
+                
     product_image_desc_id = fields.Many2one('product.image.desc', "Desc")
     not_to_website = fields.Boolean("Don't show in Website")
-               
+                
     @api.onchange('product_image_desc_id')
     def onchange_product_image_desc_id(self):
         if self.product_image_desc_id:
@@ -207,8 +207,90 @@ class Product_Master_Creation(models.Model):
     certificate_product_ids = fields.Many2many('product.product','product_certificates_rel', 'product_id', 'certificate_id', "Certificate Products")
     certificate_origin_product_ids = fields.Many2many('product.product','product_certificates_origin_rel', 'product_id', 'certificate_id', "Certificate Origin Products")
     jtypes = fields.Many2one('jewel.tags', "Jewel Type")
-    product_desc = fields.Text("Detailed Description")  
+    product_desc = fields.Text("Detailed Description", compute='compute_product_desc', store=True)
     automatic_desc = fields.Boolean("Auto Desc.", default=True)
+    
+    @api.depends('bom_id_line','bom_id_line.bom_line_type_id', 'bom_id_line.product_qty', 'bom_id_line.product_id', 'automatic_desc', 'bom_id_line.product_id.stone_name_id', 'bom_id_line.product_id.plating', 'bom_id_line.product_id.finess', 'certificate_product_ids')
+    def compute_product_desc(self):
+        cs_qty = as_qty = as_qty2 = as_qty3 = as_qty4 = as_qty5 = as_qty6 = 0.0
+        accent_stone = []
+        center_stone_name = accent_stone_name = Jewel = accent_stone_name2 = accent_stone_name3 = accent_stone_name4 = accent_stone_name5 = accent_stone_name6 = ''
+        description = ''
+        for rec in self:
+            if rec.automatic_desc == True:
+                if rec.bom_id_line:
+                    description = ''
+                    cs_qty = as_qty = as_qty2 = as_qty3 = as_qty4 = as_qty5 = as_qty6 = 0.0
+                    center_stone_name = accent_stone_name = Jewel = accent_stone_name2 = accent_stone_name3 = accent_stone_name4 = accent_stone_name5 = accent_stone_name6 = ''
+                    center_stone = rec.bom_id_line.filtered(lambda b: b.bom_line_type_id.name == 'Center Stone')
+                    if center_stone:
+                        for cs in center_stone:
+                            cs_qty += cs.product_qty
+                        center_stone_name = center_stone[0].product_id.stone_name_id.name
+                        description += str("%.2f" % cs_qty) + ' Cts ' + center_stone_name 
+                    accent_stone = rec.bom_id_line.filtered(lambda b: b.bom_line_type_id.name == 'Accent Stone 1')
+                    if accent_stone:
+                        for ast in accent_stone:
+                            as_qty += ast.product_qty
+                        accent_stone_name = accent_stone[0].product_id.stone_name_id.name
+                        description += ' and ' + str("%.2f" % as_qty) + ' Cts ' + accent_stone_name
+                    if rec.jtype == 'ring':
+                        Jewel = 'Ring'
+                    if rec.jtype == 'earring':
+                        Jewel = 'Earring'
+                    if rec.jtype == 'pendant':
+                        Jewel = 'Pendant'
+                    if rec.jtype == 'bracelet':
+                        Jewel = 'Bracelet'
+                    if rec.jtype == 'necklace':
+                        Jewel = 'Necklace'
+                    if rec.jtype == 'brooche':
+                        Jewel = 'Brooche'
+                    if rec.jtype == 'bangle':
+                        Jewel = 'Bangle'
+                    if rec.jtype == 'cuff':
+                        Jewel = 'Cuff'
+                    description += ' ' + Jewel + ' in '
+                    metal = rec.bom_id_line.filtered(lambda b: b.bom_line_type_id.name == 'Metal')
+                    if metal:
+                       description +=  str(metal[0].product_id.finess.code) + ' ' + str(metal[0].product_id.plating.name)
+                    accent_stone2 = rec.bom_id_line.filtered(lambda b: b.bom_line_type_id.name == 'Accent Stone 2')
+                    if accent_stone2:
+                        for ast in accent_stone2:
+                            as_qty2 += ast.product_qty
+                        accent_stone_name2 = accent_stone2[0].product_id.stone_name_id.name
+                        description += '\n' + str("%.2f" % as_qty2) + ' Cts ' + accent_stone_name2
+                    accent_stone3 = rec.bom_id_line.filtered(lambda b: b.bom_line_type_id.name == 'Accent Stone 3')
+                    if accent_stone3:
+                        for ast in accent_stone3:
+                            as_qty3 += ast.product_qty
+                        accent_stone_name3 = accent_stone3[0].product_id.stone_name_id.name
+                        description += '\n' + str("%.2f" % as_qty3) + ' Cts ' + accent_stone_name3
+                    accent_stone4 = rec.bom_id_line.filtered(lambda b: b.bom_line_type_id.name == 'Accent Stone 4')
+                    if accent_stone4:
+                        for ast in accent_stone4:
+                            as_qty4 += ast.product_qty
+                        accent_stone_name4 = accent_stone4[0].product_id.stone_name_id.name
+                        description += '\n' + str("%.2f" % as_qty4) + ' Cts ' + accent_stone_name4
+                    accent_stone5 = rec.bom_id_line.filtered(lambda b: b.bom_line_type_id.name == 'Accent Stone 5')
+                    if accent_stone5:
+                        for ast in accent_stone5:
+                            as_qty5 += ast.product_qty
+                        accent_stone_name5 = accent_stone5[0].product_id.stone_name_id.name
+                        description += '\n' + str("%.2f" % as_qty5) + ' Cts ' + accent_stone_name5
+                    accent_stone6 = rec.bom_id_line.filtered(lambda b: b.bom_line_type_id.name == 'Accent Stone 6')
+                    if accent_stone6:
+                        for ast in accent_stone6:
+                            as_qty6 += ast.product_qty
+                        accent_stone_name6 = accent_stone6[0].product_id.stone_name_id.name
+                        description += '\n' + str("%.2f" % as_qty6) + ' Cts ' + accent_stone_name6
+                    metal = rec.bom_id_line.filtered(lambda b: b.bom_line_type_id.name == 'Metal')
+                    if metal:
+                        description += '\n' + str("%.2f" % metal[0].product_qty) + ' Grams'
+                    if rec.certificate_product_ids:
+                        description += '\n' + rec.certificate_product_ids[0].certification_lab.code + ' - ' + rec.certificate_product_ids[0].certification_no
+                rec.product_desc = description
+                description = ''
     
     
 #     @api.onchange('name')
@@ -1272,9 +1354,93 @@ class ProductProduct(models.Model):
     center_color_stone_id = fields.Many2one('center.color.stone', "Stone Color")
     provided_by = fields.Selection([('vendor','Vendor'),('factory','Factory')], "Provided By") 
     ir_attachment_ids = fields.One2many('ir.attachment', 'product_id', "Files")
-    product_desc = fields.Text("Detailed Description")
-    automatic_desc = fields.Boolean("Auto Desc.", default=True)
+#     product_desc = fields.Text("Detailed Description")
+#     automatic_desc = fields.Boolean("Auto Desc.", default=True)
     avg=fields.Float(string='Average Weight', digits = (12,3), compute='_compute_avg', store=True)
+    product_desc = fields.Text("Detailed Description", compute='compute_product_desc', store=True)
+    automatic_desc = fields.Boolean("Auto Desc.", default=True)
+    
+    @api.depends('bom_id_line','bom_id_line.bom_line_type_id', 'bom_id_line.product_qty', 'bom_id_line.product_id', 'automatic_desc', 'bom_id_line.product_id.stone_name_id', 'bom_id_line.product_id.plating', 'bom_id_line.product_id.finess', 'certificate_product_ids')
+    def compute_product_desc(self):
+        cs_qty = as_qty = as_qty2 = as_qty3 = as_qty4 = as_qty5 = as_qty6 = 0.0
+        accent_stone = []
+        center_stone_name = accent_stone_name = Jewel = accent_stone_name2 = accent_stone_name3 = accent_stone_name4 = accent_stone_name5 = accent_stone_name6 = ''
+        description = ''
+        for rec in self:
+            if rec.automatic_desc == True:
+                if rec.bom_id_line:
+                    description = ''
+                    cs_qty = as_qty = as_qty2 = as_qty3 = as_qty4 = as_qty5 = as_qty6 = 0.0
+                    center_stone_name = accent_stone_name = Jewel = accent_stone_name2 = accent_stone_name3 = accent_stone_name4 = accent_stone_name5 = accent_stone_name6 = ''
+                    center_stone = rec.bom_id_line.filtered(lambda b: b.bom_line_type_id.name == 'Center Stone')
+                    if center_stone:
+                        for cs in center_stone:
+                            cs_qty += cs.product_qty
+                        center_stone_name = center_stone[0].product_id.stone_name_id.name
+                        description += str("%.2f" % cs_qty) + ' Cts ' + center_stone_name 
+                    accent_stone = rec.bom_id_line.filtered(lambda b: b.bom_line_type_id.name == 'Accent Stone 1')
+                    if accent_stone:
+                        for ast in accent_stone:
+                            as_qty += ast.product_qty
+                        accent_stone_name = accent_stone[0].product_id.stone_name_id.name
+                        description += ' and ' + str("%.2f" % as_qty) + ' Cts ' + accent_stone_name
+                    if rec.jtype == 'ring':
+                        Jewel = 'Ring'
+                    if rec.jtype == 'earring':
+                        Jewel = 'Earring'
+                    if rec.jtype == 'pendant':
+                        Jewel = 'Pendant'
+                    if rec.jtype == 'bracelet':
+                        Jewel = 'Bracelet'
+                    if rec.jtype == 'necklace':
+                        Jewel = 'Necklace'
+                    if rec.jtype == 'brooche':
+                        Jewel = 'Brooche'
+                    if rec.jtype == 'bangle':
+                        Jewel = 'Bangle'
+                    if rec.jtype == 'cuff':
+                        Jewel = 'Cuff'
+                    description += ' ' + Jewel + ' in '
+                    metal = rec.bom_id_line.filtered(lambda b: b.bom_line_type_id.name == 'Metal')
+                    if metal:
+                       description +=  str(metal[0].product_id.finess.code) + ' ' + str(metal[0].product_id.plating.name)
+                    accent_stone2 = rec.bom_id_line.filtered(lambda b: b.bom_line_type_id.name == 'Accent Stone 2')
+                    if accent_stone2:
+                        for ast in accent_stone2:
+                            as_qty2 += ast.product_qty
+                        accent_stone_name2 = accent_stone2[0].product_id.stone_name_id.name
+                        description += '\n' + str("%.2f" % as_qty2) + ' Cts ' + accent_stone_name2
+                    accent_stone3 = rec.bom_id_line.filtered(lambda b: b.bom_line_type_id.name == 'Accent Stone 3')
+                    if accent_stone3:
+                        for ast in accent_stone3:
+                            as_qty3 += ast.product_qty
+                        accent_stone_name3 = accent_stone3[0].product_id.stone_name_id.name
+                        description += '\n' + str("%.2f" % as_qty3) + ' Cts ' + accent_stone_name3
+                    accent_stone4 = rec.bom_id_line.filtered(lambda b: b.bom_line_type_id.name == 'Accent Stone 4')
+                    if accent_stone4:
+                        for ast in accent_stone4:
+                            as_qty4 += ast.product_qty
+                        accent_stone_name4 = accent_stone4[0].product_id.stone_name_id.name
+                        description += '\n' + str("%.2f" % as_qty4) + ' Cts ' + accent_stone_name4
+                    accent_stone5 = rec.bom_id_line.filtered(lambda b: b.bom_line_type_id.name == 'Accent Stone 5')
+                    if accent_stone5:
+                        for ast in accent_stone5:
+                            as_qty5 += ast.product_qty
+                        accent_stone_name5 = accent_stone5[0].product_id.stone_name_id.name
+                        description += '\n' + str("%.2f" % as_qty5) + ' Cts ' + accent_stone_name5
+                    accent_stone6 = rec.bom_id_line.filtered(lambda b: b.bom_line_type_id.name == 'Accent Stone 6')
+                    if accent_stone6:
+                        for ast in accent_stone6:
+                            as_qty6 += ast.product_qty
+                        accent_stone_name6 = accent_stone6[0].product_id.stone_name_id.name
+                        description += '\n' + str("%.2f" % as_qty6) + ' Cts ' + accent_stone_name6
+                    metal = rec.bom_id_line.filtered(lambda b: b.bom_line_type_id.name == 'Metal')
+                    if metal:
+                        description += '\n' + str("%.2f" % metal[0].product_qty) + ' Grams'
+                    if rec.certificate_product_ids:
+                        description += '\n' + rec.certificate_product_ids[0].certification_lab.code + ' - ' + rec.certificate_product_ids[0].certification_no
+                rec.product_desc = description
+                description = ''
     
     @api.depends('qty_available', 'secondary_qty')
     def _compute_avg(self):
