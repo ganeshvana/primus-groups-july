@@ -51,7 +51,7 @@
 					<tr width="100%"><th colspan="6" style="background:#EBEDEF;border-top:3px solid #3984C6;padding:3px" class="text-center" width="100%">
 					</th></tr>
 					<tr>
-						<td colspan="6">	
+						<td colspan="6" style="vertical-align:top">	
 							<p style="font-size:12px;">
 							This form must be completed for every jewelry product purchase.  
 							A buyer may not authorize a product purchase if this form is not completed.  In answering the questions below, if item contains multiple gemstones, please specify requested information for each gemstone contained therein to match the Gemstone Treatment Disclosure Form.  
@@ -65,47 +65,47 @@
 					</tr>
 					<tr>
 						<td width="13.4%">Supplier #</td>
-						<td width="20%">1231241</td>
+						<td width="20%"><span t-field="doc.company_id.code"/></td>
 						<td width="13.3%">PO #</td>
-						<td width="20%">12312412</td>
+						<td width="20%"><span t-field="doc.ref"/></td>
 						<td width="13.3%">Invoice #</td>
-						<td width="20%">41241241</td>
+						<td width="20%"><span t-field="doc.name"/></td>
 					</tr>
 					<tr>
 						<td colspan="1" width="25%">Supplier Name</td>
-						<td colspan="2" width="25%"></td>
+						<td colspan="2" width="25%"><span t-field="doc.company_id.name"/></td>
 						<td colspan="1" width="25%">Phone Number</td>
-						<td colspan="2" width="25%"></td>
+						<td colspan="2" width="25%"><span t-field="doc.company_id.phone"/></td>
 					</tr>
 					<tr>
 						<td colspan="1" width="25%">Address 1</td>
-						<td colspan="2" width="25%"></td>
+						<td colspan="2" width="25%"><span t-field="doc.company_id.street"/></td>
 						<td colspan="1" width="25%">Email</td>
-						<td colspan="2" width="25%"></td>
+						<td colspan="2" width="25%"><span t-field="doc.company_id.email"/></td>
 					</tr>
 					<tr>
 						<td colspan="1" width="25%">Address 2</td>
-						<td colspan="2" width="25%"></td>
+						<td colspan="2" width="25%"><span t-field="doc.company_id.street2"/></td>
 						<td colspan="1" width="25%">Supplier Contact</td>
-						<td colspan="2" width="25%"></td>
+						<td colspan="2" width="25%"><span t-field="doc.company_id.partner_id.name"/></td>
 					</tr>
 					<tr>
 						<td colspan="1" width="25%">State/Province</td>
-						<td colspan="2" width="25%"></td>
+						<td colspan="2" width="25%"><span t-field="doc.company_id.state_id.name"/></td>
 						<td colspan="1" width="25%">Phone</td>
 						<td colspan="2" width="25%"></td>
 					</tr>
 					<tr>
 						<td colspan="1" width="25%">Zip/Postal Code</td>
-						<td colspan="2" width="25%"></td>
+						<td colspan="2" width="25%"><span t-field="doc.company_id.zip"/></td>
 						<td colspan="1" width="25%">FAX</td>
-						<td colspan="2" width="25%"></td>
+						<td colspan="2" width="25%"><span t-field="doc.company_id.fax"/></td>
 					</tr>
 					<tr>
 						<td colspan="1" width="25%">Region / District / Territory</td>
-						<td colspan="2" width="25%"></td>
+						<td colspan="2" width="25%"><span t-field="doc.company_id.city"/></td>
 						<td colspan="1" width="25%">Country</td>
-						<td colspan="2" width="25%"></td>
+						<td colspan="2" width="25%"><span t-field="doc.company_id.country_id.name"/></td>
 					</tr>
 				</table>
 				<table class="table table-bordered" width="100%" style="font-size:13px;">
@@ -117,7 +117,32 @@
 						<td width="20%"><center><strong>Treatment</strong></center></td>
 						<td width="20%"><center><strong>Country of Origin (Manufactured)</strong></center></td>
 						<td width="20%"><center><strong>Country of Origin (Mine)</strong></center></td>
-					</tr>					
+					</tr>
+					<t t-foreach="doc.invoice_line_ids" t-as="line">
+						<tr>
+							<td width="20%"><span t-field="line.customer_code"/></td>
+							<td width="20%"><span t-field="line.customer_desc"/></td>
+							<td width="20%">
+								<t t-if="line.product_id.bom_id_line">
+									<t t-foreach="line.product_id.bom_id_line" t-as="l">
+										<t t-if="l.bom_line_type_id.name=='Center Stone'">
+											<span t-field="l.product_id.stone_name_id.name"/> - <span t-field="l.product_id.treatment.name"/><br/>
+										</t>
+									</t>
+								</t>
+							</td>
+							<td width="20%"><span t-field="line.product_id.country_origin.name"/></td>
+							<td width="20%">
+								<t t-if="line.product_id.bom_id_line">
+									<t t-foreach="line.product_id.bom_id_line" t-as="l">
+										<t t-if="l.bom_line_type_id.name=='Center Stone'">
+											<span t-field="l.product_id.stone_name_id.name"/> - <span t-field="l.product_id.stone_origin_id.name"/><br/>
+										</t>
+									</t>
+								</t>
+							</td>
+						</tr>
+					</t>					
 				</table>
 				<table class="table table-bordered" width="100%" style="font-size:13px;">
 					<tr width="100%"><th colspan="3" style="background:#EBEDEF;border-top:3px solid #3984C6;padding:3px" class="text-left" width="100%">
@@ -149,15 +174,15 @@
 					<td>
 					<tr>
 						<td colspan="1" width="25%">Signature</td>
-						<td colspan="1" width="25%"></td>
+						<td colspan="1" width="25%"><img t-if="doc.invoice_user_id.sign" t-att-src="image_data_uri(doc.invoice_user_id.sign)" style="max-height: 45px;" alt="Logo"/></td>
 						<td colspan="1" width="25%">Title</td>
-						<td colspan="1" width="25%"></td>
+						<td colspan="1" width="25%"><span t-field="doc.invoice_user_id.partner_id.function"/></td>
 					</tr>
 					<tr>
 						<td colspan="1" width="25%">Printed Name:</td>
-						<td colspan="1" width="25%"></td>
+						<td colspan="1" width="25%"><span t-field="doc.invoice_user_id.name"/></td>
 						<td colspan="1" width="25%">Date:</td>
-						<td colspan="1" width="25%"></td>
+						<td colspan="1" width="25%"><span t-field="doc.invoice_date" t-options='{"format": "MM/dd/yyyy"}'/></td>
 					</tr>
 					</td>
 					</tr>								
