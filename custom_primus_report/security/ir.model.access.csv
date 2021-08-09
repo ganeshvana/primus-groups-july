@@ -1,2 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_sku_tempalate_xl,sku.tempalate.xl,model_sku_tempalate_xl,,1,1,1,1
+access_disclosure_docx,disclosure.docx,model_disclosure_docx,,1,1,1,1

@@ -28,4 +28,30 @@
         <field name="binding_model_id" ref="sale.model_sale_order"/>
         <field name="binding_view_types">form</field>
     </record>
+    
+    <record id="disclosure_docx_view_form" model="ir.ui.view">
+        <field name="name">disclosure.docx.view.form</field>
+        <field name="model">disclosure.docx</field>
+        <field name="arch" type="xml">
+            <form string="274.XX Sheets">    
+            	<group>
+            		
+            	</group>            
+                <footer>
+                    <button name="generate_disclosure_doc" string="Export DOCX" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>               
+            </form>
+        </field>
+    </record>
+
+    <record id="action_disclosure_docx" model="ir.actions.act_window">
+        <field name="name">Disclosure </field>
+        <field name="res_model">disclosure.docx</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="disclosure_docx_view_form"/>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_view_types">form</field>
+    </record>
 </odoo>

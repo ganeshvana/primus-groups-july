@@ -15,7 +15,7 @@
     'category': 'Uncategorized',
     'version': '0.1',
 
-    'depends': ['base', 'sale', 'custom_primus', 'oi_primus_product_extended', 'customer_product_code'],
+    'depends': ['base', 'sale','account', 'custom_primus', 'oi_primus_product_extended', 'customer_product_code'],
 
     'data': [
         'security/ir.model.access.csv',

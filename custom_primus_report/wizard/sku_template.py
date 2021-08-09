@@ -13,6 +13,10 @@ from odoo.exceptions import UserError, ValidationError
 from odoo.modules.module import get_resource_path
 from odoo.tools.misc import xlsxwriter
 from odoo.tools.mimetypes import guess_mimetype
+import os.path
+from os import path
+from pathlib import Path
+from pdf2docx import Converter
 
 class SKUTemplateXl(models.TransientModel):
     _name = 'sku.tempalate.xl'
@@ -23,6 +27,7 @@ class SKUTemplateXl(models.TransientModel):
 
 
     def action_generate_xls(self):
+        home = str(Path.home())
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         worksheet = workbook.add_worksheet('SKU Template')
@@ -100,10 +105,12 @@ class SKUTemplateXl(models.TransientModel):
                     binary_data = line.product_id.image_1920
                     mimetype = guess_mimetype(base64.b64decode(binary_data))
                     file_path = ""
+                    if not os.path.exists(home + '/temp_files'):
+                        os.makedirs(home + '/temp_files') 
                     if mimetype == 'image/png':
-                        file_path = "/home/rminds/temporary_files/" + str(line.product_id.name) + ".png"
+                        file_path = home + '/temp_files' + str(line.product_id.name) + ".png"
                     elif mimetype == 'image/jpeg':
-                        file_path = "/home/rminds/temporary_files/" + str(line.product_id.name) + ".jpeg"
+                        file_path = home + '/temp_files' + str(line.product_id.name) + ".jpeg"
                 
                     if file_path:
                         with open(file_path, "wb") as imgFile:
@@ -181,5 +188,80 @@ class SKUTemplateXl(models.TransientModel):
             'views': [(False, 'form')],
             'target': 'new',
         }
+        
+class DisclosureDoc(models.TransientModel):
+    _name = 'disclosure.docx'
+    _description = 'Disclosure Doc'
+    
+    def generate_disclosure_doc(self):
+        home = str(Path.home())
+        active_ids = self._context['active_ids']            
+        if active_ids:
+            for rec in active_ids:                
+                invoice = self.env['account.move'].browse(rec)
+                ir_action_report_obj = self.env['ir.actions.report']
+                ir_action_report_ids = ir_action_report_obj.search([('report_name','=','custom_primus_report.report_treatment_disclosure_main')])
+                model_ref = self.env['ir.model.data'].search([('res_id','=',ir_action_report_ids.id),('model','=','ir.actions.report')])
+                pdf = self.env.ref(model_ref.module+"."+model_ref.name)._render_qweb_pdf(invoice.id)
+                b64_pdf = base64.b64encode(pdf[0])
+                   
+                file_name = ''                    
+           
+                # save pdf as attachment
+                ATTACHMENT_NAME = 'INV' + '.pdf'
+                str(ATTACHMENT_NAME).replace('/', '_')
+                pdf_file =  self.env['ir.attachment'].create({
+                    'name': ATTACHMENT_NAME,
+                    'type': 'binary',
+                    'datas': b64_pdf,
+                    'res_model': self._name,
+                    'res_id': self.id,
+                    'mimetype': 'application/pdf',
+                })
+                file_path = ""
+                if not os.path.exists(home + '/temp_files'):
+                    os.makedirs(home + '/temp_files') 
+                decoded = base64.b64decode(pdf_file.datas)
+                temp_file_path = home + '/temp_files'
+                file_path = temp_file_path+'/'+ ATTACHMENT_NAME
+                temp_file = open(temp_file_path+'/'+ ATTACHMENT_NAME , 'wb')
+                temp_file.write(decoded)
+                temp_file.close()  
+                
+                pdf_fp = file_path.replace('pdf','docx')
+#                 os.system('libreoffice --headless -convert-to -docx --outdir '+home + '/temporary_files'+ ' ' +file_path)
+                pdf_file = '/path/to/sample.pdf'
+                docx_file = temp_file_path+'/'+ 'INV.docx'
+                
+                # convert pdf to docx
+                cv = Converter(file_path)
+                cv.convert(docx_file)      # all pages by default
+                cv.close()
+                abspath = pdf_fp
+                file = open(docx_file, "rb")
+                out = file.read()
+                datas = base64.b64encode(out)
+                att_name = pdf_fp.split('/')
+                att_name = invoice.name + '.docx'
+                docx_files =  self.env['ir.attachment'].create({
+                            'name': att_name[4],
+                            'type': 'binary',
+                            'datas': datas,
+                            'res_model': self._name,
+                            'res_id': self.id,
+                        })
+                print(docx_files, "docx_files----")
+                
+        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')                 
+        if base_url and docx_files:
+            download_url = base_url + '/web/content/' + str(docx_files.id) + '?download=true'
+
+        return {
+            'type': 'ir.actions.act_url',
+            'target': 'current',
+            'url': download_url
+            }
+    
+    
 
     
