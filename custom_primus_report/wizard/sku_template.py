@@ -102,28 +102,29 @@ class SKUTemplateXl(models.TransientModel):
                     worksheet.set_row(row, 25)
                     worksheet.write(row, col, line.product_id.default_code,style_normal)
                     col += 1
-                    binary_data = line.product_id.image_1920
-                    mimetype = guess_mimetype(base64.b64decode(binary_data))
-                    file_path = ""
-                    if not os.path.exists(home + '/temp_files'):
-                        os.makedirs(home + '/temp_files') 
-                    if mimetype == 'image/png':
-                        file_path = home + '/temp_files' + str(line.product_id.name) + ".png"
-                    elif mimetype == 'image/jpeg':
-                        file_path = home + '/temp_files' + str(line.product_id.name) + ".jpeg"
-                
-                    if file_path:
-                        with open(file_path, "wb") as imgFile:
-                            imgFile.write(base64.b64decode(binary_data))
-                    image_width = 140.0
-                    image_height = 182.0
+                    if line.product_id.image_1920:
+                        binary_data = line.product_id.image_1920
+                        mimetype = guess_mimetype(base64.b64decode(binary_data))
+                        file_path = ""
+                        if not os.path.exists(home + '/temp_files'):
+                            os.makedirs(home + '/temp_files') 
+                        if mimetype == 'image/png':
+                            file_path = home + '/temp_files' + str(line.product_id.name) + ".png"
+                        elif mimetype == 'image/jpeg':
+                            file_path = home + '/temp_files' + str(line.product_id.name) + ".jpeg"
                     
-                    cell_width = 64.0
-                    cell_height = 20.0
-                    
-                    x_scale = cell_width/image_width
-                    y_scale = cell_height/image_height
-                    worksheet.insert_image(row, col, file_path, {'x_scale': x_scale, 'y_scale': y_scale})
+                        if file_path:
+                            with open(file_path, "wb") as imgFile:
+                                imgFile.write(base64.b64decode(binary_data))
+                        image_width = 140.0
+                        image_height = 182.0
+                        
+                        cell_width = 64.0
+                        cell_height = 20.0
+                        
+                        x_scale = cell_width/image_width
+                        y_scale = cell_height/image_height
+                        worksheet.insert_image(row, col, file_path, {'x_scale': x_scale, 'y_scale': y_scale})
                     col += 1
                     if line.product_id.bom_id_line:
                         metal = line.product_id.bom_id_line.filtered(lambda b: b.bom_line_type_id.name == 'Metal')
@@ -204,9 +205,7 @@ class DisclosureDoc(models.TransientModel):
                 model_ref = self.env['ir.model.data'].search([('res_id','=',ir_action_report_ids.id),('model','=','ir.actions.report')])
                 pdf = self.env.ref(model_ref.module+"."+model_ref.name)._render_qweb_pdf(invoice.id)
                 b64_pdf = base64.b64encode(pdf[0])
-                   
                 file_name = ''                    
-           
                 # save pdf as attachment
                 ATTACHMENT_NAME = 'INV' + '.pdf'
                 str(ATTACHMENT_NAME).replace('/', '_')
@@ -227,7 +226,6 @@ class DisclosureDoc(models.TransientModel):
                 temp_file = open(temp_file_path+'/'+ ATTACHMENT_NAME , 'wb')
                 temp_file.write(decoded)
                 temp_file.close()  
-                
                 pdf_fp = file_path.replace('pdf','docx')
 #                 os.system('libreoffice --headless -convert-to -docx --outdir '+home + '/temporary_files'+ ' ' +file_path)
                 pdf_file = '/path/to/sample.pdf'
