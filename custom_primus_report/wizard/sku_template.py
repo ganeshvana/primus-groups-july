@@ -250,7 +250,6 @@ class DisclosureDoc(models.TransientModel):
                             'res_model': self._name,
                             'res_id': self.id,
                         })
-                print(docx_files, "docx_files----")
                 
         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')                 
         if base_url and docx_files:

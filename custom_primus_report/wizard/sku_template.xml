@@ -46,7 +46,7 @@
     </record>
 
     <record id="action_disclosure_docx" model="ir.actions.act_window">
-        <field name="name">Disclosure </field>
+        <field name="name">Jewelry Gemstone Treatment Disclosure</field>
         <field name="res_model">disclosure.docx</field>
         <field name="view_mode">form</field>
         <field name="view_id" ref="disclosure_docx_view_form"/>
