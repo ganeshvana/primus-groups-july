@@ -277,7 +277,7 @@
 		</t>
 	</template>
 
-	<record id="action_report_sku_template" model="ir.actions.report">
+	<!-- <record id="action_report_sku_template" model="ir.actions.report">
 		<field name="name">SKU Template</field>
 		<field name="model">account.move</field>
 		<field name="report_type">qweb-pdf</field>
@@ -287,7 +287,7 @@
 		<field name="binding_model_id" ref="account.model_account_move" />
 		<field name="paperformat_id" ref="custom_primus_report.paperformat_disclosure" />
 		<field name="binding_type">report</field>
-	</record>
+	</record> -->
    
 	
 	
