@@ -66,6 +66,14 @@ class SKUTemplateXl(models.TransientModel):
                 worksheet.merge_range('D1:E1', order.date_order.strftime('%m/%d/%Y'), merge_format)
                 worksheet.write(row, col, 'DIA  &  GEMSTONE  INFO', merge_format)
                 worksheet.merge_range('H1:N1', 'DIA  &  GEMSTONE  INFO', merge_format)
+                row = 1
+                hd_data = 'Column F should be filled in once selections are made and a buy proposal is sent to you.  Metal Gram Wts (Column E) are for pricing purposes. Minimum gram weights (Column F) are for SKU creation.  If a SKU comes in fingersizes or lengths, the minimum weight of the smallest size or length must be listed in column F.  Column M is the CT/CTW for pricing purposes, Column L is the lowest CT/CTW for Sku Creation purposes. '
+                worksheet.set_row(row, 30)
+                worksheet.write(row, col, hd_data, merge_format)
+                worksheet.merge_range('A2:S2', hd_data, merge_format)
+                row = 2
+                col = 0
+                worksheet.write(row, col, 'Color', merge_format)
                 headers =[
                     "Vendor SKU",
                     "IMAGE  (if Avail)",
@@ -89,7 +97,7 @@ class SKUTemplateXl(models.TransientModel):
                 ] 
                 
                 
-                row = 1
+                row = 3
                 col = 0
                 for header in headers:
                     worksheet.write(row, col, header, style_highlight)
@@ -99,7 +107,7 @@ class SKUTemplateXl(models.TransientModel):
                 row += 1
                 for line in order.order_line:
                     col = 0
-                    worksheet.set_row(row, 25)
+                    worksheet.set_row(row, 35)
                     worksheet.write(row, col, line.product_id.default_code,style_normal)
                     col += 1
                     if line.product_id.image_1920:
@@ -109,18 +117,18 @@ class SKUTemplateXl(models.TransientModel):
                         if not os.path.exists(home + '/temp_files'):
                             os.makedirs(home + '/temp_files') 
                         if mimetype == 'image/png':
-                            file_path = home + '/temp_files' + str(line.product_id.name) + ".png"
+                            file_path = home + '/temp_files/' + str(line.product_id.name) + ".png"
                         elif mimetype == 'image/jpeg':
-                            file_path = home + '/temp_files' + str(line.product_id.name) + ".jpeg"
+                            file_path = home + '/temp_files/' + str(line.product_id.name) + ".jpeg"
                     
                         if file_path:
                             with open(file_path, "wb") as imgFile:
                                 imgFile.write(base64.b64decode(binary_data))
-                        image_width = 100.0
-                        image_height = 80.0
+                        image_width = 150.0
+                        image_height = 120.0
                         
-                        cell_width = 64.0
-                        cell_height = 20.0
+                        cell_width = 50.0
+                        cell_height = 35.0
                         
                         x_scale = cell_width/image_width
                         y_scale = cell_height/image_height
