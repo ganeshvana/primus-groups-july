@@ -116,8 +116,8 @@ class SKUTemplateXl(models.TransientModel):
                         if file_path:
                             with open(file_path, "wb") as imgFile:
                                 imgFile.write(base64.b64decode(binary_data))
-                        image_width = 140.0
-                        image_height = 182.0
+                        image_width = 100.0
+                        image_height = 80.0
                         
                         cell_width = 64.0
                         cell_height = 20.0
