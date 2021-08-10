@@ -32,8 +32,8 @@ class SKUTemplateXl(models.TransientModel):
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         worksheet = workbook.add_worksheet('SKU Template')
         worksheet.set_column(1, 1, 25)
-        style_highlight = workbook.add_format({'bold': True, 'pattern': 1, 'bg_color': '#E0E0E0', 'align': 'center'})
-        style_highlight.set_font_size(8)
+        style_highlight = workbook.add_format({'bold': True, 'pattern': 1, 'bg_color': '#FFFFFF', 'align': 'center'})
+        style_highlight.set_font_size(6)
         style_highlight.set_border(style=1)
         style_normal = workbook.add_format({'align': 'center'})
         style_normal.set_font_size(8)
@@ -53,6 +53,7 @@ class SKUTemplateXl(models.TransientModel):
                 'border': 1,
                 'align': 'center',
                 'valign': 'vcenter',
+                'bg_color': '#34EBCD',
                 })
                 merge_format.set_font_size(9)
                 style_normal.set_border(style=1)
@@ -66,14 +67,22 @@ class SKUTemplateXl(models.TransientModel):
                 worksheet.merge_range('D1:E1', order.date_order.strftime('%m/%d/%Y'), merge_format)
                 worksheet.write(row, col, 'DIA  &  GEMSTONE  INFO', merge_format)
                 worksheet.merge_range('H1:N1', 'DIA  &  GEMSTONE  INFO', merge_format)
+                merge_format2 = workbook.add_format({
+                'bold': 1,
+                'border': 1,
+                'align': 'center',
+                'valign': 'vcenter',
+                'bg_color': '#34EB89',
+                })
+                merge_format2.set_font_size(8)
                 row = 1
                 hd_data = 'Column F should be filled in once selections are made and a buy proposal is sent to you.  Metal Gram Wts (Column E) are for pricing purposes. Minimum gram weights (Column F) are for SKU creation.  If a SKU comes in fingersizes or lengths, the minimum weight of the smallest size or length must be listed in column F.  Column M is the CT/CTW for pricing purposes, Column L is the lowest CT/CTW for Sku Creation purposes. '
                 worksheet.set_row(row, 30)
-                worksheet.write(row, col, hd_data, merge_format)
-                worksheet.merge_range('A2:S2', hd_data, merge_format)
+                worksheet.write(row, col, hd_data, merge_format2)
+                worksheet.merge_range('A2:S2', hd_data, merge_format2)
                 row = 2
                 col = 0
-                worksheet.write(row, col, 'Color', merge_format)
+                
                 headers =[
                     "Vendor SKU",
                     "IMAGE  (if Avail)",
@@ -96,18 +105,26 @@ class SKUTemplateXl(models.TransientModel):
                     "Time needed to ship",
                 ] 
                 
-                
-                row = 3
-                col = 0
                 for header in headers:
                     worksheet.write(row, col, header, style_highlight)
                     worksheet.set_column(col, col, 8)
                     col += 1
         
-                row += 1
+                row = 3
+                col = 0
+                merge_format3 = workbook.add_format({
+                'bold': 1,
+                'border': 1,
+                'align': 'center',
+                'valign': 'vcenter',
+                'bg_color': '#34EBCD',
+                })
+                merge_format3.set_font_size(10)
+                worksheet.write(row, col, 'Color', merge_format3)
+                row = 4
                 for line in order.order_line:
                     col = 0
-                    worksheet.set_row(row, 35)
+                    worksheet.set_row(row, 50)
                     worksheet.write(row, col, line.product_id.default_code,style_normal)
                     col += 1
                     if line.product_id.image_1920:
@@ -127,8 +144,8 @@ class SKUTemplateXl(models.TransientModel):
                         image_width = 150.0
                         image_height = 120.0
                         
-                        cell_width = 50.0
-                        cell_height = 35.0
+                        cell_width = 75.0
+                        cell_height = 60.0
                         
                         x_scale = cell_width/image_width
                         y_scale = cell_height/image_height
