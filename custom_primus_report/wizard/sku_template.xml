@@ -20,7 +20,7 @@
     </record>
 
     <record id="action_sku_template_xl" model="ir.actions.act_window">
-        <field name="name">SKU Template Xl</field>
+        <field name="name">SKU Template Excel </field>
         <field name="res_model">sku.tempalate.xl</field>
         <field name="view_mode">form</field>
         <field name="view_id" ref="sku_template_xl_view_form"/>

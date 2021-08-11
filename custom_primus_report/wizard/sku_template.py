@@ -40,6 +40,8 @@ class SKUTemplateXl(models.TransientModel):
         style_normal.set_border(style=2)
         row = 0
         col = 0
+        cstone = cstonetrt = csshape = cs_origin = cs_minw = ''
+        stone_count = ''
         active_ids = self._context['active_ids']            
         if active_ids:
             for rec in active_ids:                
@@ -152,25 +154,38 @@ class SKUTemplateXl(models.TransientModel):
                         worksheet.insert_image(row, col, file_path, {'x_scale': x_scale, 'y_scale': y_scale})
                     col += 1
                     if line.product_id.bom_id_line:
+                        qty = 0.0
                         metal = line.product_id.bom_id_line.filtered(lambda b: b.bom_line_type_id.name == 'Metal')
                         if metal:
+                            for m in metal:
+                                qty += metal.product_qty
                             metal = metal[0]
                             worksheet.write(row, col, metal.product_id.finess.code,style_normal)
                             col += 1
                             worksheet.write(row, col, metal.product_id.plating.code,style_normal)
                             col += 1
-                            worksheet.write(row, col, metal.product_qty,style_normal)
+                            worksheet.write(row, col, qty,style_normal)
                             col += 1
                             worksheet.write(row, col, metal.min_weight,style_normal)
                             col += 1
-                    center_stone = line.product_id.bom_id_line.filtered(lambda b: b.bom_line_type_id.name == 'Center Stone')
+                    center_stone = line.product_id.bom_id_line.filtered(lambda b: b.bom_line_type_id.name in ['Center Stone', 'Accent Stone 1', 'Accent Stone 2', 'Accent Stone 3', 'Accent Stone 4', 'Accent Stone 5', 'Accent Stone 6'])
+                    stones = treatments = sorigins = []
                     if center_stone:
                         cstone = cstonetrt = csshape = cs_origin = cs_minw = ''
                         stone_count = ''
                         for cs in center_stone:
-                            cstone += cs.product_id.stone_name_id.name + '\n'
-                            cstonetrt += cs.product_id.treatment.name + '\n'
-                            cs_origin += cs.product_id.stone_origin_id.name + '\n'
+                            if cs.product_id.stone_name_id.name not in stones:
+                                stones.append(cs.product_id.stone_name_id.name)
+                            if cs.product_id.treatment.name not in treatments:
+                                treatments.append(cs.product_id.treatment.name)
+                            if cs.product_id.stone_origin_id.name not in sorigins:
+                                sorigins.append(cs.product_id.stone_origin_id.name)
+                            for sn in stones:                                
+                                cstone += sn + '\n'
+                            for trt in treatments:                                
+                                cstonetrt += trt + '\n'
+                            for org in sorigins:
+                                cs_origin += org + '\n'
                             csshape += str(cs.product_id.size_length) + '*' + str(cs.product_id.size_width) + ' '+str(cs.product_id.stone_shape_id.code) + '\n'
                             cs_minw += str(cs.sec_quantity) + '\n'
                             stone_count += str(cs.product_qty) + '\n'
