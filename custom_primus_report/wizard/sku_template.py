@@ -169,42 +169,53 @@ class SKUTemplateXl(models.TransientModel):
                             worksheet.write(row, col, metal.min_weight,style_normal)
                             col += 1
                     center_stone = line.product_id.bom_id_line.filtered(lambda b: b.bom_line_type_id.name in ['Center Stone', 'Accent Stone 1', 'Accent Stone 2', 'Accent Stone 3', 'Accent Stone 4', 'Accent Stone 5', 'Accent Stone 6'])
-                    stones = treatments = sorigins = []
+                    stones = []
+                    treatments = [] 
+                    sorigins = []
+                    shape = []
                     if center_stone:
+                        center_stone_main = center_stone
                         cstone = cstonetrt = csshape = cs_origin = cs_minw = ''
                         stone_count = ''
                         for cs in center_stone:
-                            if cs.product_id.stone_name_id.name not in stones:
-                                stones.append(cs.product_id.stone_name_id.name)
-                            if cs.product_id.treatment.name not in treatments:
-                                treatments.append(cs.product_id.treatment.name)
-                            if cs.product_id.stone_origin_id.name not in sorigins:
-                                sorigins.append(cs.product_id.stone_origin_id.name)
-                            for sn in stones:                                
-                                cstone += sn + '\n'
-                            for trt in treatments:                                
-                                cstonetrt += trt + '\n'
-                            for org in sorigins:
-                                cs_origin += org + '\n'
-                            csshape += str(cs.product_id.size_length) + '*' + str(cs.product_id.size_width) + ' '+str(cs.product_id.stone_shape_id.code) + '\n'
-                            cs_minw += str(cs.sec_quantity) + '\n'
-                            stone_count += str(cs.product_qty) + '\n'
-                        worksheet.write(row, col, line.product_id.country_origin.name, style_normal)    
-                        col += 1
-                        worksheet.write(row, col, cstone, style_normal)
-                        col += 1
-                        worksheet.write(row, col, cstonetrt, style_normal)
-                        col += 1
-                        worksheet.write(row, col, csshape, style_normal)
-                        col += 1
-                        worksheet.write(row, col, stone_count, style_normal)
-                        col += 1
-                        worksheet.write(row, col, '', style_normal)
-                        col += 1
-                        worksheet.write(row, col, cs_minw, style_normal)
-                        col += 1
-                        worksheet.write(row, col, cs_origin, style_normal)
-                        col += 1
+                            if cs.product_id.stone_name_id not in stones:
+                                stones.append(cs.product_id.stone_name_id)
+                        for a in center_stone:
+                            if a.product_id.stone_shape_id not in shape:
+                                shape.append(a.product_id.stone_shape_id)
+                        for sn in stones:   
+                            center_stone = center_stone_main.filtered(lambda b: b.product_id.stone_name_id == sn)  
+                            
+                            if center_stone: 
+                                cstone += sn.name + '\n'
+                                cstonetrt += center_stone[0].product_id.treatment.name + '\n'
+                                cs_origin += center_stone[0].product_id.stone_origin_id.name + '\n'
+                                if len(shape) == 1:
+                                    csshape += str(center_stone[0].product_id.size_length) + '*' + str(center_stone[0].product_id.size_width) + ' '+str(center_stone[0].product_id.stone_shape_id.code) + '\n'
+                                else:
+                                    csshape = 'Mix'
+                                pq = sq = 0.0
+                                for cs in center_stone:
+                                    pq += cs.product_qty
+                                    sq += cs.sec_quantity
+                                cs_minw += str(sq) + '\n'
+                                stone_count += str(pq) + '\n'
+                    worksheet.write(row, col, line.product_id.country_origin.name, style_normal)    
+                    col += 1
+                    worksheet.write(row, col, cstone, style_normal)
+                    col += 1
+                    worksheet.write(row, col, cstonetrt, style_normal)
+                    col += 1
+                    worksheet.write(row, col, csshape, style_normal)
+                    col += 1
+                    worksheet.write(row, col, stone_count, style_normal)
+                    col += 1
+                    worksheet.write(row, col, '', style_normal)
+                    col += 1
+                    worksheet.write(row, col, cs_minw, style_normal)
+                    col += 1
+                    worksheet.write(row, col, cs_origin, style_normal)
+                    col += 1
                     worksheet.write(row, col, str(line.product_uom_qty), style_normal)
                     col += 1    
                     worksheet.write(row, col, str(line.price_unit), style_normal)
@@ -214,7 +225,7 @@ class SKUTemplateXl(models.TransientModel):
                     col += 1    
                     worksheet.write(row, col, str((order.date_order - order.expected_date).days), style_normal)
                     row += 1
-
+                    stones = treatments = sorigins = []
         workbook.close()
         xlsx_data = output.getvalue()
 
