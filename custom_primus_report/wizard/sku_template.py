@@ -32,10 +32,10 @@ class SKUTemplateXl(models.TransientModel):
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         worksheet = workbook.add_worksheet('SKU Template')
         worksheet.set_column(1, 1, 25)
-        style_highlight = workbook.add_format({'bold': True, 'pattern': 1, 'bg_color': '#FFFFFF', 'align': 'center'})
+        style_highlight = workbook.add_format({'bold': True, 'pattern': 1, 'bg_color': '#FFFFFF', 'align': 'center', 'text_wrap': True})
         style_highlight.set_font_size(6)
         style_highlight.set_border(style=1)
-        style_normal = workbook.add_format({'align': 'center'})
+        style_normal = workbook.add_format({'align': 'center', 'text_wrap': True})
         style_normal.set_font_size(8)
         style_normal.set_border(style=2)
         row = 0
@@ -56,9 +56,11 @@ class SKUTemplateXl(models.TransientModel):
                 'align': 'center',
                 'valign': 'vcenter',
                 'bg_color': '#34EBCD',
+                'text_wrap': True
                 })
                 merge_format.set_font_size(9)
                 style_normal.set_border(style=1)
+                worksheet.set_row(row, 14.25)
                 worksheet.merge_range('A1:B1', 'Merged Range', merge_format)
                 col = 0
                 worksheet.write(row, col, order.company_id.name, merge_format)
@@ -75,9 +77,11 @@ class SKUTemplateXl(models.TransientModel):
                 'align': 'center',
                 'valign': 'vcenter',
                 'bg_color': '#34EB89',
+                'text_wrap': True
                 })
                 merge_format2.set_font_size(8)
                 row = 1
+                worksheet.set_row(row, 20.25)
                 hd_data = 'Column F should be filled in once selections are made and a buy proposal is sent to you.  Metal Gram Wts (Column E) are for pricing purposes. Minimum gram weights (Column F) are for SKU creation.  If a SKU comes in fingersizes or lengths, the minimum weight of the smallest size or length must be listed in column F.  Column M is the CT/CTW for pricing purposes, Column L is the lowest CT/CTW for Sku Creation purposes. '
                 worksheet.set_row(row, 30)
                 worksheet.write(row, col, hd_data, merge_format2)
@@ -108,6 +112,7 @@ class SKUTemplateXl(models.TransientModel):
                 ] 
                 
                 for header in headers:
+                    worksheet.set_row(row, 35.75)
                     worksheet.write(row, col, header, style_highlight)
                     worksheet.set_column(col, col, 8)
                     col += 1
@@ -126,7 +131,8 @@ class SKUTemplateXl(models.TransientModel):
                 row = 4
                 for line in order.order_line:
                     col = 0
-                    worksheet.set_row(row, 50)
+                    worksheet.set_row(row, 63.75)
+                    worksheet.set_column(col, col, 10.71)
                     worksheet.write(row, col, line.product_id.default_code,style_normal)
                     col += 1
                     if line.product_id.image_1920:
@@ -151,7 +157,9 @@ class SKUTemplateXl(models.TransientModel):
                         
                         x_scale = cell_width/image_width
                         y_scale = cell_height/image_height
-                        worksheet.insert_image(row, col, file_path, {'x_scale': x_scale, 'y_scale': y_scale})
+                        worksheet.set_row(row, 63.75)
+                        worksheet.set_column(col, col, 12.86)
+                        worksheet.insert_image(row, col, file_path, {'x_scale': x_scale, 'y_scale': y_scale, 'x_offset': 15, 'y_offset': 10})
                     col += 1
                     if line.product_id.bom_id_line:
                         qty = 0.0
@@ -160,12 +168,20 @@ class SKUTemplateXl(models.TransientModel):
                             for m in metal:
                                 qty += metal.product_qty
                             metal = metal[0]
+                            worksheet.set_row(row, 63.75)
+                            worksheet.set_column(col, col, 4)
                             worksheet.write(row, col, metal.product_id.finess.code,style_normal)
                             col += 1
+                            worksheet.set_row(row, 63.75)
+                            worksheet.set_column(col, col, 4.57)
                             worksheet.write(row, col, metal.product_id.plating.code,style_normal)
                             col += 1
+                            worksheet.set_row(row, 63.75)
+                            worksheet.set_column(col, col, 4.57)
                             worksheet.write(row, col, qty,style_normal)
                             col += 1
+                            worksheet.set_row(row, 63.75)
+                            worksheet.set_column(col, col, 4.57)
                             worksheet.write(row, col, metal.min_weight,style_normal)
                             col += 1
                     center_stone = line.product_id.bom_id_line.filtered(lambda b: b.bom_line_type_id.name in ['Center Stone', 'Accent Stone 1', 'Accent Stone 2', 'Accent Stone 3', 'Accent Stone 4', 'Accent Stone 5', 'Accent Stone 6'])
@@ -200,29 +216,55 @@ class SKUTemplateXl(models.TransientModel):
                                     sq += cs.sec_quantity
                                 cs_minw += str(sq) + '\n'
                                 stone_count += str(pq) + '\n'
+                    worksheet.set_row(row, 63.75)
+                    worksheet.set_column(col, col, 5.29)
                     worksheet.write(row, col, line.product_id.country_origin.name, style_normal)    
                     col += 1
+                    worksheet.set_row(row, 63.75)
+                    worksheet.set_column(col, col, 8)
                     worksheet.write(row, col, cstone, style_normal)
                     col += 1
+                    worksheet.set_row(row, 63.75)
+                    worksheet.set_column(col, col, 6.43)
                     worksheet.write(row, col, cstonetrt, style_normal)
                     col += 1
+                    worksheet.set_row(row, 63.75)
+                    worksheet.set_column(col, col, 7.86)
                     worksheet.write(row, col, csshape, style_normal)
                     col += 1
+                    worksheet.set_row(row, 63.75)
+                    worksheet.set_column(col, col, 3.86)
                     worksheet.write(row, col, stone_count, style_normal)
                     col += 1
+                    worksheet.set_row(row, 63.75)
+                    worksheet.set_column(col, col, 3.86)
                     worksheet.write(row, col, '', style_normal)
                     col += 1
+                    worksheet.set_row(row, 63.75)
+                    worksheet.set_column(col, col, 4.71)
                     worksheet.write(row, col, cs_minw, style_normal)
                     col += 1
+                    worksheet.set_row(row, 63.75)
+                    worksheet.set_column(col, col, 7.14)
                     worksheet.write(row, col, cs_origin, style_normal)
                     col += 1
+                    worksheet.set_row(row, 63.75)
+                    worksheet.set_column(col, col, 4.43)
                     worksheet.write(row, col, str(line.product_uom_qty), style_normal)
                     col += 1    
+                    worksheet.set_row(row, 63.75)
+                    worksheet.set_column(col, col, 6.14)
                     worksheet.write(row, col, str(line.price_unit), style_normal)
                     col += 1    
+                    worksheet.set_row(row, 63.75)
+                    worksheet.set_column(col, col, 5.71)
                     worksheet.write(row, col, '', style_normal)
                     col += 1    
+                    worksheet.set_row(row, 63.75)
+                    worksheet.set_column(col, col, 17.29)
                     col += 1    
+                    worksheet.set_row(row, 63.75)
+                    worksheet.set_column(col, col, 5.57)
                     worksheet.write(row, col, str((order.date_order - order.expected_date).days), style_normal)
                     row += 1
                     stones = treatments = sorigins = []
