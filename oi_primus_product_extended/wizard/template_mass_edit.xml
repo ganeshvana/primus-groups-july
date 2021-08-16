@@ -68,12 +68,17 @@
 	                    </field>
 	                </page>
             	</notebook>
-            	<group attrs="{'invisible': [('option', 'not in', ['cost'])]}" groups="oi_primus_product_extended.group_bulk_product_cost">
+            	<group attrs="{'invisible': [('option', 'not in', ['cost', 'markup'])]}" groups="oi_primus_product_extended.group_bulk_product_cost,oi_primus_product_extended.group_bulk_product_markup">
             		<field name="percentage"/>
+            	</group>
+            	<group attrs="{'invisible': [('option', 'not in', ['tag'])]}" groups="oi_primus_product_extended.group_bulk_product_markup">
+            		<field name="multiplier"/>
             	</group>
                 <footer>
                 	<button type="object" class="oe_highlight" string="Update BoM" name="create_bom" attrs="{'invisible': [('option', 'not in', ['bom'])]}" groups="oi_primus_product_extended.group_bulk_product_bom"/>
                 	<button type="object" class="oe_highlight" string="Update Cost" name="update_cost" attrs="{'invisible': [('option', 'not in', ['cost'])]}" groups="oi_primus_product_extended.group_bulk_product_cost"/>
+                	<button type="object" class="oe_highlight" string="Update Markup" name="update_markup" attrs="{'invisible': [('option', 'not in', ['markup'])]}" groups="oi_primus_product_extended.group_bulk_product_markup"/>
+                	<button type="object" class="oe_highlight" string="Apply Multiplier" name="update_multipier" attrs="{'invisible': [('option', 'not in', ['tag'])]}" groups="oi_primus_product_extended.group_bulk_product_markup"/>
                 	<button string="Discard" class="btn btn-secondary" special="cancel"/>
                 </footer>
             </form>            
@@ -81,7 +86,7 @@
     </record>
     
     <record id="action_bom_bulk_update" model="ir.actions.act_window">
-        <field name="name">BOM/Cost - Bulk Update</field>
+        <field name="name">Product - Bulk Update</field>
         <field name="res_model">product.bom.bulk</field>
         <field name="view_mode">form</field>
         <field name="view_id" ref="oi_primus_product_extended.view_bom_bulk_update"/>
