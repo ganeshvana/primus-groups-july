@@ -61,10 +61,11 @@ class BOMBulk(models.TransientModel):
     _name = 'product.bom.bulk'
     _description = "Bulk BOM"   
     
-    option = fields.Selection([('bom', 'BoM'), ('cost', 'Cost')])    
+    option = fields.Selection([('bom', 'BoM'), ('cost', 'Cost'),('markup', 'Markup'),('tag', 'Tag Multiplier')])    
     bom_type = fields.Selection([('normal', 'Manufacture this product'), ('phantom', 'Kit'),('subcontract', 'Subcontracting')], "Type", default='normal')
     bulk_bom_ids = fields.One2many('product.bom.bulk.line', 'bulk_bom_id', "Bom" )
     percentage = fields.Float("Percentage")
+    multiplier = fields.Float('Multiplier')
     
     def create_bom(self):
         context = self._context
@@ -161,6 +162,33 @@ class BOMBulk(models.TransientModel):
                 if rec.standard_price > 0.0:
                     perc_amt = rec.standard_price * (self.percentage / 100)
                     rec.standard_price += perc_amt
+                    
+    def update_markup(self):
+        context = self._context
+        active_ids = context['active_ids']  
+        no_bom = []
+        with_bom = []
+        perc_amt = markupval = 0.0
+        if active_ids:
+            products = self.env['product.product'].search([('id', 'in', active_ids)])
+            for rec in products:
+                if rec.product_price > 0.0:
+                    markupval = (self.percentage/100) + 1
+                    rec.markup_percentage = self.percentage
+                    rec.markup_value = markupval
+                    perc_amt = rec.product_price * markupval
+                    rec.lst_price = perc_amt
+                    
+    def update_multipier(self):
+        context = self._context
+        active_ids = context['active_ids']  
+        no_bom = []
+        with_bom = []
+        perc_amt = markupval = 0.0
+        if active_ids:
+            products = self.env['product.product'].search([('id', 'in', active_ids)])
+            for rec in products:
+                rec.lst_price = rec.lst_price * self.multiplier
         
     
 class BOMBulk(models.TransientModel):
