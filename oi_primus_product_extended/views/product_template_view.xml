@@ -243,7 +243,8 @@
 										per
 										<field name="uom_name" />
 									</span>
-								</div>	
+								</div>
+									
 							</group>
 							<group>
 								<field name="uom_id" groups="uom.group_uom" options="{'no_create': True, 'no_edit': True, 'no_open': True}"/>									
@@ -255,6 +256,7 @@
 								placeholder="This note is only for internal purposes." />
 						</group>
 					</page>
+					
 					<page string="Mold" name="mold_information" attrs="{'invisible': [('products_types', '!=', 'design')]}">
 						<group>
 							<field name="mold_product_ids" domain="[('products_types','=', 'mold')]" nolabel="1" readonly="1">
@@ -361,6 +363,20 @@
 								placeholder="This note is only for internal purposes." />
 						</group>
 					</page>
+					<page string="Markup" groups="oi_primus_product_extended.group_bulk_product_markup">
+						<group>
+							<group>
+								<field name="product_price"/>
+								<field name="markup_percentage"/>
+								<field name="markup_value"/>
+							</group>
+							<group>
+								<field name="price_code"/>
+								<field name="lst_price"/>
+							</group>
+							
+						</group>
+					</page>
 				</xpath>
 				<xpath expr="//notebook" position="inside">
             		<page name="mold" string="Mold" attrs="{'invisible': [('jewel_mold', '=', 'no')]}">
@@ -456,7 +472,6 @@
                 </t>
 			</xpath>
 		</template>
-		
 		
 		<record id="product_template_search_view_inherit" model="ir.ui.view">
 			<field name="name">product.template.search.view.inherit</field>
@@ -591,6 +606,52 @@
 		<menuitem id="product_img_desc_menu_config_master"
 			name="Product Ecommerce Description" sequence="11" parent="menu_action_masters"
 			action="action_product_img_desc" />
+			
+		<record id="product_price_code_tree_view" model="ir.ui.view">
+			<field name="name">price.code.tree</field>
+			<field name="model">price.code</field>
+			<field name="arch" type="xml">
+				<tree string="name">
+					<field name="name" />
+					<field name="code" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="product_price_code_form_view" model="ir.ui.view">
+			<field name="name">price.code.form</field>
+			<field name="model">price.code</field>
+			<field name="arch" type="xml">
+				<form string="name">
+					<sheet>
+						<group name="dimension">
+							<group>
+								<field name="name" />
+							</group>
+							<group>
+								<field name="code" />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_product_price_code" model="ir.actions.act_window">
+			<field name="name">Product Price Code</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">price.code</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create the first record
+				</p>
+			</field>
+		</record>
+		
+		<menuitem id="product_price_code_menu"
+			name="Product Price Code" sequence="12" parent="menu_action_masters"
+			action="action_product_price_code" />
 		
 
 
