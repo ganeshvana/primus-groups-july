@@ -63,3 +63,5 @@ product_bom_bulk,product.bom.bulk,model_product_bom_bulk,,1,1,1,1
 product_bom_bulk_line,product.bom.bulk.line,model_product_bom_bulk_line,,1,1,1,1
 jewel_tags,jewel.tags,model_jewel_tags,,1,1,1,1
 product_image_desc,Product.image.desc,model_product_image_desc,,1,1,1,1
+price_code,price.code,model_price_code,,1,1,1,1
+
